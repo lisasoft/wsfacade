@@ -1,0 +1,414 @@
+body {
+	background-color: #fff;
+}
+
+div,h1,h2,td,ul,li {
+	font-family: Verdana, sans-serif;
+	color: #000;
+	font-size: 11px;
+	vertical-align: top;
+	line-height : 17px;
+}
+
+h1 {
+	font-size : 13px;
+	font-weight : bolder;
+	color : #579;
+}
+
+h2 {
+	font-size : 16px;
+	color : #666666;
+	margin-top: 10px;
+	font-weight: normal;
+}
+
+a {
+	color: #000;
+}
+
+/* Drop Down Menubar
+----------------------------------------------- */
+#nav {
+  width:935px;
+  margin-top:80px;
+}
+
+#nav ul {
+ margin-top:80px;
+ margin-bottom:0px;
+ margin-left:0px;
+ margin-right:0px;
+ padding:0px;
+ left:0px;
+ list-style:none;
+}
+
+#nav li {
+  float:left;
+  width:150px;
+  background-color:#fff;
+  font: 11px Verdana;
+  padding:0;
+  margin: 0 0.15em;
+}
+
+#nav a{
+  background-color:#68a;
+  color:white;
+  width:150px;
+  text-decoration:none;
+  text-align:center;
+  white-space:nowrap;
+  padding-top:5px;
+  padding-bottom:5px;
+  display:block;
+}
+
+#nav .section {
+	border:1px solid #68a;
+	background-color:white;
+}
+
+#nav .section a{
+    font: 11px verdana;
+    color:#68a;
+    text-align:left;
+    text-indent:10px;
+    text-decoration: none;
+	background-color:white;
+	border-bottom:1px dotted #eee;
+}
+
+#nav .section a:hover{
+    color:#8ac;
+    text-decoration: none;
+}
+
+.ddm1 .item1,
+.ddm1 .item1:hover,
+.ddm1 .item1-active,
+.ddm1 .item1-active:hover {
+    display: block;
+    position: relative;
+}
+
+.ddm1 .item2,
+.ddm1 .item2:hover {
+    display: block;
+    white-space: nowrap;
+}
+
+.ddm1 .section {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+    white-space: nowrap;
+}
+
+* html .ddm1 a { position: relative; } /* ie 5.0 fix */
+/*-- end Drop Down Menubar -----------------------------*/
+
+/*note: level-1 is wrong, should be level0 but the level returned for the page is wrong */
+ul.level-1,ul.level0 {
+	position: absolute;
+	left: 15px;
+	top: 218px;
+	margin-left: 0;
+	padding-left: 0;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+
+ul.level-1,ul.level0,ul.level1 {
+	width: 175px;
+	padding: 0 0 0 0;
+	list-style-type: none;
+	list-style-position: inside;
+	margin-left: 0;
+}
+
+ul.level0 li a,ul.level-1 li a{
+	padding-bottom: 2px;
+	padding-top: 2px;
+	color: #333;
+	text-decoration: none;
+	display: block;
+}
+
+ul.level-1 li a,ul.level0 li a {
+	padding-left: 2px;
+	font-weight: bold;
+	color: #538307;
+}
+
+ul ul.level1 li a {
+	padding-left: 10px;
+	font-weight: normal;
+}
+
+ul.level0 strong a,ul.level-1 strong a {
+	color: #538307;
+	background-color: #E5F973;
+	text-decoration: none;
+}
+
+ul ul.level1 strong a {
+	font-weight: normal;
+}
+/**/
+
+/* sub menu */
+
+ul.level2{
+	margin-left: 0;
+	padding-left: 0;
+	border-top: 1px dotted #ccc;
+}
+
+ul.level2, ul.level3, ul.level4{
+	width: 200px;
+	padding: 0 0 0 0;
+	list-style-type: none;
+	list-style-position: inside;
+	margin-left: 0;
+}
+
+ul.level2 li a{
+	padding-bottom: 2px;
+	padding-top: 2px;
+	padding-left: 2px;
+	text-decoration: none;
+	display: block;
+	font:11px verdana;
+	color: #68a;
+	border-bottom: 1px dotted #ccc;
+}
+
+ul.level2 li a:hover{
+	color:#8ac;
+}
+
+ul ul.level3 li a {
+	padding-left: 15px;
+	font-weight: normal;
+}
+
+ul ul.level4 li a {
+	padding-left: 30px;
+	font-weight: normal;
+}
+
+ul.level2 strong a{
+	color: #468;
+	background-color: #def;
+	text-decoration: none;
+}
+
+ul ul.level3 strong a {
+	font-weight: normal;
+}
+/* end sub menu */
+
+
+/* breadcrumb menu */
+
+#breadcrumb {
+	position: absolute;
+	left: 15px;
+	top: 240px;
+	margin-left: 0;
+	padding-left: 0;
+	color:#666;
+}
+
+#breadcrumb a{
+	text-decoration:none;
+	font:11px verdana;
+	color:#68a;
+}
+
+#breadcrumb a:hover{
+	text-decoration:none;
+	font:11px verdana;
+	color:#8ac;
+}
+
+/* end breadcrumb menu */
+
+
+/* search box */
+
+#searchbox{
+	position:absolute;
+	top:275px;
+	left:15px;
+	border:1px solid #7D947B;
+	width:170px;
+	height:50px;
+	font:10px verdana;
+}
+
+#searchbox .heading{
+	background-color:#7D947B;
+	color:white;
+	width:170px;
+	font-weight:bold;
+	text-indent:5px;
+}
+
+input.blue{
+	border: 1px solid #cccccc;
+	background: #fff;
+	color: #7D947B;
+	font: 10px verdana;
+	margin-top:8px;
+	margin-left:5px;
+}
+
+/* end search box */
+
+/* companies navigation */
+
+#companies_nav{
+	position:absolute;
+	right:15px;
+	top:10px;
+	font:10px verdana;
+	color:#d9d9d9;
+}
+
+#companies_nav a{
+	color:#8ac;
+	text-decoration:none;
+}
+
+#companies_nav a:hover{
+	color:#68a;
+}
+
+/* end companies navigation */
+
+/* top banner */
+
+#topbanner{
+	position:absolute;
+	top:125px;
+	left:25px;
+	margin-left:0px;
+}
+
+/* end top banner */
+
+.line {
+	background-color: #ccc;
+	font-size: 1px;
+	line-height: 1px;
+	height: 1px;
+}
+
+.contentImage_left {
+	float: left;
+	padding-right: 20px;
+	padding-bottom: 10px;
+}
+
+.contentImage_right {
+	float: right;
+	padding-left: 5px;
+	padding-bottom: 10px;
+}
+
+#contentDivMainColumnTotalWidth {
+	position: absolute;
+	left: 217px;
+	top: 8px;
+	width: 710px;
+}
+
+#contentDivMainColumn {
+	position: absolute;
+	left: 217px;
+	top: 90px;
+	width: 450px;
+}
+
+#contentDivRightColumn {
+	position: absolute;
+	left: 702px;
+	top: 245px;
+	width: 225px;
+}
+
+.rightColumnTitle {
+	background-color: #68a;
+	color: #fff;
+	font-weight: bold;
+	padding-top: 2px;
+	padding-bottom: 3px;
+	padding-left: 2px;
+	margin-bottom: 4px;
+	margin-top: 25px;
+}
+
+td.table,td.tableHead {
+	padding-top: 2px;
+	padding-bottom: 3px;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin-bottom: 4px;
+	border-style: solid;
+	border-width: 0px;
+	border-color: #aaaaaa;
+}
+
+td.tableHead {
+	background-color: #999;
+	color: #fff;
+	font-weight: bold;
+}
+
+tr.tableAlt {
+	background-color: #eee;
+}
+
+.devShowBox {
+	background-color: #cccccc;
+	padding: 4px;
+}
+
+.code {
+	font-family: Courier New, monospace;
+	font-size: 12px;
+}
+
+textarea,input.text,select {
+	width: 100%;
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+}
+
+input.submit {
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+}
+
+input.checkbox,input.radio {
+	position: relative;
+	top: 3px;
+	margin-right: 6px;
+}
+
+.searchresult {
+	padding-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.searchresult p {
+	margin: 3px 0 3px 0;
+}
+
+.searchresult h4,.searchresult a {
+	display: block;
+	margin-bottom: 2px;
+}
