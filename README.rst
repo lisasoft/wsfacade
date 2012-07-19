@@ -9,8 +9,7 @@ For background reading please review this wiki page:
 Details
 =======
 
-Project Leads: `Jim Groffen <https://github.com/jgroffen>`_
-			   `John Hudson <https://github.com/jhudson>`_
+Project Leads: `Jim Groffen <https://github.com/jgroffen>`_, `John Hudson <https://github.com/jhudson>`_
 
 Source files use the following header::
    
@@ -34,7 +33,7 @@ Source files use the following header::
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */ 
  
-As indicated above the code is distributed under an `GPL 3 <LICENSE>`_ license.
+As indicated above the code is distributed under an `GPL 3 <https://github.com/lisasoft/wsfacade/blob/master/LICENSE>`_ license.
 
 Build
 -----
