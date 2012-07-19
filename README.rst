@@ -4,7 +4,7 @@ Web Services Facade
 
 Welcome to the Web Services Facade project, an OWS 9 testbed project.
 
-For background reading please review this wiki page: 
+The wsfacade is a service interpreting proxy for translating SOAP calls into WFS calls and back again.
 
 Details
 =======
