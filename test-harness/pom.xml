@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.lisasoft.wsfacade</groupId>
+		<artifactId>wsfacade</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.lisasoft.wsfacade.test</groupId>
+	<artifactId>wsfacade-testharness</artifactId>
+	<packaging>war</packaging>
+	<name>Web Service Facade Web Test Harness</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.lisasoft.wsfacade.core</groupId>
+			<artifactId>platform</artifactId>
+			<version>${wsf.version}</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>7.0.0.pre5</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<contextPath>wsfacade-testharness</contextPath>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>index.jsp</include>
+								<include>requestSender.jsp</include>
+								<include>testharness.jsp</include>
+							</includes>
+							<filtering>true</filtering>
+							<targetPath>/</targetPath>
+						</resource>
+					</webResources>
+					<overlays>
+						<overlay>
+							<groupId>com.lisasoft.wsfacade.core</groupId>
+							<artifactId>platform</artifactId>
+							<includes>
+								<indluce>**/**.*</indluce>
+							</includes>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<finalName>wsfacade-testharness</finalName>
+	</build>
+
+</project>

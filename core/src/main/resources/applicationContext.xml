@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<bean id="wmtsClientMapper" class="com.lisasoft.wsfacade.mappers.wmts.WmtsSoapMapper"/>
+	<bean id="wmtsServerMapper" class="com.lisasoft.wsfacade.mappers.wmts.WmtsRestMapper"/>
+	<bean id="xmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
+		<constructor-arg ref="wmtsClientMapper"/>
+	</bean>
+	<bean id="xmlBodyGenerator" class="com.lisasoft.wsfacade.generators.XmlBodyGenerator">
+		<constructor-arg ref="wmtsClientMapper"/>
+	</bean>
+	<bean id="restGenerator" class="com.lisasoft.wsfacade.generators.RestGenerator">
+		<constructor-arg ref="wmtsServerMapper"/>
+	</bean>
+	<bean id="restInterpreter" class="com.lisasoft.wsfacade.interpreters.RestInterpreter">
+		<constructor-arg ref="wmtsServerMapper"/>
+	</bean>
+
+	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.proxies.WmtsProxy">
+		<property name="proxyUrl" value="/wmts"/>
+		<property name="proxyManagedUrls">
+			<list>
+				<value>?WSDL</value>
+			</list>
+		</property>
+		<property name="name" value="wmtsLocal"/>
+		<property name="clientType" value="SOAP"/>
+		<property name="serverType" value="REST"/>
+		<property name="serverUrl" value="http://localhost/tilecache/tilecache.py/"/>
+		<property name="clientMapper" ref="wmtsClientMapper"/>
+		<property name="serverMapper" ref="wmtsServerMapper"/>
+		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter"/>
+		<property name="clientResponseGenerator" ref="xmlBodyGenerator"/>
+		<property name="serverRequestGenerator" ref="restGenerator"/>
+		<property name="serverResponseInterpreter" ref="restInterpreter"/>
+		<property name="connectionProxyEnabled" value="False"/>
+		<property name="connectionProxyUrl" value="10.1.1.1"/>
+		<property name="connectionProxyPort" value="80"/>
+		<property name="connectionProxyUsername" value="username"/>
+		<property name="connectionProxyPassword" value="password"/>
+	</bean>
+</beans>

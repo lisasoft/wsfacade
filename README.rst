@@ -39,13 +39,28 @@ As indicated above the code is distributed under an `GPL 3 <LICENSE>`_ license.
 Build
 -----
 
+The Web Service Facade is build with modules:
+
+ core - contains the core service, the 'platform'
+ test-harness - is a convenience module to help test the service 
+
 wsfacade is built using Maven::
   
-  mvn clean install
+  mvn clean install -Pall to build all of the modules
+  mvn clean install -Pcore builds just the core service into a deployable WAR
 
 Additional build profiles are documented in the root `pom.xml`:pom.xml ::
   
   more pom.xml
+
+Test
+----
+
+Change directory to the test harness and run:
+
+ mvn clean jetty:run-exploded
+ 
+This will run a local version of the software on port 8080 which can be accessed at http://localhost:8080/wsfacade-testharness
 
 Participation
 =============
