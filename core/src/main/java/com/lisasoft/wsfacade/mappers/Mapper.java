@@ -19,19 +19,9 @@
  */
 package com.lisasoft.wsfacade.mappers;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-
 import com.lisasoft.wsfacade.models.Model;
 
-public abstract class Mapper {
-	
-	// override this if you want to load custom settings from config 
-	// but call the super so this stuff still gets loaded.
-	public void loadConfig(String prefix, Context context) throws NamingException {
-	}
-	
+public abstract class Mapper {	
 	public abstract Model mapToModel(String source) throws IllegalArgumentException;
-
 	public abstract String mapFromModel(Model model) throws UnsupportedModelException ;
 }

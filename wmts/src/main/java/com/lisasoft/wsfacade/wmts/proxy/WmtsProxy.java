@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.proxies;
+package com.lisasoft.wsfacade.wmts.proxy;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+
+import com.lisasoft.wsfacade.proxies.Proxy;
 
 public class WmtsProxy extends Proxy {
     static final Logger log = Logger.getLogger(WmtsProxy.class);

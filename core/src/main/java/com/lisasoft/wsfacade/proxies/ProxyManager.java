@@ -79,18 +79,6 @@ public class ProxyManager {
 			return(result);
 	}
 
-//	private static SortedSet<String> getAllProxyNames() throws ProxyException {
-//		SortedSet<String> proxies = new TreeSet<String>();
-//		try {
-//			String proxiesCommmaDelimited = (String) context.lookup(PROXIES);
-//			String[] stringArray = proxiesCommmaDelimited.split(",");
-//			proxies.addAll(Arrays.asList(stringArray));
-//		} catch (NamingException e) {
-//			throw new ProxyException("Problem reading proxies configuration.");
-//		}
-//		return proxies;
-//	}
-
 	public static List<Proxy> getProxies() throws ProxyException {
 		if(!config_loaded) {
 			loadConfig();

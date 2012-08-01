@@ -17,13 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.mappers.wmts;
+package com.lisasoft.wsfacade.wmts.mappers;
 
 import java.io.IOException;
 import java.io.StringReader;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 import org.xmlpull.v1.XmlPullParser;
@@ -38,12 +35,14 @@ import com.lisasoft.wsfacade.models.GetTileModel;
 import com.lisasoft.wsfacade.models.GetTileResponseModel;
 import com.lisasoft.wsfacade.models.Model;
 import com.lisasoft.wsfacade.utils.Base64Coder;
+import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class WmtsSoapMapper extends SoapMapper {
-	
+
 	static final Logger log = Logger.getLogger(WmtsSoapMapper.class);
 	
-	public void loadConfig(String prefix, Context context) throws NamingException {
+	protected WmtsSoapMapper(String startTag) {
+		super(startTag);
 	}
 
 	public Model mapToModel(String source) throws IllegalArgumentException {
@@ -78,7 +77,7 @@ public class WmtsSoapMapper extends SoapMapper {
 			GetTileResponseModel m = (GetTileResponseModel)model;
 			
 			if(m.contentType.contains("image")) {
-				result = String.format(WmtsConstants.GET_TILE_RESPONSE_TEMPLATE, m.contentType, new String(Base64Coder.encode(m.binarySource)));
+				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.contentType, new String(Base64Coder.encode(m.binarySource)));
 			} else {
 				// TODO: feature info responses end up here at the moment. This is ambiguous so we either 
 				// remove the GetFeatureInfoResponseModel or go to the effort of differentiating between 
@@ -96,12 +95,12 @@ public class WmtsSoapMapper extends SoapMapper {
 						responseBody = responseBody.substring(responseBody.indexOf("<", responseBody.indexOf("?>")));
 					}
 				//}
-				result = String.format(WmtsConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, responseBody);
+				result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, responseBody);
 			}
 			
 		} else if(model instanceof GetFeatureInfoResponseModel) {
 			GetFeatureInfoResponseModel m = (GetFeatureInfoResponseModel)model;
-			result = String.format(WmtsConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.properties.get("response"));
+			result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.properties.get("response"));
 			
 		} else {
 			if(model.properties.containsKey("capabilities")) {
@@ -112,12 +111,12 @@ public class WmtsSoapMapper extends SoapMapper {
 					// chop to the first tag after the xml file descriptor bit
 					responseBody = responseBody.substring(responseBody.indexOf("<", responseBody.indexOf("?>")));
 				}
-				responseBody = String.format(WmtsConstants.GET_CAPABILITIES_RESPONSE_TEMPLATE, responseBody);
+				responseBody = String.format(SOAPConstants.GET_CAPABILITIES_RESPONSE_TEMPLATE, responseBody);
 				result = injectCapabilities(responseBody, model.properties.get("host"));
 				
 			} else if(model.properties.containsKey("response")) {
 				// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-				result = String.format(WmtsConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
+				result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
 			} else {
 				throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
 			}
@@ -241,7 +240,7 @@ public class WmtsSoapMapper extends SoapMapper {
     }
 
     protected Model parseGetCapabilities(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	Model model = new Model(WmtsConstants.GET_CAPABILITIES_MODEL);
+    	Model model = new Model(SOAPConstants.GET_CAPABILITIES_MODEL);
     	
 		model.properties.put("name", xpp.getName());
 		model.properties.put("service", xpp.getAttributeValue(null, "service"));
@@ -320,7 +319,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get capabilities
     	int idx = result.indexOf("<ows:Operation name=\"GetCapabilities\">");
     	if(idx != -1) {
-    		String new_content = String.format(WmtsConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -328,7 +327,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get tile
     	idx = result.indexOf("<ows:Operation name=\"GetTile\">");
     	if(idx != -1) {
-    		String new_content = String.format(WmtsConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -336,7 +335,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get feature info
     	idx = result.indexOf("<ows:Operation name=\"GetFeatureInfo\">");
     	if(idx != -1) {
-    		String new_content = String.format(WmtsConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -344,7 +343,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// WSDL details
     	idx = result.indexOf("</Capabilities>");
     	if(idx != -1) {
-    		String new_content = String.format(WmtsConstants.SOAP_WSDL_LINK_TEMPLATE, host);
+    		String new_content = String.format(SOAPConstants.SOAP_WSDL_LINK_TEMPLATE, host);
     		result = result.substring(0, idx) + new_content + result.substring(idx, result.length());
     	}
     	

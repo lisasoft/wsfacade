@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xsi:schemaLocation="http://www.w3.org/2001/12/soap-envelope http://www.w3.org/2001/12/soap-envelope.xsd">
+  <soap:Body>
+    <GetCapabilities xmlns="http://www.opengis.net/wmts/1.0.0"
+        xmlns:ows="http://www.opengis.net/ows/1.1"
+        xsi:schemaLocation="http://www.opengis.net/wmts/1.0.0 ../wmtsGetCapabilities_request.xsd"
+        service="WMTS">
+        <ows:AcceptVersions>
+          <ows:Version>1.0.0</ows:Version>
+        </ows:AcceptVersions>
+          <ows:AcceptFormats>
+        <ows:OutputFormat>text/xml</ows:OutputFormat>
+      </ows:AcceptFormats>
+    </GetCapabilities>
+  </soap:Body>
+</soap:Envelope>

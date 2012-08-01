@@ -42,7 +42,7 @@ import com.lisasoft.wsfacade.proxies.ProxyManager;
  * response information to generate and send the client response.
  * 
  * @author jgroffen
- * 
+ * @author jhudson
  */
 public class Service extends HttpServlet implements Servlet {
 

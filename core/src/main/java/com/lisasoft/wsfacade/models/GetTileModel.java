@@ -24,15 +24,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.lisasoft.wsfacade.mappers.wmts.WmtsConstants;
+import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class GetTileModel extends RestModel {
 	public List<String> dimensionsOrder = new ArrayList<String>();
 	public Map<String, String> dimensions = new HashMap<String, String>();
 	
 	public GetTileModel() {
-		this(WmtsConstants.GET_TILE_MODEL);
-		order = WmtsConstants.GET_TILE_ORDER.split(",");
+		this(SOAPConstants.GET_TILE_MODEL);
+		order = SOAPConstants.GET_TILE_ORDER.split(",");
 	}
 
 	public GetTileModel(String modelPropertyNames) {

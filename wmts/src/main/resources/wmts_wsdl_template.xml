@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Based on wmtsConcrete.wsdl provided by Joan Maso (UAB-CREAF-MiraMon),
+	which was in-turn based on previous documents from OWS-5.
+-->
+<definitions xmlns:wmts_wsdl="http://www.opengis.net/wmts/wsdl"
+                  xmlns="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://www.opengis.net/wmts/wsdl"
+                  name="WMTS-Example">
+                  
+	<annotation>
+		<appinfo>wmts_concrete.wsdl 2009-02-21</appinfo>
+		<documentation>This WSDL document encodes describes the WMTS server instance for SOAP encodings only.
+		Copyright (c) 2009 Open Geospatial Consortium, Inc. All Rights Reserved. </documentation>
+	</annotation>
+
+	<!-- import WMTS types, message and portType -->
+	<import namespace="http://www.opengis.net/wmts/wsdl" location="../../xml/schema/wmtsAbstract.wsdl"/>
+
+<!-- ****************************************
+                         Bindings
+      **************************************** -->
+             
+	<!-- HTTP Post SOAP  bindings -->
+
+	<binding name="WMTS_SOAP_Binding"
+	              type="wmts_wsdl:WMTS_HTTP_Port_SOAP" 
+	              xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+	              
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		<operation name="GetCapabilities">
+			<soap:operation soapAction="%1$s#GetCapabilities"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+		
+		<operation name="GetTile">
+			<soap:operation soapAction="%1$s#GetTile"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+                <soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+	
+		<operation name="GetFeatureInfo">
+			<soap:operation soapAction="%1$s#GetFeatureInfo"/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+                <soap:body use="literal"/>
+			</output>
+			<fault name="exception">
+				<soap:fault name="exception" use="literal"/>
+			</fault>
+		</operation>
+
+	</binding> 
+
+	<!-- ****************************************
+                        Services
+          **************************************** -->
+	<service name="WMTS-%2$s">
+	
+		<port name="WMTS-SOAP-Port" binding="wmts_wsdl:WMTS_SOAP_Binding" 
+					xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+			<soap:address location="%1$s"/>
+		</port>
+
+	</service>
+  	
+</definitions>

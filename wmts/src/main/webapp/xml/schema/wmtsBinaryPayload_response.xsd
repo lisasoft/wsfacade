@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by Joan Masó (UAB-CREAF-MiraMon). Based on previous documents of Keith Pomakis. -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:wmts="http://www.opengis.net/wmts/1.0" targetNamespace="http://www.opengis.net/wmts/1.0" elementFormDefault="qualified" xml:lang="en">
+	<annotation>
+		<appinfo>wmtsBinaryPayload_response 2009-01-31</appinfo>
+		<documentation>This XML Schema Document initially was intended to encode SOAP response for a WMTS GetTile request but in the future it could be used and part of a WMTS service (or even in any OWS service) that needs a binary encoding.
+		Copyright (c) 2009 Open Geospatial Consortium, Inc. All Rights Reserved. </documentation>
+	</annotation>
+	<!-- =============================================================
+		includes and imports
+	============================================================== -->
+	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<!-- =============================================================
+		elements and types
+	============================================================== -->
+	<element name="BinaryPayload">
+		<complexType>
+			<sequence>
+				<element name="Format" type="ows:MimeType">
+					<annotation>
+						<documentation>MIMEType format of the PayloadContent once base64 decodified</documentation>
+					</annotation>
+				</element>
+				<element name="PayloadContent" type="base64Binary">
+					<annotation>
+						<documentation>Binary content encoded in base64</documentation>
+					</annotation>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

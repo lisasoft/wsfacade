@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.mappers.wmts;
+package com.lisasoft.wsfacade.wmts.mappers;
 
 import org.apache.log4j.Logger;
 
@@ -27,6 +27,7 @@ import com.lisasoft.wsfacade.models.EntityModel;
 import com.lisasoft.wsfacade.models.GetTileModel;
 import com.lisasoft.wsfacade.models.GetTileResponseModel;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class WmtsRestMapper extends RestMapper {
 	
@@ -35,17 +36,16 @@ public class WmtsRestMapper extends RestMapper {
     public Model mapToModel(String source) throws IllegalArgumentException {
     	// This method has to return an entity model, as this mapper
     	// inherits from EntityMapper 
-    	
     	// a rest response with a sting source could be a getFeatureInfo response 
     	// or it could be a failed response.
 		Model model = null;
 		
     	if(source == null) {
-    		model = new GetTileResponseModel(WmtsConstants.GET_TILE_RESPONSE_MODEL);
+    		model = new GetTileResponseModel(SOAPConstants.GET_TILE_RESPONSE_MODEL);
 		
     	} else if(source.contains("<Capabilities")) {
 			// map to a get capabilities model
-    		model = new EntityModel(WmtsConstants.GET_CAPABILITIES_MODEL);
+    		model = new EntityModel(SOAPConstants.GET_CAPABILITIES_MODEL);
     		model.properties.put("capabilities", source);
 		} else {
 			model = new EntityModel("response");

@@ -22,16 +22,13 @@ package com.lisasoft.wsfacade.mappers;
 import java.io.IOException;
 import java.io.StringReader;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-
 import org.apache.log4j.Logger;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.lisasoft.wsfacade.mappers.wmts.WmtsConstants;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class SoapMapper extends Mapper {
 	
@@ -39,11 +36,9 @@ public class SoapMapper extends Mapper {
     
     protected String startTag = null;
     
-	public void loadConfig(String prefix, Context context) throws NamingException {
-		super.loadConfig(prefix, context);
-		startTag = (String)context.lookup(String.format("%s.start_tag",prefix));
+	protected SoapMapper(String startTag){
+		this.startTag = startTag;
 	}
-    
 
     public Model mapToModel(String source) throws IllegalArgumentException {
     	Model result = null;
@@ -69,7 +64,7 @@ public class SoapMapper extends Mapper {
 		String result = null;
 		if(model.properties.containsKey("response")) {
 			// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-			result = String.format(WmtsConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
+			result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
 		} else {
 			throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
 		}

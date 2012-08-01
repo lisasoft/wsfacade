@@ -17,9 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.mappers.wmts;
+package com.lisasoft.wsfacade.utils;
 
-public class WmtsConstants {
+/**
+ * A class to have constant String - TODO: refactor, most of this can be moved to xml files? 
+ * @author jhudson
+ *
+ */
+public class SOAPConstants {
 	public static final String COMMON_REQUEST_ORDER  = "Layer,Style,dimensions,TileMatrixSet,TileMatrix,TileCol,TileRow";
 	
 	public static final String GET_TILE_MODEL = "Layer,Style,TileMatrixSet,TileMatrix,TileCol,TileRow,Format,mime";
@@ -59,8 +64,6 @@ public class WmtsConstants {
 		"	</soap:Body>\n" + 
 		"</soap:Envelope>";
 
-
-	
 	public static final String GET_CAPABILITIES_MODEL = "name,service,version,capabilities";
 	public static final String GET_CAPABILITIES_RESPONSE_TEMPLATE = 
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
