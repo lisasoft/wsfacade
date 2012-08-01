@@ -41,6 +41,10 @@ public class WmtsSoapMapper extends SoapMapper {
 
 	static final Logger log = Logger.getLogger(WmtsSoapMapper.class);
 	
+	protected WmtsSoapMapper() {
+		super(null);
+	}
+	
 	protected WmtsSoapMapper(String startTag) {
 		super(startTag);
 	}

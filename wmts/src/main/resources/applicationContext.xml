@@ -6,8 +6,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<!-- Common beans -->
-	<bean id="wmtsClientMapper" class="com.lisasoft.wsfacade.mappers.wmts.WmtsSoapMapper" />
-	<bean id="wmtsServerMapper" class="com.lisasoft.wsfacade.mappers.wmts.WmtsRestMapper" />
+	<bean id="wmtsClientMapper" class="com.lisasoft.wsfacade.wmts.mappers.WmtsSoapMapper" />
+	<bean id="wmtsServerMapper" class="com.lisasoft.wsfacade.wmts.mappers.WmtsRestMapper" />
 
 	<!-- WMTS local Proxy -->
 	<bean id="xmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
@@ -23,7 +23,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<constructor-arg ref="wmtsServerMapper" />
 	</bean>
 
-	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.proxies.WmtsProxy">
+	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
 		<property name="connectionProxyEnabled" value="False" />
 		<property name="connectionProxyUrl" value="10.1.1.1" />
 		<property name="connectionProxyPort" value="80" />
@@ -51,7 +51,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<!-- WMTS Landgate Proxy -->
-	<bean id="wmtsLandgate" class="com.lisasoft.wsfacade.proxies.WmtsProxy">
+	<bean id="wmtsLandgate" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
 		<property name="connectionProxyEnabled" value="False" />
 		<property name="connectionProxyUrl" value="10.1.1.1" />
 		<property name="connectionProxyPort" value="80" />
@@ -79,7 +79,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 	
 	<!-- WMTS uab Proxy -->
-	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.proxies.WmtsProxy">
+	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
 		<property name="connectionProxyEnabled" value="False" />
 		<property name="connectionProxyUrl" value="10.1.1.1" />
 		<property name="connectionProxyPort" value="80" />
