@@ -45,6 +45,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
+		
+		<!-- seems to be added but not used in project -->
+		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 
 	<!-- WMTS Landgate Proxy -->
@@ -71,6 +74,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
+		<!-- seems to be added but not used in project -->
+		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 	
 	<!-- WMTS uab Proxy -->
@@ -97,5 +102,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
+		<!-- seems to be added but not used in project -->
+		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 </beans>
