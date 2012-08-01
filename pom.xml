@@ -1,11 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+  http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.lisasoft.wsfacade</groupId>
 	<artifactId>wsfacade</artifactId>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 	<version>1.1-SNAPSHOT</version>
 	<name>Web Service Facade</name>
+
 	<url>http://www.github.com/lisasoft/wsfacade</url>
 	<issueManagement>
 		<system>GITHUB</system>
@@ -30,62 +34,86 @@
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<wsf.version>1.1-SNAPSHOT</wsf.version>
+		<log4j.level>WARN</log4j.level>
+		<log4j.file>./logs/wsfacade.log</log4j.file>
 	</properties>
-	<dependencies>
+
+	<licenses>
+		<license>
+			<name>General Public License (GPL)</name>
+			<url>http://www.gnu.org/copyleft/gpl.txt</url>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.0-beta2</version>
-		</dependency> 
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
 		<dependency>
-		    <groupId>xpp3</groupId>
-		    <artifactId>xpp3</artifactId>
-		    <version>1.1.4c</version>
-		</dependency> 
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>6.0.35</version>
+		</dependency>
 		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>servlet-api</artifactId>
-		    <version>2.4-20040521</version>
-			<scope>provided</scope>
-		</dependency> 
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+			<version>1.1.4c</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
-	<build>
-		<filters>
-			<filter>src/main/filters/filter.properties</filter>
-		</filters>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<webResources>
-						<resource>
-							<!-- this is relative to the pom.xml directory -->
-							<directory>src/main/webapp-filtered</directory>
-							<filtering>true</filtering>
-						</resource>
-					</webResources>
-				</configuration>
-			</plugin>
-		</plugins>
-		<finalName>wsfacade</finalName>
-	</build>
+		</dependencies>
+	</dependencyManagement>
+
+	<profiles>
+		<profile>
+			<id>all</id>
+			<modules>
+				<module>core</module>
+				<module>wmts</module>
+				<module>web</module>
+				<module>test-harness</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>core</id>
+			<modules>
+				<module>core</module>
+				<module>wmts</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>web</id>
+			<modules>
+				<module>web</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>test</id>
+			<modules>
+				<module>core</module>
+				<module>wmts</module>
+				<module>web</module>
+				<module>test-harness</module>
+			</modules>
+		</profile>
+	</profiles>
+
 </project>
