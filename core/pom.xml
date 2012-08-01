@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.lisasoft.wsfacade</groupId>
+		<artifactId>wsfacade</artifactId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+
+	<groupId>com.lisasoft.wsfacade.core</groupId>
+	<artifactId>core</artifactId>
+	<packaging>jar</packaging>
+	<name>Web Service Facade Core Platform</name>
+	<description>
+		This is the main core module - this module is built upon by other modules
+	</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- build> <resources> <resource> <directory>src/main/resources</directory> 
+		<filtering>true</filtering> </resource> </resources> <plugins> <plugin> <groupId>org.mortbay.jetty</groupId> 
+		<artifactId>jetty-maven-plugin</artifactId> <version>7.0.0.pre5</version> 
+		<configuration> <scanIntervalSeconds>10</scanIntervalSeconds> <contextPath>wsfacade</contextPath> 
+		</configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+		<artifactId>maven-war-plugin</artifactId> <version>2.2</version> </plugin> 
+		</plugins> <finalName>wsfacade</finalName> </build -->
+</project>
