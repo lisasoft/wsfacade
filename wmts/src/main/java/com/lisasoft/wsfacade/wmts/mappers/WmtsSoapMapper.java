@@ -22,6 +22,7 @@ package com.lisasoft.wsfacade.wmts.mappers;
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -34,7 +35,6 @@ import com.lisasoft.wsfacade.models.GetFeatureInfoResponseModel;
 import com.lisasoft.wsfacade.models.GetTileModel;
 import com.lisasoft.wsfacade.models.GetTileResponseModel;
 import com.lisasoft.wsfacade.models.Model;
-import com.lisasoft.wsfacade.utils.Base64Coder;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class WmtsSoapMapper extends SoapMapper {
@@ -81,7 +81,7 @@ public class WmtsSoapMapper extends SoapMapper {
 			GetTileResponseModel m = (GetTileResponseModel)model;
 			
 			if(m.contentType.contains("image")) {
-				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.contentType, new String(Base64Coder.encode(m.binarySource)));
+				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.contentType, new String(Base64.encodeBase64(m.binarySource)));
 			} else {
 				// TODO: feature info responses end up here at the moment. This is ambiguous so we either 
 				// remove the GetFeatureInfoResponseModel or go to the effort of differentiating between 
