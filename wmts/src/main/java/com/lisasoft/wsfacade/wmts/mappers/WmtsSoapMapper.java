@@ -30,12 +30,12 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.lisasoft.wsfacade.mappers.SoapMapper;
 import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
-import com.lisasoft.wsfacade.models.GetFeatureInfoModel;
-import com.lisasoft.wsfacade.models.GetFeatureInfoResponseModel;
-import com.lisasoft.wsfacade.models.GetTileModel;
-import com.lisasoft.wsfacade.models.GetTileResponseModel;
 import com.lisasoft.wsfacade.models.Model;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoModel;
+import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoResponseModel;
+import com.lisasoft.wsfacade.wmts.models.GetTileModel;
+import com.lisasoft.wsfacade.wmts.models.GetTileResponseModel;
 
 public class WmtsSoapMapper extends SoapMapper {
 

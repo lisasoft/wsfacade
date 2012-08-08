@@ -17,25 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.models;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.lisasoft.wsfacade.wmts.models;
 
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 
-public class GetTileModel extends RestModel {
-	public List<String> dimensionsOrder = new ArrayList<String>();
-	public Map<String, String> dimensions = new HashMap<String, String>();
+public class GetFeatureInfoModel extends GetTileModel {
 	
-	public GetTileModel() {
-		this(SOAPConstants.GET_TILE_MODEL);
-		order = SOAPConstants.GET_TILE_ORDER.split(",");
+	public GetFeatureInfoModel() {
+		this(SOAPConstants.GET_FEATURE_INFO_MODEL);
+		order = SOAPConstants.GET_FEATURE_INFO_ORDER.split(",");
 	}
 
-	public GetTileModel(String modelPropertyNames) {
+	public GetFeatureInfoModel(String modelPropertyNames) {
 		super(modelPropertyNames);
 	}
+
 }

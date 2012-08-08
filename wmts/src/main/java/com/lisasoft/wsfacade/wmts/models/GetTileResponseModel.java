@@ -17,7 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.models;
+package com.lisasoft.wsfacade.wmts.models;
+
+import com.lisasoft.wsfacade.models.EntityModel;
 
 
 public class GetTileResponseModel extends EntityModel {
