@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.lisasoft.wsfacade</groupId>
 		<artifactId>wsfacade</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.lisasoft.wsfacade.wmts</groupId>
@@ -33,6 +33,10 @@
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>xpp3</groupId>

@@ -42,14 +42,12 @@ public class RestGenerator extends HttpGenerator {
     
     //post.setRequestHeader("Content-type", "text/xml; charset=ISO-8859-1");
     // TODO: Should be a config setting
-    //protected static final String DEFAULT_CHARSET = "ISO-8859-1";
     protected static final String DEFAULT_CHARSET = "UTF-8";
 
-    
 	public RestGenerator(Mapper mapper) {
 		super(mapper);
 	}
-	
+
 	@Override
 	public HttpRequestBase generateRequest(Model model, String url, String requestType) throws UnsupportedModelException, URISyntaxException {
 		// for now all REST requests are GETs.
@@ -60,7 +58,7 @@ public class RestGenerator extends HttpGenerator {
 	protected HttpGet generateGetRequest(Model model, String url) throws UnsupportedModelException, URISyntaxException {
 		HttpGet result = null;
 		String restRequest = mapper.mapFromModel(model);
-		
+
 		try {
 			log.debug(String.format("Request URI: %s", url + restRequest));
 			result = new HttpGet(new URI(url + restRequest));

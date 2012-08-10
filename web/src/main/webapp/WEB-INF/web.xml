@@ -9,7 +9,9 @@
 		Web Services Facade
 	</display-name>
 	<description>
-		A web application that can act as a proxy that interprets between a client and a server that communicate using different web service standards.
+		A web application that can act as a proxy that interprets
+		between a client and a server that communicate using different web
+		service standards.
 	</description>
 
 	<welcome-file-list>

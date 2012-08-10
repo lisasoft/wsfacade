@@ -19,9 +19,8 @@
  */
 package com.lisasoft.wsfacade.wmts.proxy;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.servlet.ServletException;
@@ -29,45 +28,25 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.proxies.Proxy;
+import com.lisasoft.wsfacade.utils.Constants;
+import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 public class WmtsProxy extends Proxy {
     static final Logger log = Logger.getLogger(WmtsProxy.class);
     
-    protected static final String WSDL_TEMPLATE = "/xml/wmts_wsdl_template.xml";
-
 	protected void processProxyManagedUrl(URL host, String url, String serviceRequestType, HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-		if(url.equals("?WSDL")) {
-			response.setContentType("text/xml");
+		if(url.equals(Constants.WSDL)) {
+			response.setContentType(PropertiesUtil.getProperty(Constants.TYPE_TEXT_XML));
 			ServletOutputStream out = response.getOutputStream();
-			
-			BufferedReader bufReader = new BufferedReader(new InputStreamReader(WmtsProxy.class.getResourceAsStream(WSDL_TEMPLATE)));
-			
-			StringBuffer buf = new StringBuffer("");
-
-		    try {
-	            String line;
-		        do {
-		            line = bufReader.readLine();
-		
-		            if (line != null) {
-		                buf.append(line);
-		                buf.append("\n");
-		            }
-		        } while (line != null);
-		    } finally {
-		        try {
-		            if (bufReader != null)
-		                bufReader.close();
-		        } catch (IOException ioe) {
-		            log.fatal(String.format("WSDL template document is missing! Should be here: %s.", WSDL_TEMPLATE), ioe);
-		        }
-		    }
-			
-			out.print(String.format(buf.toString(), host, name));
+			String templateFile = PropertiesUtil.getProperty(Constants.WSDL_TEMPLATE);
+			String absolutePath = request.getSession().getServletContext().getRealPath(templateFile);
+			String wsdlTemplate = FileUtils.readFileToString(new File(absolutePath));
+			out.print(String.format(wsdlTemplate, host, name));
 			out.flush();
 			out.close();
 		}
