@@ -21,7 +21,8 @@ package com.lisasoft.wsfacade.utils;
 
 public class Constants {
 	public static final String WSDL_TEMPLATE = "WSDL_TEMPLATE";
-	public static final String WSDL = "?WSDL";
+	public static final String QUESTION_WSDL = "?WSDL";
+	public static final String WSDL = "WSDL";
 	public static final String TYPE_TEXT_XML = "TYPE_TEXT_XML";
-	
+	public static final String  HOST = "host";
 }

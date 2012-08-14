@@ -35,7 +35,9 @@ public class SoapMapper extends Mapper {
     static final Logger log = Logger.getLogger(SoapMapper.class);
     
     protected String startTag = null;
-    
+
+	protected SoapMapper() {}
+
 	protected SoapMapper(String startTag){
 		this.startTag = startTag;
 	}

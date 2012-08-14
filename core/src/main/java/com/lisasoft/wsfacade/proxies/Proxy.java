@@ -41,6 +41,7 @@ import com.lisasoft.wsfacade.interpreters.HttpInterpreter;
 import com.lisasoft.wsfacade.mappers.Mapper;
 import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.utils.Constants;
 
 /**
  * A Proxy object which is loaded from the application context through spring
@@ -115,7 +116,7 @@ public class Proxy {
 						clientMapper.getClass().getName()));
 			}
 			Model model = clientRequestInterpreter.interpretRequest(request);
-			model.properties.put("host", host.toString());
+			model.properties.put(Constants.HOST, host.toString());
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(

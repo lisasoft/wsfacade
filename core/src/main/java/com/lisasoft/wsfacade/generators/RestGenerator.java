@@ -65,7 +65,7 @@ public class RestGenerator extends HttpGenerator {
 		} catch (URISyntaxException e) {
 			throw new URISyntaxException("Generated REST URI failed", url + restRequest);
 		}
-		
+
 		return result;
 	}
 
@@ -73,6 +73,7 @@ public class RestGenerator extends HttpGenerator {
 	protected HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		return generatePostRequest(model, url, DEFAULT_CHARSET);
 	}
+
 	public HttpPost generatePostRequest(Model model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		HttpPost result = null;
 		
@@ -83,7 +84,7 @@ public class RestGenerator extends HttpGenerator {
 		} catch (URISyntaxException e) {
 			throw new URISyntaxException("Generated REST URI failed", url + restRequest);
 		}
-		
+
 		return result;
 	}
 

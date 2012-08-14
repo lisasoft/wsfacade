@@ -36,9 +36,6 @@ import com.lisasoft.wsfacade.models.Model;
  */
 public class RestInterpreter extends HttpInterpreter {
 
-	// You can't create a RestInterpreter with a normal mapper as it's been 
-	// declared private. You have to use an EntityMapper.
-	// TODO: Look into generics as an alternative to this.
 	private RestInterpreter(Mapper mapper) {
 		super(mapper);
 	}

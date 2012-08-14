@@ -72,7 +72,7 @@ public class ProxyManager {
 				break;
 			}
 		}
-		
+
 		if(result == null) {
 			throw new ProxyException(String.format("No proxy configured for URL %s", url));
 		} else

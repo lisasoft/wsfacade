@@ -96,8 +96,7 @@ public class Service extends HttpServlet implements Servlet {
 			// proxy path is without the context portion, remove it.
 			String proxyUrl = request.getRequestURI();
 			if (proxyUrl.startsWith(request.getContextPath())) {
-				proxyUrl = proxyUrl
-						.substring(request.getContextPath().length());
+				proxyUrl = proxyUrl.substring(request.getContextPath().length());
 			}
 
 			Proxy proxy = pm.getProxy(proxyUrl);
