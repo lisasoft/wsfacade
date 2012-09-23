@@ -103,6 +103,7 @@
 			<modules>
 				<module>core</module>
 				<module>wmts</module>
+				<module>wfs</module>
 				<module>web</module>
 				<module>test-harness</module>
 			</modules>

@@ -26,22 +26,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.http.HttpResponse;
 
 import com.lisasoft.wsfacade.mappers.EntityMapper;
-import com.lisasoft.wsfacade.mappers.Mapper;
 import com.lisasoft.wsfacade.models.Model;
 
 /**
  * Base interpreter class for Rest services.
  * @author jgroffen
+ * @author jhudson
  *
  */
 public class RestInterpreter extends HttpInterpreter {
 
-	private RestInterpreter(Mapper mapper) {
+	private RestInterpreter(EntityMapper mapper) {
 		super(mapper);
-	}
-
-	public RestInterpreter(EntityMapper mapper) {
-		this((Mapper)mapper);
 	}
 
 	@Override
@@ -53,7 +49,7 @@ public class RestInterpreter extends HttpInterpreter {
 			}
 		}
 		
-		return ((EntityMapper)mapper).mapToModel(request.getRequestURI(), request.getContentType(), textContent);
+		return mapper.mapToModel(request.getRequestURI(), request.getContentType(), textContent);
 	}
 
 	@Override
@@ -70,17 +66,17 @@ public class RestInterpreter extends HttpInterpreter {
 			throw new IOException("response has no content");
 		} else {
 			if(response.getEntity().getContentType().getValue().startsWith("text/")) {
-				textContent = readString(response); 
+				textContent = readString(response);
 				if(log.isDebugEnabled()) {
 					log.debug("Text Content: \n\n---\n" + textContent + "\n---\n\n");
 				}
-				result = ((EntityMapper)mapper).mapToModel(textContent, response.getEntity().getContentType().getValue());
+				result = mapper.mapToModel(textContent, response.getEntity().getContentType().getValue());
 			} else {
 				binaryContent = readBinary(response);
 				if(log.isDebugEnabled()) {
 					log.debug("Binary Content length: " + binaryContent.length);
 				}
-				result = ((EntityMapper)mapper).mapToModel(binaryContent, response.getEntity().getContentType().getValue());
+				result = mapper.mapToModel(binaryContent, response.getEntity().getContentType().getValue());
 			}
 		}
 		return result;

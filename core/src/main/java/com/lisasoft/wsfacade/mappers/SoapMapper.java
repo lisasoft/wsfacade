@@ -30,7 +30,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import com.lisasoft.wsfacade.models.Model;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 
-public class SoapMapper extends Mapper {
+public class SoapMapper extends EntityMapper {
 	
     static final Logger log = Logger.getLogger(SoapMapper.class);
     
@@ -47,7 +47,7 @@ public class SoapMapper extends Mapper {
     	try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
-			
+
 			XmlPullParser xpp = factory.newPullParser();
 			xpp.setInput(new StringReader(source));
 			result = parse(xpp);
@@ -58,10 +58,10 @@ public class SoapMapper extends Mapper {
 		} catch (IOException ioe) {
     		throw new IllegalArgumentException(String.format("IOException while parsing XML:\n\n %s", source), ioe);
 		}
-		
+
 		return result;
 	}
-	
+
 	public String mapFromModel(Model model) throws UnsupportedModelException {
 		String result = null;
 		if(model.properties.containsKey("response")) {
@@ -72,9 +72,9 @@ public class SoapMapper extends Mapper {
 		}
 		return(result);
 	}
-	
+
     protected Model parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	
+
     	Model model = null;
 
     	while(true) {

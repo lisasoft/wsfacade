@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpResponse;
 
-import com.lisasoft.wsfacade.mappers.Mapper;
+import com.lisasoft.wsfacade.mappers.EntityMapper;
 import com.lisasoft.wsfacade.models.Model;
 
 /**
@@ -35,7 +35,7 @@ import com.lisasoft.wsfacade.models.Model;
  */
 public class XmlBodyInterpreter extends HttpInterpreter {
 
-	public XmlBodyInterpreter(Mapper mapper) {
+	public XmlBodyInterpreter(EntityMapper mapper) {
 		super(mapper);
 	}
 

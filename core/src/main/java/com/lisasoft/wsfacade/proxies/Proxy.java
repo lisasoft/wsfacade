@@ -41,6 +41,7 @@ import com.lisasoft.wsfacade.interpreters.HttpInterpreter;
 import com.lisasoft.wsfacade.mappers.Mapper;
 import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.security.ISecurityProvider;
 import com.lisasoft.wsfacade.utils.Constants;
 
 /**
@@ -63,13 +64,7 @@ public class Proxy {
 
 	protected Mapper clientMapper = null;
 	protected Mapper serverMapper = null;
-
-	private boolean connectionProxyEnabled = false;
-	protected String connectionProxyHost = null;
-	protected String connectionProxyUrl = null;
-	protected int connectionProxyPort = 0;
-	protected String connectionProxyUsername = null;
-	protected String connectionProxyPassword = null;
+	protected ISecurityProvider securityProvider = null;
 
 	private HttpInterpreter clientRequestInterpreter = null;
 	private HttpGenerator serverRequestGenerator = null;
@@ -144,28 +139,7 @@ public class Proxy {
 				throw new ServletException(use);
 			}
 
-			// HttpClient httpClient = null;
-			//
-			// if(connectionProxyEnabled) {
-			// ProxyClient proxyClient = new ProxyClient();
-			// proxyClient.getHostConfiguration().setHost(serverUrl);
-			// proxyClient.getHostConfiguration().setProxy(connectionProxyUrl,
-			// connectionProxyPort);
-			//
-			// // set the proxy credentials, only necessary for authenticating
-			// proxies
-			// proxyClient.getState().setProxyCredentials(
-			// new AuthScope(connectionProxyUrl, connectionProxyPort, null),
-			// new UsernamePasswordCredentials(connectionProxyUsername,
-			// connectionProxyPassword));
-			//
-			//
-			// httpClient = proxyClient;
-			// } else {
-			// httpClient = new DefaultHttpClient();
-			// }
-
-			HttpClient httpClient = new DefaultHttpClient();
+			HttpClient httpClient = getHttpClient(request);
 			HttpResponse serverResponse = httpClient.execute(serverRequest);
 
 			if (log.isDebugEnabled()) {
@@ -195,6 +169,13 @@ public class Proxy {
 		}
 	}
 
+	private HttpClient getHttpClient(HttpServletRequest request) {
+		if (securityProvider != null){
+			return securityProvider.getHttpClient(request);
+		}
+		return new DefaultHttpClient();
+	}
+
 	/**
 	 * Override this method if you would like the proxy to deal with particular
 	 * queries.
@@ -210,46 +191,6 @@ public class Proxy {
 	protected void processProxyManagedUrl(URL host, String url,
 			String serviceRequestType, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	public String getConnectionProxyHost() {
-		return connectionProxyHost;
-	}
-
-	public void setConnectionProxyHost(String connectionProxyHost) {
-		this.connectionProxyHost = connectionProxyHost;
-	}
-
-	public String getConnectionProxyUrl() {
-		return connectionProxyUrl;
-	}
-
-	public void setConnectionProxyUrl(String connectionProxyUrl) {
-		this.connectionProxyUrl = connectionProxyUrl;
-	}
-
-	public int getConnectionProxyPort() {
-		return connectionProxyPort;
-	}
-
-	public void setConnectionProxyPort(int connectionProxyPort) {
-		this.connectionProxyPort = connectionProxyPort;
-	}
-
-	public String getConnectionProxyUsername() {
-		return connectionProxyUsername;
-	}
-
-	public void setConnectionProxyUsername(String connectionProxyUsername) {
-		this.connectionProxyUsername = connectionProxyUsername;
-	}
-
-	public String getConnectionProxyPassword() {
-		return connectionProxyPassword;
-	}
-
-	public void setConnectionProxyPassword(String connectionProxyPassword) {
-		this.connectionProxyPassword = connectionProxyPassword;
 	}
 
 	public void setClientMapper(Mapper clientMapper) {
@@ -357,13 +298,5 @@ public class Proxy {
 
 	public void setClientResponseGenerator(HttpGenerator clientResponseGenerator) {
 		this.clientResponseGenerator = clientResponseGenerator;
-	}
-
-	public boolean isConnectionProxyEnabled() {
-		return connectionProxyEnabled;
-	}
-
-	public void setConnectionProxyEnabled(boolean connectionProxyEnabled) {
-		this.connectionProxyEnabled = connectionProxyEnabled;
 	}
 }

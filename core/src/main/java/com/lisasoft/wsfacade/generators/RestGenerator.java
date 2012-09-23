@@ -35,14 +35,12 @@ import org.apache.log4j.Logger;
 import com.lisasoft.wsfacade.mappers.Mapper;
 import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.utils.Constants;
+import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 public class RestGenerator extends HttpGenerator {
 
     static final Logger log = Logger.getLogger(RestGenerator.class);
-    
-    //post.setRequestHeader("Content-type", "text/xml; charset=ISO-8859-1");
-    // TODO: Should be a config setting
-    protected static final String DEFAULT_CHARSET = "UTF-8";
 
 	public RestGenerator(Mapper mapper) {
 		super(mapper);
@@ -71,7 +69,7 @@ public class RestGenerator extends HttpGenerator {
 
 	@Override
 	protected HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
-		return generatePostRequest(model, url, DEFAULT_CHARSET);
+		return generatePostRequest(model, url, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
 	public HttpPost generatePostRequest(Model model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
@@ -90,7 +88,7 @@ public class RestGenerator extends HttpGenerator {
 
 	@Override
 	public void generateResponse(Model model, HttpServletResponse response) throws IOException, UnsupportedModelException {
-		generateResponse(model, response, DEFAULT_CHARSET);
+		generateResponse(model, response, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
 	public void generateResponse(Model model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {

@@ -17,13 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.utils;
+package com.lisasoft.wsfacade.wfs.models;
 
-public class Constants {
-	public static final String WSDL_TEMPLATE = "WSDL_TEMPLATE";
-	public static final String QUESTION_WSDL = "?WSDL";
-	public static final String WSDL = "WSDL";
-	public static final String TYPE_TEXT_XML = "TYPE_TEXT_XML";
-	public static final String HOST = "host";
-	public static final String DEFAULT_CHARSET = "DEFAULT_CHARSET";
+import com.lisasoft.wsfacade.models.EntityModel;
+
+
+public class GetTileResponseModel extends EntityModel {
+
+	public GetTileResponseModel(String modelPropertyNames) {
+		super(modelPropertyNames);
+	}
+	
 }

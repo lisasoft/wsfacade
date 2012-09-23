@@ -37,12 +37,12 @@ import org.apache.log4j.Logger;
 import com.lisasoft.wsfacade.mappers.Mapper;
 import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.utils.Constants;
+import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 public class XmlBodyGenerator extends HttpGenerator {
 
     static final Logger log = Logger.getLogger(XmlBodyGenerator.class);
-
-    protected static final String DEFAULT_CHARSET = "UTF-8";
 
 	public XmlBodyGenerator(Mapper mapper) {
 		super(mapper);
@@ -73,7 +73,7 @@ public class XmlBodyGenerator extends HttpGenerator {
 
 	@Override
 	protected HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
-		return generatePostRequest(model, url, DEFAULT_CHARSET);
+		return generatePostRequest(model, url, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 	protected HttpPost generatePostRequest(Model model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		HttpPost result = null;
@@ -86,12 +86,12 @@ public class XmlBodyGenerator extends HttpGenerator {
 		try {
 			entity = new StringEntity(xml, charset);
 		} catch (UnsupportedEncodingException e) {
-			log.warn(String.format("Charset '%s' was unsupported. Defaulting to '%s'.", charset, DEFAULT_CHARSET));
-			charset = DEFAULT_CHARSET;
+			log.warn(String.format("Charset '%s' was unsupported. Defaulting to '%s'.", charset, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)));
+			charset = PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET);
 			try {
 				entity = new StringEntity(xml, charset);
 			} catch (UnsupportedEncodingException uee) {
-				log.error(String.format("The default charset '%s' was unsupported.", DEFAULT_CHARSET), uee);
+				log.error(String.format("The default charset '%s' was unsupported.", PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)), uee);
 				throw uee;
 			}
 		}
@@ -105,7 +105,7 @@ public class XmlBodyGenerator extends HttpGenerator {
 
 	@Override
 	public void generateResponse(Model model, HttpServletResponse response) throws IOException, UnsupportedModelException {
-		generateResponse(model, response, DEFAULT_CHARSET);
+		generateResponse(model, response, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
 	public void generateResponse(Model model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {

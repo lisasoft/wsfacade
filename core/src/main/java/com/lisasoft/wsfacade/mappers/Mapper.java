@@ -23,5 +23,5 @@ import com.lisasoft.wsfacade.models.Model;
 
 public abstract class Mapper {	
 	public abstract Model mapToModel(String source) throws IllegalArgumentException;
-	public abstract String mapFromModel(Model model) throws UnsupportedModelException ;
+	public abstract String mapFromModel(Model model) throws UnsupportedModelException;
 }
