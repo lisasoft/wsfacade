@@ -64,9 +64,9 @@ public class SoapMapper extends EntityMapper {
 
 	public String mapFromModel(Model model) throws UnsupportedModelException {
 		String result = null;
-		if(model.properties.containsKey("response")) {
+		if(model.getProperties().containsKey("response")) {
 			// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-			result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
+			result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.getProperties().get("response"));
 		} else {
 			throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
 		}
@@ -108,7 +108,7 @@ public class SoapMapper extends EntityMapper {
     			
     			String val = xpp.getText();
 
-				model.properties.put(tag, val);
+				model.getProperties().put(tag, val);
                 	 
              } else if(eventType == XmlPullParser.END_TAG) {
             	 break;

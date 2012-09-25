@@ -46,10 +46,10 @@ public class WmtsRestMapper extends RestMapper {
     	} else if(source.contains("<Capabilities")) {
 			// map to a get capabilities model
     		model = new EntityModel(SOAPConstants.GET_CAPABILITIES_MODEL);
-    		model.properties.put("capabilities", source);
+    		model.getProperties().put("capabilities", source);
 		} else {
 			model = new EntityModel("response");
-			model.properties.put("response", source);
+			model.getProperties().put("response", source);
     	}
 		
 		return(model);
@@ -71,7 +71,7 @@ public class WmtsRestMapper extends RestMapper {
     		GetTileModel m = (GetTileModel)model;
     		
     		for(String propertyName : m.order) {
-    			String property = m.properties.get(propertyName);
+    			String property = m.getProperties().get(propertyName);
     			
     			if(propertyName.equals("InfoFormat")) {
     				if(property.contains(".")) {
@@ -100,13 +100,13 @@ public class WmtsRestMapper extends RestMapper {
     		result.replace(result.lastIndexOf("/"), result.lastIndexOf("/") + 1, ".");
 
 		} else {
-			if(model.properties.containsKey("name")) {
-				if(model.properties.get("name").equals("GetCapabilities")) {
-					result.append(model.properties.get("version"));
+			if(model.getProperties().containsKey("name")) {
+				if(model.getProperties().get("name").equals("GetCapabilities")) {
+					result.append(model.getProperties().get("version"));
 					result.append("/");
 					result.append("WMTSCapabilities.xml");
 				} else {
-					throw new UnsupportedModelException(String.format("%s cannot map from model %s. Model with the property 'name' of '%s' not supported.", getClass().getName(), model.getClass().getName(), model.properties.get("name")));
+					throw new UnsupportedModelException(String.format("%s cannot map from model %s. Model with the property 'name' of '%s' not supported.", getClass().getName(), model.getClass().getName(), model.getProperties().get("name")));
 				}
 			} else {
 				throw new UnsupportedModelException(String.format("%s cannot map from model %s. Model not supported or does not have expected properties.", getClass().getName(), model.getClass().getName()));

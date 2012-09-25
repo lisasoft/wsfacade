@@ -104,11 +104,11 @@ public class WmtsSoapMapper extends SoapMapper {
 			
 		} else if(model instanceof GetFeatureInfoResponseModel) {
 			GetFeatureInfoResponseModel m = (GetFeatureInfoResponseModel)model;
-			result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.properties.get("response"));
+			result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.getProperties().get("response"));
 			
 		} else {
-			if(model.properties.containsKey("capabilities")) {
-				String responseBody = model.properties.get("capabilities");
+			if(model.getProperties().containsKey("capabilities")) {
+				String responseBody = model.getProperties().get("capabilities");
 				
 				// remove the xml file descriptor bit as we'll be wrapping it in a soap message.
 				if(responseBody.startsWith("<?")) {
@@ -116,11 +116,11 @@ public class WmtsSoapMapper extends SoapMapper {
 					responseBody = responseBody.substring(responseBody.indexOf("<", responseBody.indexOf("?>")));
 				}
 				responseBody = String.format(SOAPConstants.GET_CAPABILITIES_RESPONSE_TEMPLATE, responseBody);
-				result = injectCapabilities(responseBody, model.properties.get("host"));
+				result = injectCapabilities(responseBody, model.getProperties().get("host"));
 				
-			} else if(model.properties.containsKey("response")) {
+			} else if(model.getProperties().containsKey("response")) {
 				// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-				result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.properties.get("response"));
+				result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.getProperties().get("response"));
 			} else {
 				throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
 			}
@@ -220,17 +220,17 @@ public class WmtsSoapMapper extends SoapMapper {
     			} else if("Format".equals(tag)) {
     				String val = xpp.nextText(); 
 //        			log.debug("XPP - " + tag + " = " + val);
-    				model.properties.put("mime", val);
+    				model.getProperties().put("mime", val);
 					try {
-						model.properties.put(tag, val.split("/")[1]);
+						model.getProperties().put(tag, val.split("/")[1]);
 					} catch(Exception e) {
 						// If for any reason we can't get the format out, complain bitterly.
 						throw new IllegalArgumentException(String.format("Couldn't interpret the format: '%s'", tag));
 					}
-    			} else if(model.properties.containsKey(tag)) {
+    			} else if(model.getProperties().containsKey(tag)) {
     				String val = xpp.nextText(); 
 //        			log.debug("XPP - " + tag + " = " + val);
-    				model.properties.put(tag, val);
+    				model.getProperties().put(tag, val);
     			} else {
     				throw new IllegalArgumentException(String.format("Tag '%s' with value '%s' was not expected.", xpp.getName(), xpp.nextText()));
     			}
@@ -246,8 +246,8 @@ public class WmtsSoapMapper extends SoapMapper {
     protected Model parseGetCapabilities(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
     	Model model = new Model(SOAPConstants.GET_CAPABILITIES_MODEL);
     	
-		model.properties.put("name", xpp.getName());
-		model.properties.put("service", xpp.getAttributeValue(null, "service"));
+		model.getProperties().put("name", xpp.getName());
+		model.getProperties().put("service", xpp.getAttributeValue(null, "service"));
 		
     	while(true) {
     		int eventType = xpp.next();
@@ -259,7 +259,7 @@ public class WmtsSoapMapper extends SoapMapper {
     			// last version specified. REST servers don't accept capability requests 
     			// for more than one version in a single request.
     			if("Version".equals(tag)) {
-    				model.properties.put("version", xpp.nextText());
+    				model.getProperties().put("version", xpp.nextText());
     			}
 
     		} else if(eventType == XmlPullParser.END_TAG) {
@@ -289,17 +289,17 @@ public class WmtsSoapMapper extends SoapMapper {
     			} else if("InfoFormat".equals(tag)) {
     				String val = xpp.nextText(); 
 //        			log.debug("XPP - " + tag + " = " + val);
-    				model.properties.put("infomime", val);
+    				model.getProperties().put("infomime", val);
 					try {
-						model.properties.put(tag, val.split("/")[1]);
+						model.getProperties().put(tag, val.split("/")[1]);
 					} catch(Exception e) {
 						// If for any reason we can't get the format out, complain bitterly.
 						throw new IllegalArgumentException(String.format("Couldn't interpret the format: '%s'", tag));
 					}
-    			} else if(model.properties.containsKey(tag)) {
+    			} else if(model.getProperties().containsKey(tag)) {
     				String val = xpp.nextText(); 
 //        			log.debug("XPP - " + tag + " = " + val);
-    				model.properties.put(tag, val);
+    				model.getProperties().put(tag, val);
     			} else {
     				throw new IllegalArgumentException(String.format("Tag '%s' with value '%s' was not expected.", xpp.getName(), xpp.nextText()));
     			}

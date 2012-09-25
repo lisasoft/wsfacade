@@ -25,14 +25,32 @@ import java.util.Map;
 /**
  * Interpreters populate a model to store details of a request to translate. 
  * @author jgroffen
+ * @author jhudson
  */
 public class Model {
 	
-	public Map<String, String> properties = new HashMap<String, String>();
+	private Map<String, String> properties = new HashMap<String, String>();
 	
 	public Model(String modelPropertyNames) {
-		for(String propertyName : modelPropertyNames.split(",")) {
-			properties.put(propertyName, "");
+		for(String property : modelPropertyNames.split(",")) {
+			String propertyName = property;
+			String propertyValue = "";
+			if (property.contains("=")){
+				String[] propertyNameValue = property.split("=");
+				propertyName = propertyNameValue[0];
+				propertyValue = propertyNameValue[1];
+				propertyName.replace('&', ' ');
+				propertyValue.replace('&', ' ');
+			}
+			getProperties().put(propertyName.trim(), propertyValue.trim());
 		}
+	}
+
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
 	}
 }

@@ -62,8 +62,8 @@ public class Proxy {
 	protected String serverUrl = null;
 	private List<String> proxyManagedUrls = null;
 
-	protected Mapper clientMapper = null;
-	protected Mapper serverMapper = null;
+	//protected Mapper clientMapper = null;
+	//protected Mapper serverMapper = null;
 	protected ISecurityProvider securityProvider = null;
 
 	private HttpInterpreter clientRequestInterpreter = null;
@@ -107,17 +107,17 @@ public class Proxy {
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 1: Interpret Client Request (%s, %s)",
-						clientRequestInterpreter.getClass().getName(),
-						clientMapper.getClass().getName()));
+						clientRequestInterpreter.getClass().getName()));
+						//clientMapper.getClass().getName()));
 			}
 			Model model = clientRequestInterpreter.interpretRequest(request);
-			model.properties.put(Constants.HOST, host.toString());
+			model.getProperties().put(Constants.HOST, host.toString());
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 2: Generate Service Request (%s, %s)",
-						serverRequestGenerator.getClass().getName(),
-						serverMapper.getClass().getName()));
+						serverRequestGenerator.getClass().getName()));
+						//serverMapper.getClass().getName()));
 			}
 
 			HttpRequestBase serverRequest = null;
@@ -145,17 +145,17 @@ public class Proxy {
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 3: Interpret Server Response (%s, %s)",
-						serverResponseInterpreter.getClass().getName(),
-						serverMapper.getClass().getName()));
+						serverResponseInterpreter.getClass().getName()));
+						//serverMapper.getClass().getName()));
 			}
 			model = serverResponseInterpreter.interpretResponse(serverResponse);
-			model.properties.put("host", host.toString());
+			model.getProperties().put("host", host.toString());
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 4: Generate Client Response (%s, %s)",
-						clientResponseGenerator.getClass().getName(),
-						clientMapper.getClass().getName()));
+						clientResponseGenerator.getClass().getName()));
+						//clientMapper.getClass().getName()));
 			}
 
 			try {
@@ -199,14 +199,6 @@ public class Proxy {
 	protected void processProxyManagedUrl(URL host, String url,
 			String serviceRequestType, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-	}
-
-	public void setClientMapper(Mapper clientMapper) {
-		this.clientMapper = clientMapper;
-	}
-
-	public void setServerMapper(Mapper serverMapper) {
-		this.serverMapper = serverMapper;
 	}
 
 	public String getName() {
@@ -253,14 +245,6 @@ public class Proxy {
 
 	public void setServerUrl(String serverUrl) {
 		this.serverUrl = serverUrl;
-	}
-
-	public Mapper getClientMapper() {
-		return clientMapper;
-	}
-
-	public Mapper getServerMapper() {
-		return serverMapper;
 	}
 
 	public List<String> getProxyManagedUrls() {

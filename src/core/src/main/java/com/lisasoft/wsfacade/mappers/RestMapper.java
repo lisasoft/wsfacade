@@ -46,7 +46,7 @@ public class RestMapper extends EntityMapper {
 			RestModel m = (RestModel)model;
 			
 			for(String propertyName : m.order) {
-				String property = m.properties.get(propertyName);
+				String property = m.getProperties().get(propertyName);
 				
 				if(property != null) {
 					if(result.length() != 0) {

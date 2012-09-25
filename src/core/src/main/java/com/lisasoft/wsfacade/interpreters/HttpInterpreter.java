@@ -37,7 +37,7 @@ import com.lisasoft.wsfacade.utils.Constants;
 import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 /**
- * Interprets a HTTP requests or responses into a common model.
+ * Interprets HTTP requests or responses into a common model.
  * 
  * @author jgroffen
  * @author jhudson

@@ -21,5 +21,6 @@ package com.lisasoft.wsfacade.config;
 
 public enum Translatable {
 	REST,
+	KVP,
 	SOAP;
 }
