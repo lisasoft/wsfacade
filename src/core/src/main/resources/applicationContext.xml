@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+	<!-- Common beans -->
+	<bean id="clientMapper" class="com.lisasoft.wsfacade.mappers.SoapMapper" />
+	<bean id="serverMapper" class="com.lisasoft.wsfacade.mappers.RestMapper" />
+
+	<!-- local Proxy -->
+	<bean id="xmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
+		<constructor-arg ref="clientMapper" />
+	</bean>
+	<bean id="xmlBodyGenerator" class="com.lisasoft.wsfacade.generators.XmlBodyGenerator">
+		<constructor-arg ref="clientMapper" />
+	</bean>
+	<bean id="restGenerator" class="com.lisasoft.wsfacade.generators.RestGenerator">
+		<constructor-arg ref="serverMapper" />
+	</bean>
+	<bean id="restInterpreter" class="com.lisasoft.wsfacade.interpreters.RestInterpreter">
+		<constructor-arg ref="serverMapper" />
+	</bean>
+
+	<bean id="rest" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+		<property name="proxyUrl" value="/rest" />
+		<property name="proxyManagedUrls">
+			<list>
+				<value>?WSDL</value>
+			</list>
+		</property>
+		<property name="name" value="rest" />
+		<property name="clientType" value="REST" />
+		<property name="serverType" value="SOAP" />
+		<property name="serverUrl" value="http://localhost:8081/geoserver/ows?" />
+		<property name="clientMapper" ref="wmtsClientMapper" />
+		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="clientRequestInterpreter" ref="restInterpreter" />
+		<property name="clientResponseGenerator" ref="restGenerator" />
+		<property name="serverRequestGenerator" ref="xmlBodyGenerator" />
+		<property name="serverResponseInterpreter" ref="xmlBodyInterpreter" />
+
+		<!-- seems to be added but not used in project -->
+		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
+	</bean>
+	
+	<bean id="soap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+		<property name="proxyUrl" value="/soap" />
+		<property name="proxyManagedUrls">
+			<list>
+				<value>?WSDL</value>
+			</list>
+		</property>
+		<property name="name" value="soap" />
+		<property name="clientType" value="REST" />
+		<property name="serverType" value="SOAP" />
+		<property name="serverUrl" value="http://localhost/tilecache/tilecache.py/" />
+		<property name="clientMapper" ref="wmtsClientMapper" />
+		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
+		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
+		<property name="serverRequestGenerator" ref="restGenerator" />
+		<property name="serverResponseInterpreter" ref="restInterpreter" />
+		
+		<!-- seems to be added but not used in project -->
+		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
+	</bean>
+	
+	<!-- KVP Get to SOAP using Generic interpreters -->
+	<bean id="genericSoap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+		<property name="proxyUrl" value="/soap" />
+		<property name="proxyManagedUrls">
+			<list>
+				<value>?WSDL</value>
+			</list>
+		</property>
+		<property name="name" value="soap" />
+		<property name="clientType" value="REST" />
+		<property name="serverType" value="SOAP" />
+		<property name="serverUrl" value="http://localhost/tilecache/tilecache.py/" />
+		<property name="clientMapper" ref="wmtsClientMapper" />
+		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
+		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
+		<property name="serverRequestGenerator" ref="restGenerator" />
+		<property name="serverResponseInterpreter" ref="restInterpreter" />
+	</bean>
+</beans>
