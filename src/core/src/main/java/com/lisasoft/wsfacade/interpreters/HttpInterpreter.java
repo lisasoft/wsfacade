@@ -46,10 +46,10 @@ public abstract class HttpInterpreter {
 
 	static final Logger log = Logger.getLogger(HttpInterpreter.class);
 
-	protected EntityMapper mapper;
+	private EntityMapper mapper;
 
 	HttpInterpreter(EntityMapper mapper) {
-		this.mapper = mapper;
+		this.setMapper(mapper);
 	}
 
 	public abstract Model interpretRequest(HttpServletRequest request)
@@ -142,5 +142,13 @@ public abstract class HttpInterpreter {
 		}
 
 		return result;
+	}
+
+	public EntityMapper getMapper() {
+		return mapper;
+	}
+
+	public void setMapper(EntityMapper mapper) {
+		this.mapper = mapper;
 	}
 }

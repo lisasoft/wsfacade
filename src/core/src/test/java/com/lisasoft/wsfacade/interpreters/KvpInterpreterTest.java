@@ -17,26 +17,38 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.mappers;
+package com.lisasoft.wsfacade.interpreters;
 
-public class UnsupportedModelException extends Exception {
+import static org.junit.Assert.assertNotNull;
 
-	private static final long serialVersionUID = 3541184756279934347L;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-	public UnsupportedModelException() {
-		super();
-	}
+import com.lisasoft.wsfacade.utils.FileConfigurationContext;
 
-	public UnsupportedModelException(String message) {
-		super(message);
-	}
+/**
+ * Test the KvpInterpreter
+ * s
+ * @author jhudson
+ *
+ */
+public class KvpInterpreterTest {
+
+	private KvpInterpreter interpreter;
 	
-	public UnsupportedModelException(Throwable cause) {
-		super(cause);
+	@Before
+	public void setUp() throws Exception {
+		interpreter = FileConfigurationContext.getInstance().getBean("kvpInterpreter", KvpInterpreter.class);
 	}
 
-	public UnsupportedModelException(String message, Throwable cause) {
-		super(message, cause);
+	@After
+	public void tearDown() throws Exception {
+		interpreter = null;
 	}
 
+	@Test
+	public void testMapper() {
+		assertNotNull(interpreter.getMapper());
+	}
 }

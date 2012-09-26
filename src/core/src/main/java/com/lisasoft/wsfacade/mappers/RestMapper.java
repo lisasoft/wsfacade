@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.models.Model;
 import com.lisasoft.wsfacade.models.RestModel;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 public class RestMapper extends EntityMapper {
 	

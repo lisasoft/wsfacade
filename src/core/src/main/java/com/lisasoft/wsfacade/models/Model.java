@@ -39,8 +39,6 @@ public class Model {
 				String[] propertyNameValue = property.split("=");
 				propertyName = propertyNameValue[0];
 				propertyValue = propertyNameValue[1];
-				propertyName.replace('&', ' ');
-				propertyValue.replace('&', ' ');
 			}
 			getProperties().put(propertyName.trim(), propertyValue.trim());
 		}

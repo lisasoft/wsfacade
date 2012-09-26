@@ -33,19 +33,21 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.Constants;
 import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 /**
- * The KVP Get generator, using the stock standard model object of key/value pairs to generate  
+ * The KVP Get generator, using the stock standard model object of key/value
+ * pairs to generate
+ * 
  * @author jhudson
- *
+ * 
  */
 public class KvpGenerator extends HttpGenerator {
 
-    static final Logger log = Logger.getLogger(KvpGenerator.class);
+	static final Logger log = Logger.getLogger(KvpGenerator.class);
 
 	public KvpGenerator(Mapper mapper) {
 		super(mapper);
@@ -55,15 +57,18 @@ public class KvpGenerator extends HttpGenerator {
 	 * All KVP Get requests are GET
 	 */
 	@Override
-	public HttpRequestBase generateRequest(Model model, String url, String requestType) throws UnsupportedModelException, URISyntaxException {
-		return(generateGetRequest(model, url));
+	public HttpRequestBase generateRequest(Model model, String url,
+			String requestType) throws UnsupportedModelException,
+			URISyntaxException {
+		return (generateGetRequest(model, url));
 	}
 
 	/**
 	 * The main body of the request is generated here
 	 */
 	@Override
-	protected HttpGet generateGetRequest(Model model, String url) throws UnsupportedModelException, URISyntaxException {
+	protected HttpGet generateGetRequest(Model model, String url)
+			throws UnsupportedModelException, URISyntaxException {
 		HttpGet result = null;
 		String restRequest = mapper.mapFromModel(model);
 
@@ -71,39 +76,43 @@ public class KvpGenerator extends HttpGenerator {
 			log.debug(String.format("Request URI: %s", url + restRequest));
 			result = new HttpGet(new URI(url + restRequest));
 		} catch (URISyntaxException e) {
-			throw new URISyntaxException("Generated REST URI failed", url + restRequest);
+			throw new URISyntaxException("Generated REST URI failed", url
+					+ restRequest);
 		}
 
 		return result;
 	}
 
 	@Override
-	protected HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
-		return generatePostRequest(model, url, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
+	protected HttpPost generatePostRequest(Model model, String url)
+			throws UnsupportedEncodingException, UnsupportedModelException,
+			URISyntaxException {
+		return generatePostRequest(model, url,
+				PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
-	public HttpPost generatePostRequest(Model model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
+	public HttpPost generatePostRequest(Model model, String url, String charset)
+			throws UnsupportedEncodingException, UnsupportedModelException,
+			URISyntaxException {
 		HttpPost result = null;
-		
+
 		String restRequest = mapper.mapFromModel(model);
 		try {
 			log.debug(String.format("Request URI: %s", url + restRequest));
 			result = new HttpPost(new URI(url + restRequest));
 		} catch (URISyntaxException e) {
-			throw new URISyntaxException("Generated REST URI failed", url + restRequest);
+			throw new URISyntaxException("Generated REST URI failed", url
+					+ restRequest);
 		}
 
 		return result;
 	}
 
 	@Override
-	public void generateResponse(Model model, HttpServletResponse response) throws IOException, UnsupportedModelException {
-		generateResponse(model, response, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
-	}
-
-	public void generateResponse(Model model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {
+	public void generateResponse(Model model, HttpServletResponse response)
+			throws IOException, UnsupportedModelException {
 		String xml = mapper.mapFromModel(model);
-		
+
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();
 		out.print(xml);

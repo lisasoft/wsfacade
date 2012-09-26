@@ -24,18 +24,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
-		<property name="proxyUrl" value="/wmts" />
+		<property name="proxyContextUrl" value="/wmts" />
 		<property name="proxyManagedUrls">
 			<list>
 				<value>?WSDL</value>
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
-		<property name="clientType" value="SOAP" />
-		<property name="serverType" value="REST" />
-		<property name="serverUrl" value="http://localhost/tilecache/tilecache.py/" />
-		<property name="clientMapper" ref="wmtsClientMapper" />
-		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="serviceUrl" value="http://localhost/tilecache/tilecache.py/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
@@ -47,47 +43,33 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- WMTS Landgate Proxy -->
 	<bean id="wmtsLandgate" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
-		<property name="proxyUrl" value="/landgate" />
+		<property name="proxyContextUrl" value="/landgate" />
 		<property name="proxyManagedUrls">
 			<list>
 				<value>?WSDL</value>
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
-		<property name="clientType" value="SOAP" />
-		<property name="serverType" value="REST" />
-		<property name="serverUrl"
-			value="http://beta.landgate.wa.gov.au/tilecache2/wmts.py/" />
-		<property name="clientMapper" ref="wmtsClientMapper" />
-		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="serviceUrl" value="http://beta.landgate.wa.gov.au/tilecache2/wmts.py/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
-		<!-- seems to be added but not used in project -->
-		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 	
 	<!-- WMTS uab Proxy -->
 	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
-		<property name="proxyUrl" value="/uab" />
+		<property name="proxyContextUrl" value="/uab" />
 		<property name="proxyManagedUrls">
 			<list>
 				<value>?WSDL</value>
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
-		<property name="clientType" value="SOAP" />
-		<property name="serverType" value="REST" />
-		<property name="serverUrl"
-			value="http://www.opengis.uab.es/SITiled/world/" />
-		<property name="clientMapper" ref="wmtsClientMapper" />
-		<property name="serverMapper" ref="wmtsServerMapper" />
+		<property name="serviceUrl" value="http://www.opengis.uab.es/SITiled/world/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
-		<!-- seems to be added but not used in project -->
-		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 </beans>

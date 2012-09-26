@@ -28,6 +28,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 
 public class SoapMapper extends EntityMapper {

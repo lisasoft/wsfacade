@@ -29,12 +29,14 @@ import com.lisasoft.wsfacade.mappers.EntityMapper;
 import com.lisasoft.wsfacade.models.Model;
 
 /**
+ * <p>
  * An interpreter class for KVP GET services. This object is responsible for the interpretation of requests in the form of KVP GET:
- * 
- * http://HOST:PORT/service?property1=value1&...propertyN=valueN
+ * </p>
+ * <p>
+ * <b>http://HOST:PORT/service?property1=value1&...propertyN=valueN</b>
+ * </p>
  * 
  * @author jhudson
- *
  */
 public class KvpInterpreter extends HttpInterpreter {
 
@@ -50,8 +52,8 @@ public class KvpInterpreter extends HttpInterpreter {
 				textContent = readString(request); 
 			}
 		}
-		
-		return mapper.mapToModel(request.getRequestURI(), request.getContentType(), textContent);
+
+		return getMapper().mapToModel(request.getRequestURI(), request.getContentType(), textContent);
 	}
 
 	@Override
@@ -72,13 +74,13 @@ public class KvpInterpreter extends HttpInterpreter {
 				if(log.isDebugEnabled()) {
 					log.debug("Text Content: \n\n---\n" + textContent + "\n---\n\n");
 				}
-				result = mapper.mapToModel(textContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(textContent, response.getEntity().getContentType().getValue());
 			} else {
 				binaryContent = readBinary(response);
 				if(log.isDebugEnabled()) {
 					log.debug("Binary Content length: " + binaryContent.length);
 				}
-				result = mapper.mapToModel(binaryContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue());
 			}
 		}
 		return result;

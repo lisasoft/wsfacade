@@ -17,15 +17,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.wfs.models;
+package com.lisasoft.wsfacade.models;
 
-import com.lisasoft.wsfacade.models.EntityModel;
+public class UnsupportedModelException extends Exception {
 
+	private static final long serialVersionUID = 3541184756279934347L;
 
-public class GetFeatureInfoResponseModel extends EntityModel {
-	
-	public GetFeatureInfoResponseModel(String modelPropertyNames) {
-		super(modelPropertyNames);
+	public UnsupportedModelException() {
+		super();
+	}
+
+	public UnsupportedModelException(String message) {
+		super(message);
 	}
 	
+	public UnsupportedModelException(Throwable cause) {
+		super(cause);
+	}
+
+	public UnsupportedModelException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

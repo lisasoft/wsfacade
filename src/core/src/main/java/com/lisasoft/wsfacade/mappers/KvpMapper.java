@@ -22,6 +22,7 @@ package com.lisasoft.wsfacade.mappers;
 import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 /**
  * A URL mapper for KVP Get in the for:
@@ -46,12 +47,11 @@ public class KvpMapper extends EntityMapper {
 	 * </p>
 	 */
 	public Model mapToModel(String source) throws IllegalArgumentException {
-
 		if (log.isDebugEnabled()){
 			log.info("Parsing input string in the KvpMapper: '" + source + "'");
 		}
 
-		Model model = new Model(source);
+		Model model = new Model(source.replace("&", ",").replace("?", ""));
 		return model;
 	}
 

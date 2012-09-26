@@ -49,7 +49,7 @@ public class RestInterpreter extends HttpInterpreter {
 			}
 		}
 		
-		return mapper.mapToModel(request.getRequestURI(), request.getContentType(), textContent);
+		return getMapper().mapToModel(request.getRequestURI(), request.getContentType(), textContent);
 	}
 
 	@Override
@@ -70,13 +70,13 @@ public class RestInterpreter extends HttpInterpreter {
 				if(log.isDebugEnabled()) {
 					log.debug("Text Content: \n\n---\n" + textContent + "\n---\n\n");
 				}
-				result = mapper.mapToModel(textContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(textContent, response.getEntity().getContentType().getValue());
 			} else {
 				binaryContent = readBinary(response);
 				if(log.isDebugEnabled()) {
 					log.debug("Binary Content length: " + binaryContent.length);
 				}
-				result = mapper.mapToModel(binaryContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue());
 			}
 		}
 		return result;

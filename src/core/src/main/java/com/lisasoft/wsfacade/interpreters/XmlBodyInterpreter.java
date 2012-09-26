@@ -42,13 +42,13 @@ public class XmlBodyInterpreter extends HttpInterpreter {
 	@Override
 	public Model interpretRequest(HttpServletRequest request) throws IOException {
 		String xml = readString(request);
-		return mapper.mapToModel(xml);
+		return getMapper().mapToModel(xml);
 	}
 
 	@Override
 	public Model interpretResponse(HttpResponse response) throws IOException {
 		String xml = readString(response);
-		return mapper.mapToModel(xml);
+		return getMapper().mapToModel(xml);
 	}
 
 }

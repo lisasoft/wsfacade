@@ -22,9 +22,9 @@ package com.lisasoft.wsfacade.wmts.mappers;
 import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.mappers.RestMapper;
-import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.EntityModel;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 import com.lisasoft.wsfacade.wmts.models.GetTileModel;
 import com.lisasoft.wsfacade.wmts.models.GetTileResponseModel;

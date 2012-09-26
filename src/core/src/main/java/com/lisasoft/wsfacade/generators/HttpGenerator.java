@@ -30,8 +30,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 /**
  * Given a common model, generate a Http request or response.

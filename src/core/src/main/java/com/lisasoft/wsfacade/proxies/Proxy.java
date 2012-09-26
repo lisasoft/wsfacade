@@ -35,12 +35,11 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.config.Translatable;
+import com.google.common.base.Preconditions;
 import com.lisasoft.wsfacade.generators.HttpGenerator;
 import com.lisasoft.wsfacade.interpreters.HttpInterpreter;
-import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.security.ISecurityProvider;
 import com.lisasoft.wsfacade.utils.Constants;
 
@@ -55,78 +54,154 @@ public class Proxy {
 	private static final Logger log = Logger.getLogger(Proxy.class);
 	public static final String PROXY_PREFIX = "/proxies";
 
+	/**
+	 * <p>
+	 * The name of this proxy object for example "WFSProxy" set in the
+	 * applicationContext.xml with the name property
+	 * </p>
+	 * <property name="name" value="genericKVPtoSoap" />
+	 */
 	protected String name = null;
-	protected String proxyUrl = null;
-	protected Translatable clientType = null;
-	protected Translatable serverType = null;
-	protected String serverUrl = null;
-	private List<String> proxyManagedUrls = null;
 
-	//protected Mapper clientMapper = null;
-	//protected Mapper serverMapper = null;
+	/**
+	 * <p>
+	 * This is the context URL for instance if the proxy is accessible:
+	 * </p>
+	 * <p>
+	 * <b>http://host:8080/proxy</b>
+	 * </p>
+	 * <p>
+	 * This proxy will be available here:
+	 * </p>
+	 * <p>
+	 * <b>http://host:8080/proxy/proxyContextUrl</b>
+	 * </p>
+	 */
+	protected String proxyContextUrl = null;
+
+	/**
+	 * The URL of the service this proxy is responsible for pushing requests
+	 * onto.
+	 */
+	protected String serviceUrl = null;
+
+	/**
+	 * A list of URLS which this proxy can handle internally, this means if the
+	 * request from the client is a request to a URL in this list it will
+	 * <b>NOT</b> be pushed to the service.
+	 */
+	protected List<String> proxyManagedUrls = null;
+
+	/**
+	 * A security provider - can provide security implementations on top of the
+	 * HttpClient Object.
+	 */
 	protected ISecurityProvider securityProvider = null;
 
+	/**
+	 * Interprets all incoming requests from clients
+	 */
 	private HttpInterpreter clientRequestInterpreter = null;
+
+	/**
+	 * Generates requests for the service URL in the format necessary to
+	 * Communicate with it.
+	 */
 	private HttpGenerator serverRequestGenerator = null;
+	
+	/**
+	 * Interprets the response from the service. 
+	 */
 	private HttpInterpreter serverResponseInterpreter = null;
+	
+	/**
+	 * Creates an appropriate response for the originating client request.
+	 */
 	private HttpGenerator clientResponseGenerator = null;
 
+	/**
+	 * The main method which will do all the 'real' work.
+	 * @param serviceRequestType
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void processRequest(String serviceRequestType,
 			HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		URL host = new URL("http://" + request.getServerName() + ":"
-				+ request.getServerPort() + request.getContextPath() + proxyUrl);
+				+ request.getServerPort() + request.getContextPath()
+				+ proxyContextUrl);
 
-		if (clientRequestInterpreter == null) {
-			throw new ServletException(
-					"Failed to load translation details: clientRequestInterpreter was null");
-		} else if (serverRequestGenerator == null) {
-			throw new ServletException(
-					"Failed to load translation details: serverRequestGenerator was null");
-		} else if (serverResponseInterpreter == null) {
-			throw new ServletException(
-					"Failed to load translation details: serverResponseInterpreter was null");
-		} else if (clientResponseGenerator == null) {
-			throw new ServletException(
-					"Failed to load translation details: clientResponseGenerator was null");
-		}
+		Preconditions.checkNotNull(clientRequestInterpreter,
+				"Failed to load clientRequestInterpreter");
+		Preconditions.checkNotNull(clientResponseGenerator,
+				"Failed to load clientResponseGenerator");
+		Preconditions.checkNotNull(serverRequestGenerator,
+				"Failed to load serverRequestGenerator");
+		Preconditions.checkNotNull(serverResponseInterpreter,
+				"Failed to load serverResponseInterpreter");
 
 		if (log.isDebugEnabled()) {
-			log.debug(String.format("Request for Proxy (%s)", name));
+			log.debug(String
+					.format("Request for Proxy (%s) recieved - passing it on to the clientInterpreter of type: (%s)",
+							name, clientRequestInterpreter.getClass().getName()));
 		}
 
-		// remove the proxyUrl, we only take what was after the proxy path and
-		// the query string.
-		String requestedUrl = ("/proxies" + request.getPathInfo()).replace(
-				proxyUrl, "") + "?" + request.getQueryString();
+		/*
+		 * Remove the proxy prefix usually "/proxies", we only take what was
+		 * after the proxy path and the query string.
+		 */
+		String requestedUrl = (PROXY_PREFIX + request.getPathInfo()).replace(
+				proxyContextUrl, "") + "?" + request.getQueryString();
+
+		/*
+		 * Here we are checking if the request was a request to a proxy managed
+		 * URL for instance "WSDL" - in this case we don't want to pass the
+		 * request on to the server we can to handle it here at the proxy.
+		 */
 		if (getProxyManagedUrls().contains(requestedUrl)) {
 			processProxyManagedUrl(host, requestedUrl, serviceRequestType,
 					request, response);
 		} else {
+			/*
+			 * Otherwise we are going to need to push the request back out to
+			 * the service once we have translated it
+			 */
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 1: Interpret Client Request (%s, %s)",
 						clientRequestInterpreter.getClass().getName()));
-						//clientMapper.getClass().getName()));
 			}
+
+			/*
+			 * The model object represents the data in the request in a generic
+			 * format which can be translated into a new request type.
+			 */
 			Model model = clientRequestInterpreter.interpretRequest(request);
+
+			/*
+			 * Give the model a copy of the host paramater in case its needed
+			 */
 			model.getProperties().put(Constants.HOST, host.toString());
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
 						"Step 2: Generate Service Request (%s, %s)",
 						serverRequestGenerator.getClass().getName()));
-						//serverMapper.getClass().getName()));
 			}
 
+			/*
+			 * At this point we want to create a new request in correct format
+			 * what the server can handle. So here we invoke the
+			 * serverRequestGenerator to create a request from the model.
+			 */
 			HttpRequestBase serverRequest = null;
-
-			// Exceptions at this level should only be thrown for situations the
-			// interpreters / generators can't handle.
 			try {
 				serverRequest = serverRequestGenerator.generateRequest(model,
-						serverUrl, serviceRequestType);
+						serviceUrl, serviceRequestType);
 			} catch (UnsupportedModelException ume) {
 				log.error(
 						"UnsupportedModelException while generating server request.",
@@ -139,6 +214,14 @@ public class Proxy {
 				throw new ServletException(use);
 			}
 
+			/*
+			 * OK so we have a new request - which the server can now understand
+			 * - and we need to send the request so we can get the response
+			 * back. You will notice the next line invokes the getHttpClient
+			 * method, this method will get an Apache HttpClient which may or
+			 * may not have a security provisioned. (please read the
+			 * ISecuirtyProvider interface for more details)
+			 */
 			HttpClient httpClient = getHttpClient(request);
 			HttpResponse serverResponse = httpClient.execute(serverRequest);
 
@@ -146,8 +229,16 @@ public class Proxy {
 				log.debug(String.format(
 						"Step 3: Interpret Server Response (%s, %s)",
 						serverResponseInterpreter.getClass().getName()));
-						//serverMapper.getClass().getName()));
 			}
+
+			/*
+			 * At this point the proxy has sent the request and received a
+			 * response, we need to unwrap it and send it back to the client
+			 * 
+			 * here we are taking the same route as before but going backwards:
+			 * take the response from the service and get a the model (remember
+			 * its what holds the data in a nice generic way)
+			 */
 			model = serverResponseInterpreter.interpretResponse(serverResponse);
 			model.getProperties().put("host", host.toString());
 
@@ -155,9 +246,11 @@ public class Proxy {
 				log.debug(String.format(
 						"Step 4: Generate Client Response (%s, %s)",
 						clientResponseGenerator.getClass().getName()));
-						//clientMapper.getClass().getName()));
 			}
 
+			/*
+			 * This is where we send the request back to the client
+			 */
 			try {
 				clientResponseGenerator.generateResponse(model, response);
 			} catch (UnsupportedModelException ume) {
@@ -210,7 +303,7 @@ public class Proxy {
 	}
 
 	public String getProxyUrl() {
-		return proxyUrl;
+		return proxyContextUrl;
 	}
 
 	public void setProxyUrl(String proxyUrl) {
@@ -220,31 +313,15 @@ public class Proxy {
 		if (!proxyUrl.startsWith(PROXY_PREFIX)) {
 			proxyUrl = PROXY_PREFIX + proxyUrl;
 		}
-		this.proxyUrl = proxyUrl;
-	}
-
-	public Translatable getClientType() {
-		return clientType;
-	}
-
-	public void setClientType(Translatable clientType) {
-		this.clientType = clientType;
-	}
-
-	public Translatable getServerType() {
-		return serverType;
-	}
-
-	public void setServerType(Translatable serverType) {
-		this.serverType = serverType;
+		this.proxyContextUrl = proxyUrl;
 	}
 
 	public String getServerUrl() {
-		return serverUrl;
+		return serviceUrl;
 	}
 
 	public void setServerUrl(String serverUrl) {
-		this.serverUrl = serverUrl;
+		this.serviceUrl = serverUrl;
 	}
 
 	public List<String> getProxyManagedUrls() {

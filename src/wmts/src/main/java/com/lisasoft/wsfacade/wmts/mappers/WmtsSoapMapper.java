@@ -29,8 +29,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.lisasoft.wsfacade.mappers.SoapMapper;
-import com.lisasoft.wsfacade.mappers.UnsupportedModelException;
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoModel;
 import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoResponseModel;

@@ -20,6 +20,7 @@
 package com.lisasoft.wsfacade.mappers;
 
 import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 public abstract class Mapper {	
 	public abstract Model mapToModel(String source) throws IllegalArgumentException;

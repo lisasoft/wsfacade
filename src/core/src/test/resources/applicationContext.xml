@@ -27,14 +27,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- KVP Get to SOAP using Generic interpreters -->
 	<bean id="genericKVPtoSoap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
-		<property name="proxyContextUrl" value="/kvp" />
+		<property name="proxyUrl" value="/kvp" />
 		<property name="proxyManagedUrls">
 			<list>
 				<value>?WSDL</value>
 			</list>
 		</property>
 		<property name="name" value="genericKVPtoSoap" />
-		<property name="serviceUrl" value="http://localhost:8080/geoserver/" />
+		<property name="clientType" value="KVP" />
+		<property name="serverType" value="SOAP" />
+		<property name="serverUrl" value="http://localhost:8080/geoserver/" />
 		<property name="clientRequestInterpreter" ref="kvpInterpreter" />
 		<property name="clientResponseGenerator" ref="kvpGenerator" />
 		<property name="serverRequestGenerator" ref="xmlBodyGenerator" />
