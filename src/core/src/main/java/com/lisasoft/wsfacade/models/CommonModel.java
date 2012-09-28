@@ -19,14 +19,20 @@
  */
 package com.lisasoft.wsfacade.models;
 
-public class EntityModel extends Model {
+/**
+ * A common model for use were properties are sorted from a String in the form:
+ * PROPERTY_NAME_1,PROPERTY_NAME_2,...,PROPERTY_NAME_N
+ * 
+ * @author jhudson
+ *
+ */
+public class CommonModel extends AbstractModel {
 
-	public String contentType = null;
-	public boolean isBinary = false;
-	public byte[] binarySource = null;
-	public String textSource = null;
-
-	public EntityModel(String modelPropertyNames) {
-		super(modelPropertyNames);
+	public CommonModel(String modelPropertyNames) {
+		for (String property : modelPropertyNames.split(",")) {
+			String propertyName = property;
+			String propertyValue = "";
+			getProperties().put(propertyName.trim(), propertyValue.trim());
+		}
 	}
 }

@@ -21,15 +21,15 @@ package com.lisasoft.wsfacade.mappers;
 
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.RestModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
-public class RestMapper extends EntityMapper {
+public class RestMapper extends AbstractMapper {
 	
     static final Logger log = Logger.getLogger(RestMapper.class);
 
-    public Model mapToModel(String source) throws IllegalArgumentException {
+    public IModel mapToModel(String source) throws IllegalArgumentException {
 		throw new IllegalArgumentException("Mapping from REST to the model is not supported yet.");
 		// return null;
 	}
@@ -39,7 +39,7 @@ public class RestMapper extends EntityMapper {
 	 * EG:
 	 * {layer}/{style}/{firstDimension}/{...}/{lastDimension}/{TileMatrixSet}/{scale}/{TileRow}/{TileCol}.{format_extension}
 	 */
-    public String mapFromModel(Model model) throws UnsupportedModelException {
+    public String mapFromModel(IModel model) throws UnsupportedModelException {
     	
     	StringBuffer result = new StringBuffer("");
 		

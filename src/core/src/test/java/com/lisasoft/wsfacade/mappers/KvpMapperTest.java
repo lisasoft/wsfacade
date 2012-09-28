@@ -7,12 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.lisasoft.wsfacade.interpreters.KvpInterpreter;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.utils.FileConfigurationContext;
 
 public class KvpMapperTest {
 
-	private static final String SERVICE_WMS = "?service=wms&version=1.3.0&request=GetCapabilities";
+	private static final String SERVICE_WMS = "service=wms,version=1.3.0,request=GetCapabilities";
 	private static final String SERVICE_WMS_R = "request=GetCapabilities&service=wms&version=1.3.0";
 
 	private KvpInterpreter interpreter;
@@ -30,7 +30,7 @@ public class KvpMapperTest {
 
 	@Test
 	public void testMapToModelString() {
-		Model model = interpreter.getMapper().mapToModel(SERVICE_WMS);
+		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS);
 		assertEquals(model.getProperties().get("service"), "wms");
 		assertEquals(model.getProperties().get("version"), "1.3.0");
 		assertEquals(model.getProperties().get("request"), "GetCapabilities");
@@ -38,7 +38,7 @@ public class KvpMapperTest {
 
 	@Test
 	public void testMapFromModel() throws Exception {
-		Model model = interpreter.getMapper().mapToModel(SERVICE_WMS);
+		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS);
 		String testString = interpreter.getMapper().mapFromModel(model);
 		assertEquals(SERVICE_WMS_R, testString);
 	}

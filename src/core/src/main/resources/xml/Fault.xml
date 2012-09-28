@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2001/12/soap-envelope"  
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xsi:schemaLocation="http://www.w3.org/2001/12/soap-envelope http://www.w3.org/2001/12/soap-envelope.xsd">
+  <soap:Body>
+    <soap:Fault>
+      <soap:Code>
+        <soap:Value>soap:Server</soap:Value>
+      </soap:Code>
+      <soap:Reason>
+        <soap:Text>A server exception was encountered.</soap:Text>
+      </soap:Reason>
+      <soap:Detail>
+        <ows:ExceptionReport xmlns:ows="http://www.opengis.net/ows/1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/ows/1.1  
+          http://schemas.opengis.net/ows/1.1.0/owsExceptionReport.xsd" version="1.0.0" xml:lang="en"> 
+          <ows:Exception exceptionCode="%s"> 
+                  <ows:ExceptionText> 
+                    <![CDATA[]]>
+            </ows:ExceptionText>
+          </ows:Exception> 
+        </ows:ExceptionReport>
+      </soap:Detail>
+    </soap:Fault>
+  </soap:Body> 
+</soap:Envelope>

@@ -19,10 +19,10 @@
  */
 package com.lisasoft.wsfacade.wmts.models;
 
-import com.lisasoft.wsfacade.models.EntityModel;
+import com.lisasoft.wsfacade.models.CommonModel;
 
 
-public class GetFeatureInfoResponseModel extends EntityModel {
+public class GetFeatureInfoResponseModel extends CommonModel {
 	
 	public GetFeatureInfoResponseModel(String modelPropertyNames) {
 		super(modelPropertyNames);

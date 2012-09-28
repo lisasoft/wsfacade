@@ -17,12 +17,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.mappers;
+package com.lisasoft.wsfacade.models;
 
-import com.lisasoft.wsfacade.models.Model;
-import com.lisasoft.wsfacade.models.UnsupportedModelException;
+/**
+ * Interpreters and populate a model with paramaters from a KVP GET request.
+ * 
+ * @author jhudson
+ */
+public class KvpModel extends AbstractModel {
 
-public abstract class Mapper {	
-	public abstract Model mapToModel(String source) throws IllegalArgumentException;
-	public abstract String mapFromModel(Model model) throws UnsupportedModelException;
+	public KvpModel(String modelPropertyNames) {
+		for (String property : modelPropertyNames.split(",")) {
+			String propertyName = property;
+			String propertyValue = "";
+			String[] propertyNameValue = property.split("=");
+			propertyName = propertyNameValue[0];
+			propertyValue = propertyNameValue[1];
+			getProperties().put(propertyName.trim(), propertyValue.trim());
+		}
+	}
 }

@@ -34,8 +34,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.IMapper;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.Constants;
 import com.lisasoft.wsfacade.utils.PropertiesUtil;
@@ -44,12 +44,12 @@ public class XmlBodyGenerator extends HttpGenerator {
 
     static final Logger log = Logger.getLogger(XmlBodyGenerator.class);
 
-	public XmlBodyGenerator(Mapper mapper) {
+	public XmlBodyGenerator(IMapper mapper) {
 		super(mapper);
 	}
 
 	@Override
-	public HttpRequestBase generateRequest(Model model, String url, String requestType) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
+	public HttpRequestBase generateRequest(IModel model, String url, String requestType) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		// for now all REST requests are GETs.
 		if(requestType.equals("get")) {
 			return(generateGetRequest(model, url));
@@ -60,9 +60,9 @@ public class XmlBodyGenerator extends HttpGenerator {
 
 
 	@Override
-	protected HttpGet generateGetRequest(Model model, String url) throws UnsupportedModelException, URISyntaxException {
+	protected HttpGet generateGetRequest(IModel model, String url) throws UnsupportedModelException, URISyntaxException {
 		HttpGet result = null;
-		String xml = mapper.mapFromModel(model);
+		String xml = getMapper().mapFromModel(model);
 		
 		result = new HttpGet(new URI(url));
 		
@@ -72,12 +72,12 @@ public class XmlBodyGenerator extends HttpGenerator {
 	}
 
 	@Override
-	protected HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
+	protected HttpPost generatePostRequest(IModel model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		return generatePostRequest(model, url, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
-	protected HttpPost generatePostRequest(Model model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
+	protected HttpPost generatePostRequest(IModel model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
 		HttpPost result = null;
-		String xml = mapper.mapFromModel(model);
+		String xml = getMapper().mapFromModel(model);
 
 		result = new HttpPost(new URI(url));
 		
@@ -104,12 +104,12 @@ public class XmlBodyGenerator extends HttpGenerator {
 	}
 
 	@Override
-	public void generateResponse(Model model, HttpServletResponse response) throws IOException, UnsupportedModelException {
+	public void generateResponse(IModel model, HttpServletResponse response) throws IOException, UnsupportedModelException {
 		generateResponse(model, response, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
-	public void generateResponse(Model model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {
-		String xml = mapper.mapFromModel(model);
+	public void generateResponse(IModel model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {
+		String xml = getMapper().mapFromModel(model);
 		
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();

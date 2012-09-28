@@ -31,5 +31,4 @@ public class GetFeatureInfoModel extends GetTileModel {
 	public GetFeatureInfoModel(String modelPropertyNames) {
 		super(modelPropertyNames);
 	}
-
 }

@@ -27,21 +27,44 @@ import java.util.Map;
  * @author jgroffen
  * @author jhudson
  */
-public class Model {
+public abstract class AbstractModel implements IModel {
 	
-	private Map<String, String> properties = new HashMap<String, String>();
-	
-	public Model(String modelPropertyNames) {
-		for(String property : modelPropertyNames.split(",")) {
-			String propertyName = property;
-			String propertyValue = "";
-			if (property.contains("=")){
-				String[] propertyNameValue = property.split("=");
-				propertyName = propertyNameValue[0];
-				propertyValue = propertyNameValue[1];
-			}
-			getProperties().put(propertyName.trim(), propertyValue.trim());
-		}
+	protected String contentType;
+	protected boolean isBinary;
+	protected byte[] binarySource = null;
+	protected String textSource = null;
+	protected Map<String, String> properties = new HashMap<String, String>();
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public boolean isBinary() {
+		return isBinary;
+	}
+
+	public void setBinary(boolean isBinary) {
+		this.isBinary = isBinary;
+	}
+
+	public byte[] getBinarySource() {
+		return binarySource;
+	}
+
+	public void setBinarySource(byte[] binarySource) {
+		this.binarySource = binarySource;
+	}
+
+	public String getTextSource() {
+		return textSource;
+	}
+
+	public void setTextSource(String textSource) {
+		this.textSource = textSource;
 	}
 
 	public Map<String, String> getProperties() {

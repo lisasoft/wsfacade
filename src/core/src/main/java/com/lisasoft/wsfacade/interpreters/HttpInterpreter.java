@@ -31,8 +31,8 @@ import org.apache.http.util.ByteArrayBuffer;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.mappers.EntityMapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.AbstractMapper;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.utils.Constants;
 import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
@@ -46,16 +46,16 @@ public abstract class HttpInterpreter {
 
 	static final Logger log = Logger.getLogger(HttpInterpreter.class);
 
-	private EntityMapper mapper;
+	private AbstractMapper mapper;
 
-	HttpInterpreter(EntityMapper mapper) {
+	HttpInterpreter(AbstractMapper mapper) {
 		this.setMapper(mapper);
 	}
 
-	public abstract Model interpretRequest(HttpServletRequest request)
+	public abstract IModel interpretRequest(HttpServletRequest request)
 			throws IOException;
 
-	public abstract Model interpretResponse(HttpResponse response)
+	public abstract IModel interpretResponse(HttpResponse response)
 			throws IOException;
 
 	protected static String LINE_SEPERATOR = "\n";
@@ -144,11 +144,11 @@ public abstract class HttpInterpreter {
 		return result;
 	}
 
-	public EntityMapper getMapper() {
+	public AbstractMapper getMapper() {
 		return mapper;
 	}
 
-	public void setMapper(EntityMapper mapper) {
+	public void setMapper(AbstractMapper mapper) {
 		this.mapper = mapper;
 	}
 }

@@ -25,6 +25,15 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+/**
+ * <p>
+ * Loads the properties file "application.properties" from the jar context and
+ * give access to them from this static Object
+ * </p>
+ * 
+ * @author jhudson
+ * 
+ */
 public class PropertiesUtil {
 	private static Properties properties = null;
 	private static boolean triedAndFailed = false;
@@ -32,10 +41,13 @@ public class PropertiesUtil {
 
 	private static void load() {
 		try {
-			properties = PropertiesLoaderUtils.loadAllProperties("application.properties");
+			properties = PropertiesLoaderUtils
+					.loadAllProperties("application.properties");
 		} catch (IOException e) {
 			triedAndFailed = true;
-			log.error("An error occured trying to load the application properties: ",e);
+			log.error(
+					"An error occured trying to load the application properties: ",
+					e);
 		}
 	}
 

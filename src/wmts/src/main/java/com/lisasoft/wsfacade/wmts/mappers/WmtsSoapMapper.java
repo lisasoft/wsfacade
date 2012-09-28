@@ -29,7 +29,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.lisasoft.wsfacade.mappers.SoapMapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.AbstractModel;
+import com.lisasoft.wsfacade.models.CommonModel;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoModel;
@@ -49,8 +51,8 @@ public class WmtsSoapMapper extends SoapMapper {
 		super(startTag);
 	}
 
-	public Model mapToModel(String source) throws IllegalArgumentException {
-    	Model result = null;
+	public IModel mapToModel(String source) throws IllegalArgumentException {
+		IModel result = null;
     	try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
@@ -73,22 +75,22 @@ public class WmtsSoapMapper extends SoapMapper {
 		return result;
 	}
 	
-	public String mapFromModel(Model model) throws UnsupportedModelException {
+	public String mapFromModel(AbstractModel model) throws UnsupportedModelException {
 		
 		String result = null;
 		
 		if(model instanceof GetTileResponseModel) {
 			GetTileResponseModel m = (GetTileResponseModel)model;
 			
-			if(m.contentType.contains("image")) {
-				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.contentType, new String(Base64.encodeBase64(m.binarySource)));
+			if(m.getContentType().contains("image")) {
+				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.getContentType(), new String(Base64.encodeBase64(m.getBinarySource())));
 			} else {
 				// TODO: feature info responses end up here at the moment. This is ambiguous so we either 
 				// remove the GetFeatureInfoResponseModel or go to the effort of differentiating between 
 				// REST tile and FeatureInfo resources earlier than this point
-				String responseBody = m.textSource;
+				String responseBody = m.getTextSource();
 				if(responseBody == null) {
-					responseBody = new String(m.binarySource);
+					responseBody = new String(m.getBinarySource());
 				}
 				//if(responseBody == null) {
 				//	throw new UnsupportedModelException("Unable to interpret response with contentType " + m.contentType);
@@ -150,9 +152,9 @@ public class WmtsSoapMapper extends SoapMapper {
 	 * @author jgroffen
 	 * @throws IOException 
 	 */
-    protected Model parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
+    protected IModel parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
     	
-    	Model model = null;
+    	IModel model = null;
 
     	while(true) {
     		int eventType = xpp.next();
@@ -243,8 +245,8 @@ public class WmtsSoapMapper extends SoapMapper {
     	return model;
     }
 
-    protected Model parseGetCapabilities(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	Model model = new Model(SOAPConstants.GET_CAPABILITIES_MODEL);
+    protected IModel parseGetCapabilities(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
+    	IModel model = new CommonModel(SOAPConstants.GET_CAPABILITIES_MODEL);
     	
 		model.getProperties().put("name", xpp.getName());
 		model.getProperties().put("service", xpp.getAttributeValue(null, "service"));
@@ -272,7 +274,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	return model;
     }
 
-    protected Model parseGetFeatureInfo(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
+    protected AbstractModel parseGetFeatureInfo(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
     	GetFeatureInfoModel model = new GetFeatureInfoModel();
     	
     	while(true) {

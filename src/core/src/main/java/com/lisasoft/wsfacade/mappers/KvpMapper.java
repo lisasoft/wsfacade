@@ -21,7 +21,8 @@ package com.lisasoft.wsfacade.mappers;
 
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
+import com.lisasoft.wsfacade.models.KvpModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 /**
@@ -31,7 +32,7 @@ import com.lisasoft.wsfacade.models.UnsupportedModelException;
  * 
  * @author jhudson
  */
-public class KvpMapper extends EntityMapper {
+public class KvpMapper extends AbstractMapper {
 
 	static final Logger log = Logger.getLogger(KvpMapper.class);
 
@@ -46,19 +47,18 @@ public class KvpMapper extends EntityMapper {
 	 * <b>http://HOST:PORT/service?property1=value1&...propertyN=valueN</b>
 	 * </p>
 	 */
-	public Model mapToModel(String source) throws IllegalArgumentException {
+	public IModel mapToModel(String source) throws IllegalArgumentException {
 		if (log.isDebugEnabled()){
-			log.info("Parsing input string in the KvpMapper: '" + source + "'");
+			log.info("Parsing input string in the KvpMapper: '" + source  + "'");
 		}
 
-		Model model = new Model(source.replace("&", ",").replace("?", ""));
-		return model;
+		return new KvpModel(source);
 	}
 
 	/**
 	 * Return the KVP Get path EG: property1=value1&...propertyN=valueN
 	 */
-	public String mapFromModel(Model model) throws UnsupportedModelException {
+	public String mapFromModel(IModel model) throws UnsupportedModelException {
 
 		StringBuffer result = new StringBuffer("");
 

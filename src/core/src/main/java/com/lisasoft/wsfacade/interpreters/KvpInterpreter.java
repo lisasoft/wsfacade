@@ -20,13 +20,14 @@
 package com.lisasoft.wsfacade.interpreters;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpResponse;
 
-import com.lisasoft.wsfacade.mappers.EntityMapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.AbstractMapper;
+import com.lisasoft.wsfacade.models.IModel;
 
 /**
  * <p>
@@ -40,27 +41,28 @@ import com.lisasoft.wsfacade.models.Model;
  */
 public class KvpInterpreter extends HttpInterpreter {
 
-	private KvpInterpreter(EntityMapper mapper) {
+	private KvpInterpreter(AbstractMapper mapper) {
 		super(mapper);
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public Model interpretRequest(HttpServletRequest request) throws IOException {
-		String textContent = null;
-		if(request.getContentLength() > 0) {
-			if(request.getContentType().startsWith("text/")) {
-				textContent = readString(request); 
-			}
+	public IModel interpretRequest(HttpServletRequest request) throws IOException {
+		Enumeration<String> keys = request.getParameterNames();
+		StringBuilder sb = new StringBuilder();
+		while (keys.hasMoreElements()){
+			String key = keys.nextElement();
+			sb.append(key+"="+request.getParameter(key));
+			sb.append(",");
 		}
-
-		return getMapper().mapToModel(request.getRequestURI(), request.getContentType(), textContent);
-	}
+		return getMapper().mapToModel(request.getRequestURI(), sb.toString(), request.getContentType());
+	}	
 
 	@Override
-	public Model interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response) throws IOException {
 		String textContent = null;
 		byte[] binaryContent = null;
-		Model result = null;
+		IModel result = null;
 		
 		if(log.isDebugEnabled()) {
 			log.debug("Content Type: " + response.getEntity().getContentType().getValue());

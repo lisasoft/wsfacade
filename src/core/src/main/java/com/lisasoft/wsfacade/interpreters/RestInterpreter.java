@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpResponse;
 
-import com.lisasoft.wsfacade.mappers.EntityMapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.AbstractMapper;
+import com.lisasoft.wsfacade.models.IModel;
 
 /**
  * Base interpreter class for Rest services.
@@ -36,12 +36,12 @@ import com.lisasoft.wsfacade.models.Model;
  */
 public class RestInterpreter extends HttpInterpreter {
 
-	private RestInterpreter(EntityMapper mapper) {
+	private RestInterpreter(AbstractMapper mapper) {
 		super(mapper);
 	}
 
 	@Override
-	public Model interpretRequest(HttpServletRequest request) throws IOException {
+	public IModel interpretRequest(HttpServletRequest request) throws IOException {
 		String textContent = null;
 		if(request.getContentLength() > 0) {
 			if(request.getContentType().startsWith("text/")) {
@@ -53,10 +53,10 @@ public class RestInterpreter extends HttpInterpreter {
 	}
 
 	@Override
-	public Model interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response) throws IOException {
 		String textContent = null;
 		byte[] binaryContent = null;
-		Model result = null;
+		IModel result = null;
 		
 		if(log.isDebugEnabled()) {
 			log.debug("Content Type: " + response.getEntity().getContentType().getValue());

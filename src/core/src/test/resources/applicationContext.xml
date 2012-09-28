@@ -34,8 +34,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 		<property name="name" value="genericKVPtoSoap" />
-		<property name="clientType" value="KVP" />
-		<property name="serverType" value="SOAP" />
 		<property name="serverUrl" value="http://localhost:8080/geoserver/" />
 		<property name="clientRequestInterpreter" ref="kvpInterpreter" />
 		<property name="clientResponseGenerator" ref="kvpGenerator" />

@@ -29,28 +29,37 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.IMapper;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 /**
  * Given a common model, generate a Http request or response.
+ * 
  * @author jgroffen
- *
+ * @author jhudson
  */
 public abstract class HttpGenerator {
 
-    protected Mapper mapper;
+    private IMapper mapper;
     
-    HttpGenerator(Mapper mapper) {
+	HttpGenerator(IMapper mapper) {
     	this.mapper = mapper;
     }
 
-    public abstract HttpRequestBase generateRequest(Model model, String url, String requestType) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
+    public abstract HttpRequestBase generateRequest(IModel model, String url, String requestType) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
 
-    protected abstract HttpGet generateGetRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
+    protected abstract HttpGet generateGetRequest(IModel model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
 
-	protected abstract HttpPost generatePostRequest(Model model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
+	protected abstract HttpPost generatePostRequest(IModel model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException;
 
-	public abstract void generateResponse(Model model, HttpServletResponse response) throws IOException, UnsupportedModelException;
+	public abstract void generateResponse(IModel model, HttpServletResponse response) throws IOException, UnsupportedModelException;
+	
+    public IMapper getMapper() {
+		return mapper;
+	}
+
+	public void setMapper(IMapper mapper) {
+		this.mapper = mapper;
+	}
 }

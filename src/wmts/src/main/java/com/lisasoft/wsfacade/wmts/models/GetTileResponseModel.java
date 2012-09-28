@@ -19,13 +19,15 @@
  */
 package com.lisasoft.wsfacade.wmts.models;
 
-import com.lisasoft.wsfacade.models.EntityModel;
+import com.lisasoft.wsfacade.models.AbstractModel;
 
-
-public class GetTileResponseModel extends EntityModel {
+public class GetTileResponseModel extends AbstractModel {
 
 	public GetTileResponseModel(String modelPropertyNames) {
-		super(modelPropertyNames);
+		for (String property : modelPropertyNames.split(",")) {
+			String propertyName = property;
+			String propertyValue = "";
+			getProperties().put(propertyName.trim(), propertyValue.trim());
+		}
 	}
-	
 }

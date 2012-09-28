@@ -22,8 +22,9 @@ package com.lisasoft.wsfacade.wmts.mappers;
 import org.apache.log4j.Logger;
 
 import com.lisasoft.wsfacade.mappers.RestMapper;
-import com.lisasoft.wsfacade.models.EntityModel;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.AbstractModel;
+import com.lisasoft.wsfacade.models.CommonModel;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 import com.lisasoft.wsfacade.wmts.models.GetTileModel;
@@ -33,22 +34,22 @@ public class WmtsRestMapper extends RestMapper {
 	
     static final Logger log = Logger.getLogger(WmtsRestMapper.class);
     
-    public Model mapToModel(String source) throws IllegalArgumentException {
+    public IModel mapToModel(String source) throws IllegalArgumentException {
     	// This method has to return an entity model, as this mapper
     	// inherits from EntityMapper 
     	// a rest response with a sting source could be a getFeatureInfo response 
     	// or it could be a failed response.
-		Model model = null;
+    	IModel model = null;
 		
     	if(source == null) {
     		model = new GetTileResponseModel(SOAPConstants.GET_TILE_RESPONSE_MODEL);
 		
     	} else if(source.contains("<Capabilities")) {
 			// map to a get capabilities model
-    		model = new EntityModel(SOAPConstants.GET_CAPABILITIES_MODEL);
+    		model = new CommonModel(SOAPConstants.GET_CAPABILITIES_MODEL);
     		model.getProperties().put("capabilities", source);
 		} else {
-			model = new EntityModel("response");
+			model = new CommonModel("response");
 			model.getProperties().put("response", source);
     	}
 		
@@ -62,7 +63,7 @@ public class WmtsRestMapper extends RestMapper {
 	 * or
 	 * {layer}/{style}/{firstDimension}/{...}/{lastDimension}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}/{J}/{I}.{InfoFormat_extension}
 	 */
-    public String mapFromModel(Model model) throws UnsupportedModelException {
+    public String mapFromModel(AbstractModel model) throws UnsupportedModelException {
     	
     	StringBuffer result = new StringBuffer("");
 		

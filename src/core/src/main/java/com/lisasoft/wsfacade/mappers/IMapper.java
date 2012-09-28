@@ -17,26 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.utils;
+package com.lisasoft.wsfacade.mappers;
 
-/**
- * Project constants
- * 
- * @author jhudson
- *
- */
-public class Constants {
-	/*
-	 * Raw strings for reference
-	 */
-	public static final String HOST = "host";
-	public static final String QUESTION_WSDL = "?WSDL";
-	public static final String WSDL = "WSDL";
+import com.lisasoft.wsfacade.models.IModel;
+import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
-	/*
-	 * Property Names for lookup in the application.properties file 
-	 */
-	public static final String WSDL_TEMPLATE = "WSDL_TEMPLATE";
-	public static final String TYPE_TEXT_XML = "TYPE_TEXT_XML";
-	public static final String DEFAULT_CHARSET = "DEFAULT_CHARSET";
+public interface IMapper {	
+	public abstract IModel mapToModel(String source) throws IllegalArgumentException;
+	public abstract String mapFromModel(IModel model) throws UnsupportedModelException;
 }

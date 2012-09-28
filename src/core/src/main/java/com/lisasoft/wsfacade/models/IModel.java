@@ -17,26 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Web Services Facade.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.lisasoft.wsfacade.utils;
+package com.lisasoft.wsfacade.models;
 
-/**
- * Project constants
- * 
- * @author jhudson
- *
- */
-public class Constants {
-	/*
-	 * Raw strings for reference
-	 */
-	public static final String HOST = "host";
-	public static final String QUESTION_WSDL = "?WSDL";
-	public static final String WSDL = "WSDL";
+import java.util.Map;
 
-	/*
-	 * Property Names for lookup in the application.properties file 
-	 */
-	public static final String WSDL_TEMPLATE = "WSDL_TEMPLATE";
-	public static final String TYPE_TEXT_XML = "TYPE_TEXT_XML";
-	public static final String DEFAULT_CHARSET = "DEFAULT_CHARSET";
+public interface IModel {
+	public String getContentType();
+	public void setContentType(String contentType);
+	public boolean isBinary();
+	public void setBinary(boolean isBinary);
+	public byte[] getBinarySource();
+	public void setBinarySource(byte[] binarySource);
+	public String getTextSource();
+	public void setTextSource(String textSource);
+	public Map<String, String> getProperties() ;
+	public void setProperties(Map<String, String> properties);
 }

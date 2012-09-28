@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.HttpResponse;
 
-import com.lisasoft.wsfacade.mappers.EntityMapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.AbstractMapper;
+import com.lisasoft.wsfacade.models.IModel;
 
 /**
  * Base interpreter class where the body of the HTTP message is text/xml.
@@ -35,18 +35,18 @@ import com.lisasoft.wsfacade.models.Model;
  */
 public class XmlBodyInterpreter extends HttpInterpreter {
 
-	public XmlBodyInterpreter(EntityMapper mapper) {
+	public XmlBodyInterpreter(AbstractMapper mapper) {
 		super(mapper);
 	}
 
 	@Override
-	public Model interpretRequest(HttpServletRequest request) throws IOException {
+	public IModel interpretRequest(HttpServletRequest request) throws IOException {
 		String xml = readString(request);
 		return getMapper().mapToModel(xml);
 	}
 
 	@Override
-	public Model interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response) throws IOException {
 		String xml = readString(response);
 		return getMapper().mapToModel(xml);
 	}

@@ -27,11 +27,12 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
+import com.lisasoft.wsfacade.models.RestModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.SOAPConstants;
 
-public class SoapMapper extends EntityMapper {
+public class SoapMapper extends AbstractMapper {
 	
     static final Logger log = Logger.getLogger(SoapMapper.class);
     
@@ -43,8 +44,8 @@ public class SoapMapper extends EntityMapper {
 		this.startTag = startTag;
 	}
 
-    public Model mapToModel(String source) throws IllegalArgumentException {
-    	Model result = null;
+    public IModel mapToModel(String source) throws IllegalArgumentException {
+    	IModel result = null;
     	try {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
@@ -63,7 +64,7 @@ public class SoapMapper extends EntityMapper {
 		return result;
 	}
 
-	public String mapFromModel(Model model) throws UnsupportedModelException {
+	public String mapFromModel(IModel model) throws UnsupportedModelException {
 		String result = null;
 		if(model.getProperties().containsKey("response")) {
 			// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
@@ -74,9 +75,9 @@ public class SoapMapper extends EntityMapper {
 		return(result);
 	}
 
-    protected Model parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
+    protected IModel parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
 
-    	Model model = null;
+    	IModel model = null;
 
     	while(true) {
     		int eventType = xpp.nextTag();
@@ -98,9 +99,9 @@ public class SoapMapper extends EntityMapper {
     	return model;
     }
 	
-    protected Model parseTags(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	Model model = new Model("");
-    	
+    protected IModel parseTags(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
+    	IModel model = new RestModel("");
+
     	while(true) {
     		int eventType = xpp.nextTag();
 

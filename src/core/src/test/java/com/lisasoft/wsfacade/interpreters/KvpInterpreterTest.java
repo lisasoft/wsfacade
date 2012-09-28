@@ -19,12 +19,14 @@
  */
 package com.lisasoft.wsfacade.interpreters;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.utils.FileConfigurationContext;
 
 /**
@@ -34,9 +36,12 @@ import com.lisasoft.wsfacade.utils.FileConfigurationContext;
  *
  */
 public class KvpInterpreterTest {
+	
+	private static final String SERVICE_WMS = "service=wms,version=1.3.0,request=GetCapabilities";
+	private static final String SERVICE_WMS_R = "request=GetCapabilities&service=wms&version=1.3.0";
 
 	private KvpInterpreter interpreter;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		interpreter = FileConfigurationContext.getInstance().getBean("kvpInterpreter", KvpInterpreter.class);
@@ -50,5 +55,14 @@ public class KvpInterpreterTest {
 	@Test
 	public void testMapper() {
 		assertNotNull(interpreter.getMapper());
+	}
+
+	@Test
+	public void testInterprater() throws Exception {
+		assertNotNull(interpreter);
+		IModel model = interpreter.interpretRequest(new MockHttpServletRequest());
+		assertEquals(model.getProperties().get("service"), "wms");
+		assertEquals(model.getProperties().get("version"), "1.3.0");
+		assertEquals(model.getProperties().get("request"), "GetCapabilities");
 	}
 }

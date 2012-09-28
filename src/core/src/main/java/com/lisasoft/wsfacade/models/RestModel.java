@@ -19,18 +19,21 @@
  */
 package com.lisasoft.wsfacade.models;
 
-
 /**
- * Holds a model that can be used for mapping to / from rest.
- * Differs from a regular model as parameter order is important.
+ * Holds a model that can be used for mapping to / from rest. Differs from a
+ * regular model as parameter order is important.
+ * 
  * @author jgroffen
  */
 
-public class RestModel extends Model {
+public class RestModel extends AbstractModel {
 	public String[] order = {};
 
 	public RestModel(String modelPropertyNames) {
-		super(modelPropertyNames);
+		for (String property : modelPropertyNames.split(",")) {
+			String propertyName = property;
+			String propertyValue = "";
+			getProperties().put(propertyName.trim(), propertyValue.trim());
+		}
 	}
 }
-

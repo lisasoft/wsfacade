@@ -32,8 +32,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.log4j.Logger;
 
-import com.lisasoft.wsfacade.mappers.Mapper;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.mappers.IMapper;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.utils.Constants;
 import com.lisasoft.wsfacade.utils.PropertiesUtil;
@@ -49,7 +49,7 @@ public class KvpGenerator extends HttpGenerator {
 
 	static final Logger log = Logger.getLogger(KvpGenerator.class);
 
-	public KvpGenerator(Mapper mapper) {
+	public KvpGenerator(IMapper mapper) {
 		super(mapper);
 	}
 
@@ -57,7 +57,7 @@ public class KvpGenerator extends HttpGenerator {
 	 * All KVP Get requests are GET
 	 */
 	@Override
-	public HttpRequestBase generateRequest(Model model, String url,
+	public HttpRequestBase generateRequest(IModel model, String url,
 			String requestType) throws UnsupportedModelException,
 			URISyntaxException {
 		return (generateGetRequest(model, url));
@@ -67,10 +67,10 @@ public class KvpGenerator extends HttpGenerator {
 	 * The main body of the request is generated here
 	 */
 	@Override
-	protected HttpGet generateGetRequest(Model model, String url)
+	protected HttpGet generateGetRequest(IModel model, String url)
 			throws UnsupportedModelException, URISyntaxException {
 		HttpGet result = null;
-		String restRequest = mapper.mapFromModel(model);
+		String restRequest = getMapper().mapFromModel(model);
 
 		try {
 			log.debug(String.format("Request URI: %s", url + restRequest));
@@ -84,19 +84,19 @@ public class KvpGenerator extends HttpGenerator {
 	}
 
 	@Override
-	protected HttpPost generatePostRequest(Model model, String url)
+	protected HttpPost generatePostRequest(IModel model, String url)
 			throws UnsupportedEncodingException, UnsupportedModelException,
 			URISyntaxException {
 		return generatePostRequest(model, url,
 				PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
-	public HttpPost generatePostRequest(Model model, String url, String charset)
+	public HttpPost generatePostRequest(IModel model, String url, String charset)
 			throws UnsupportedEncodingException, UnsupportedModelException,
 			URISyntaxException {
 		HttpPost result = null;
 
-		String restRequest = mapper.mapFromModel(model);
+		String restRequest = getMapper().mapFromModel(model);
 		try {
 			log.debug(String.format("Request URI: %s", url + restRequest));
 			result = new HttpPost(new URI(url + restRequest));
@@ -109,9 +109,9 @@ public class KvpGenerator extends HttpGenerator {
 	}
 
 	@Override
-	public void generateResponse(Model model, HttpServletResponse response)
+	public void generateResponse(IModel model, HttpServletResponse response)
 			throws IOException, UnsupportedModelException {
-		String xml = mapper.mapFromModel(model);
+		String xml = getMapper().mapFromModel(model);
 
 		response.setContentType("text/xml");
 		ServletOutputStream out = response.getOutputStream();

@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
 import com.google.common.base.Preconditions;
 import com.lisasoft.wsfacade.generators.HttpGenerator;
 import com.lisasoft.wsfacade.interpreters.HttpInterpreter;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.security.ISecurityProvider;
 import com.lisasoft.wsfacade.utils.Constants;
@@ -50,7 +50,7 @@ import com.lisasoft.wsfacade.utils.Constants;
  * @author jgroffen
  * @author jhudson
  */
-public class Proxy {
+public abstract class Proxy {
 	private static final Logger log = Logger.getLogger(Proxy.class);
 	public static final String PROXY_PREFIX = "/proxies";
 
@@ -180,8 +180,8 @@ public class Proxy {
 			 * The model object represents the data in the request in a generic
 			 * format which can be translated into a new request type.
 			 */
-			Model model = clientRequestInterpreter.interpretRequest(request);
-
+			IModel model = clientRequestInterpreter.interpretRequest(request);
+	
 			/*
 			 * Give the model a copy of the host paramater in case its needed
 			 */

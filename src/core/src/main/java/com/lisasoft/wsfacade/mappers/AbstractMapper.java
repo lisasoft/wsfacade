@@ -19,37 +19,38 @@
  */
 package com.lisasoft.wsfacade.mappers;
 
-import com.lisasoft.wsfacade.models.EntityModel;
-import com.lisasoft.wsfacade.models.Model;
+import com.lisasoft.wsfacade.models.IModel;
 
-public abstract class EntityMapper extends Mapper {
+
+public abstract class AbstractMapper implements IMapper {
 	
-	public Model mapToModel(String uri, String source, String contentType) throws IllegalArgumentException {
-		EntityModel model = (EntityModel)mapToModel(source);
+	public IModel mapToModel(String uri, String source, String contentType) throws IllegalArgumentException {
+		IModel model = mapToModel(source);
 
-		model.contentType = contentType;
-		model.isBinary = false;
-		model.textSource = source;
-
-		return model;
-	}
-	public Model mapToModel(String source, String contentType) throws IllegalArgumentException {
-		EntityModel model = (EntityModel)mapToModel(source);
-
-		model.contentType = contentType;
-		model.isBinary = false;
-		model.textSource = source;
+		model.setContentType(contentType);
+		model.setBinary(false);
+		model.setTextSource(source);
 
 		return model;
 	}
 
-	public Model mapToModel(byte[] source, String contentType) throws IllegalArgumentException {
-		EntityModel model = (EntityModel)mapToModel(null);
+	public IModel mapToModel(String source, String contentType) throws IllegalArgumentException {
+		IModel model = mapToModel(source);
 
-		model.contentType = contentType;
-		model.isBinary = true;
-		model.binarySource = source;
-		
+		model.setContentType(contentType);
+		model.setBinary(false);
+		model.setTextSource(source);
+
+		return model;
+	}
+
+	public IModel mapToModel(byte[] source, String contentType) throws IllegalArgumentException {
+		IModel model = mapToModel(null);
+
+		model.setContentType(contentType);
+		model.setBinary(true);
+		model.setBinarySource(source);
+
 		return model;
 	}
 }
