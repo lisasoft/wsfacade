@@ -36,6 +36,12 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>com.lisasoft.wsfacade.wfs</groupId>
+			<artifactId>wfs</artifactId>
+			<version>${wsf.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>com.lisasoft.wsfacade.core</groupId>
 			<artifactId>core</artifactId>
 			<version>${wsf.version}</version>

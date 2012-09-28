@@ -56,8 +56,11 @@ public class KvpInterpreter extends HttpInterpreter {
 			sb.append(",");
 		}
 		return getMapper().mapToModel(request.getRequestURI(), sb.toString(), request.getContentType());
-	}	
+	}
 
+	/**
+	 * The response from a KVP Get request on an OGC service should be an XML body
+	 */
 	@Override
 	public IModel interpretResponse(HttpResponse response) throws IOException {
 		String textContent = null;

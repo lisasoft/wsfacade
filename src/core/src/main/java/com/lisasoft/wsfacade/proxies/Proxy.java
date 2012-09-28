@@ -50,9 +50,9 @@ import com.lisasoft.wsfacade.utils.Constants;
  * @author jgroffen
  * @author jhudson
  */
-public abstract class Proxy {
+public class Proxy {
 	private static final Logger log = Logger.getLogger(Proxy.class);
-	public static final String PROXY_PREFIX = "/proxies";
+	protected static final String PROXY_PREFIX = "/proxies";
 
 	/**
 	 * <p>
@@ -302,11 +302,11 @@ public abstract class Proxy {
 		this.name = name;
 	}
 
-	public String getProxyUrl() {
+	public String getProxyContextUrl() {
 		return proxyContextUrl;
 	}
 
-	public void setProxyUrl(String proxyUrl) {
+	public void setProxyContextUrl(String proxyUrl) {
 		if (!proxyUrl.startsWith("/")) {
 			proxyUrl = "/" + proxyUrl;
 		}
@@ -316,12 +316,12 @@ public abstract class Proxy {
 		this.proxyContextUrl = proxyUrl;
 	}
 
-	public String getServerUrl() {
+	public String getServiceUrl() {
 		return serviceUrl;
 	}
 
-	public void setServerUrl(String serverUrl) {
-		this.serviceUrl = serverUrl;
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
 	}
 
 	public List<String> getProxyManagedUrls() {

@@ -66,8 +66,8 @@ public class ProxyManager {
 		log.debug(String.format("Proxy Count: %d", proxies.size()));
 		
 		for(Proxy p : proxies) {
-			log.debug(String.format("Proxy URL: %s", p.getProxyUrl()));
-			if(url.startsWith(p.getProxyUrl())) {
+			log.debug(String.format("Proxy URL: %s", p.getProxyContextUrl()));
+			if(url.startsWith(p.getProxyContextUrl())) {
 				result = p;
 				break;
 			}

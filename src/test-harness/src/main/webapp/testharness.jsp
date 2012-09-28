@@ -149,7 +149,7 @@ $(document).ready(function() {
 <%List proxies = ProxyManager.getProxies();
 	for(int i = 0; i < proxies.size(); i++) {
 		Proxy proxy = (Proxy)proxies.get(i);%>
-	options += '<option value="<%=proxy.getProxyUrl()%>"><%=proxy.getName()%>: <%=proxy.getProxyUrl()%></option>';
+	options += '<option value="<%=proxy.getProxyContextUrl()%>"><%=proxy.getName()%>: <%=proxy.getProxyContextUrl()%></option>';
 <%
 	}
 %>
