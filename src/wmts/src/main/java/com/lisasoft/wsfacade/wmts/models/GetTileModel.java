@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.lisasoft.wsfacade.models.RestModel;
-import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.utils.SoapConstants;
 
 public class GetTileModel extends RestModel {
 	public List<String> dimensionsOrder = new ArrayList<String>();
 	public Map<String, String> dimensions = new HashMap<String, String>();
 	
 	public GetTileModel() {
-		this(SOAPConstants.GET_TILE_MODEL);
-		order = SOAPConstants.GET_TILE_ORDER.split(",");
+		this(SoapConstants.GET_TILE_MODEL);
+		order = SoapConstants.GET_TILE_ORDER.split(",");
 	}
 
 	public GetTileModel(String modelPropertyNames) {

@@ -26,7 +26,7 @@ import com.lisasoft.wsfacade.models.AbstractModel;
 import com.lisasoft.wsfacade.models.CommonModel;
 import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
-import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.utils.SoapConstants;
 import com.lisasoft.wsfacade.wmts.models.GetTileModel;
 import com.lisasoft.wsfacade.wmts.models.GetTileResponseModel;
 
@@ -42,11 +42,11 @@ public class WmtsRestMapper extends RestMapper {
     	IModel model = null;
 		
     	if(source == null) {
-    		model = new GetTileResponseModel(SOAPConstants.GET_TILE_RESPONSE_MODEL);
+    		model = new GetTileResponseModel(SoapConstants.GET_TILE_RESPONSE_MODEL);
 		
     	} else if(source.contains("<Capabilities")) {
 			// map to a get capabilities model
-    		model = new CommonModel(SOAPConstants.GET_CAPABILITIES_MODEL);
+    		model = new CommonModel(SoapConstants.GET_CAPABILITIES_MODEL);
     		model.getProperties().put("capabilities", source);
 		} else {
 			model = new CommonModel("response");

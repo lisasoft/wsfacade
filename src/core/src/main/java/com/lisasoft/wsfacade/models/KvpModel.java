@@ -31,7 +31,7 @@ public class KvpModel extends AbstractModel {
 			String propertyName = property;
 			String propertyValue = "";
 			String[] propertyNameValue = property.split("=");
-			propertyName = propertyNameValue[0];
+			propertyName = propertyNameValue[0].toLowerCase();
 			propertyValue = propertyNameValue[1];
 			getProperties().put(propertyName.trim(), propertyValue.trim());
 		}

@@ -6,23 +6,27 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<!-- Common beans -->
-	<bean id="clientMapper" class="com.lisasoft.wsfacade.mappers.KvpMapper" />
-	<bean id="serverMapper" class="com.lisasoft.wsfacade.mappers.SoapMapper" />
+	<bean id="kvpClientMapper" class="com.lisasoft.wsfacade.mappers.KvpMapper" />
+	<bean id="soapServerMapper" class="com.lisasoft.wsfacade.mappers.SoapMapper" />
+	<bean id="xmlMapper" class="com.lisasoft.wsfacade.mappers.XmlMapper" />
 
 	<!-- Client To Proxy beans -->
 	<bean id="kvpInterpreter" class="com.lisasoft.wsfacade.interpreters.KvpInterpreter">
-		<constructor-arg ref="clientMapper" />
+		<constructor-arg ref="kvpClientMapper" />
 	</bean>
 	<bean id="kvpGenerator" class="com.lisasoft.wsfacade.generators.KvpGenerator">
-		<constructor-arg ref="clientMapper" />
+		<constructor-arg ref="soapServerMapper" />
 	</bean>
 
 	<!-- Proxy to Server beans -->
-	<bean id="xmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
-		<constructor-arg ref="serverMapper" />
+	<bean id="kvpXmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
+		<constructor-arg ref="soapServerMapper" />
+	</bean>
+	<bean id="xmlClientBodyGenerator" class="com.lisasoft.wsfacade.generators.XmlBodyGenerator">
+		<constructor-arg ref="xmlMapper" />
 	</bean>
 	<bean id="xmlBodyGenerator" class="com.lisasoft.wsfacade.generators.XmlBodyGenerator">
-		<constructor-arg ref="serverMapper" />
+		<constructor-arg ref="soapServerMapper" />
 	</bean>
 
 	<!-- KVP Get to SOAP using Generic interpreters -->
@@ -34,10 +38,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 		<property name="name" value="genericKVPtoSoap" />
-		<property name="serviceUrl" value="http://localhost:8080/geoserver/" />
+		<property name="serviceRequestType" value="post" />
+		<property name="serviceUrl" value="http://services.interactive-instruments.de/xsprojects/ows9-tds/services/ltds/wfs" />
 		<property name="clientRequestInterpreter" ref="kvpInterpreter" />
-		<property name="clientResponseGenerator" ref="kvpGenerator" />
+		<property name="clientResponseGenerator" ref="xmlClientBodyGenerator" />
 		<property name="serverRequestGenerator" ref="xmlBodyGenerator" />
-		<property name="serverResponseInterpreter" ref="xmlBodyInterpreter" />
+		<property name="serverResponseInterpreter" ref="kvpXmlBodyInterpreter" />
 	</bean>
 </beans>

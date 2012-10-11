@@ -118,6 +118,11 @@ public class Proxy {
 	 * Creates an appropriate response for the originating client request.
 	 */
 	private HttpGenerator clientResponseGenerator = null;
+	
+	/**
+	 * This is the type of request the proxy is expected to send to the server
+	 */
+	private String serviceRequestType = "get";
 
 	/**
 	 * The main method which will do all the 'real' work.
@@ -127,8 +132,7 @@ public class Proxy {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	public void processRequest(String serviceRequestType,
-			HttpServletRequest request, HttpServletResponse response)
+	public void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		URL host = new URL("http://" + request.getServerName() + ":"
@@ -172,7 +176,7 @@ public class Proxy {
 			 */
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
-						"Step 1: Interpret Client Request (%s, %s)",
+						"Step 1: Interpret Client Request (%s)",
 						clientRequestInterpreter.getClass().getName()));
 			}
 
@@ -183,13 +187,13 @@ public class Proxy {
 			IModel model = clientRequestInterpreter.interpretRequest(request);
 	
 			/*
-			 * Give the model a copy of the host paramater in case its needed
+			 * Give the model a copy of the host parameter in case its needed
 			 */
 			model.getProperties().put(Constants.HOST, host.toString());
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
-						"Step 2: Generate Service Request (%s, %s)",
+						"Step 2: Generate Service Request (%s)",
 						serverRequestGenerator.getClass().getName()));
 			}
 
@@ -227,7 +231,7 @@ public class Proxy {
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
-						"Step 3: Interpret Server Response (%s, %s)",
+						"Step 3: Interpret Server Response (%s)",
 						serverResponseInterpreter.getClass().getName()));
 			}
 
@@ -244,7 +248,7 @@ public class Proxy {
 
 			if (log.isDebugEnabled()) {
 				log.debug(String.format(
-						"Step 4: Generate Client Response (%s, %s)",
+						"Step 4: Generate Client Response (%s)",
 						clientResponseGenerator.getClass().getName()));
 			}
 
@@ -367,5 +371,21 @@ public class Proxy {
 
 	public void setClientResponseGenerator(HttpGenerator clientResponseGenerator) {
 		this.clientResponseGenerator = clientResponseGenerator;
+	}
+	
+	public ISecurityProvider getSecurityProvider() {
+		return securityProvider;
+	}
+
+	public void setSecurityProvider(ISecurityProvider securityProvider) {
+		this.securityProvider = securityProvider;
+	}
+
+	public String getServiceRequestType() {
+		return serviceRequestType;
+	}
+
+	public void setServiceRequestType(String serviceRequestType) {
+		this.serviceRequestType = serviceRequestType;
 	}
 }

@@ -21,90 +21,44 @@ package com.lisasoft.wsfacade.utils;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
-
-import nu.xom.Comment;
-import nu.xom.DocType;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Node;
-import nu.xom.ProcessingInstruction;
-import nu.xom.Text;
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lisasoft.wsfacade.models.IModel;
+import com.lisasoft.wsfacade.models.KvpModel;
+
 public class XMLUtilitiesTest {
 
-	XMLUtilities instance;
-	String xmlFilePath = "target\\classes\\xml\\FeatureInfoResponse.xml";
-	File xmlFile;
+	String xmlFileName = "FeatureInfoResponse.xml";
 
 	@Before
-	public void setUp() throws Exception {
-		instance = XMLUtilities.getInstance();
-		xmlFile = new File(xmlFilePath);
-	}
+	public void setUp() throws Exception {}
 
 	@After
-	public void tearDown() throws Exception {
-		instance = null;
-	}
+	public void tearDown() throws Exception {}
 
 	@Test
 	public void testObjects() {
-		assertNotNull(instance);
-		assertNotNull(xmlFilePath);
-		assertNotNull(xmlFile);
+		assertNotNull(xmlFileName);
+	}
+	@Test
+	public void testloadDocument() throws IOException {
+		assertNotNull(XmlUtilities.loadDocument(xmlFileName));
 	}
 
 	@Test
-	public void testloadStringDocument() {
-		assertNotNull(instance.loadDocument(xmlFile));
-	}
-
-	@Test
-	public void testloadDocument() {
-		assertNotNull(instance.loadDocument(xmlFilePath));
-	}
-
-	@Test
-	public void testmanipulateDocument() {
-		Document xmlDoc = instance.loadDocument(xmlFilePath);
+	public void testmanipulateDocument() throws IOException {
+		String xmlDoc = XmlUtilities.loadDocument(xmlFileName);
 		assertNotNull(xmlDoc);
-		listChildren(xmlDoc.getRootElement(), 0);
 	}
 
-	public static void listChildren(Node current, int depth) {
-		printSpaces(depth);
-		String data = "";
-		if (current instanceof Element) {
-			Element temp = (Element) current;
-			data = ": " + temp.getQualifiedName();
-		} else if (current instanceof ProcessingInstruction) {
-			ProcessingInstruction temp = (ProcessingInstruction) current;
-			data = ": " + temp.getTarget();
-		} else if (current instanceof DocType) {
-			DocType temp = (DocType) current;
-			data = ": " + temp.getRootElementName();
-		} else if (current instanceof Text || current instanceof Comment) {
-			String value = current.getValue();
-			value = value.replace('\n', ' ').trim();
-			if (value.length() <= 20)
-				data = ": " + value;
-			else
-				data = ": " + current.getValue().substring(0, 17) + "...";
-		}
-		System.out.println(current.getClass().getName() + data);
-		for (int i = 0; i < current.getChildCount(); i++) {
-			listChildren(current.getChild(i), depth + 1);
-		}
-	}
-
-	private static void printSpaces(int n) {
-		for (int i = 0; i < n; i++) {
-			System.out.print(' ');
-		}
+	@Test
+	public void testMapModelToOGCXML(){
+		IModel model = new KvpModel("request=getfeature,typename=tds:AircraftHangarGeopoint,service=wfs,version=2.0.0,maxfeatures=10");
+		String xml = XmlUtilities.mapModelToOGCXML(model);
+		System.out.println(xml);
 	}
 }

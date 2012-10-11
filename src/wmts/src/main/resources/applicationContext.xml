@@ -31,14 +31,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
+		<property name="serviceRequestType" value="post" />
 		<property name="serviceUrl" value="http://localhost/tilecache/tilecache.py/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
-		
-		<!-- seems to be added but not used in project -->
-		<!-- property name="proxyMappings" value="GetCapabilities,GetTile,GetFeatureInfo" /-->
 	</bean>
 
 	<!-- WMTS Landgate Proxy -->
@@ -50,13 +48,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
+		<property name="serviceRequestType" value="post" />
 		<property name="serviceUrl" value="http://beta.landgate.wa.gov.au/tilecache2/wmts.py/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
 		<property name="serverResponseInterpreter" ref="restInterpreter" />
 	</bean>
-	
+
 	<!-- WMTS uab Proxy -->
 	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
 		<property name="proxyContextUrl" value="/uab" />
@@ -66,6 +65,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</list>
 		</property>
 		<property name="name" value="wmtsLocal" />
+		<property name="serviceRequestType" value="post" />
 		<property name="serviceUrl" value="http://www.opengis.uab.es/SITiled/world/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />

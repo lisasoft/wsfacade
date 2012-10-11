@@ -33,7 +33,7 @@ import com.lisasoft.wsfacade.models.AbstractModel;
 import com.lisasoft.wsfacade.models.CommonModel;
 import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
-import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.utils.SoapConstants;
 import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoModel;
 import com.lisasoft.wsfacade.wmts.models.GetFeatureInfoResponseModel;
 import com.lisasoft.wsfacade.wmts.models.GetTileModel;
@@ -83,7 +83,7 @@ public class WmtsSoapMapper extends SoapMapper {
 			GetTileResponseModel m = (GetTileResponseModel)model;
 			
 			if(m.getContentType().contains("image")) {
-				result = String.format(SOAPConstants.GET_TILE_RESPONSE_TEMPLATE, m.getContentType(), new String(Base64.encodeBase64(m.getBinarySource())));
+				result = String.format(SoapConstants.GET_TILE_RESPONSE_TEMPLATE, m.getContentType(), new String(Base64.encodeBase64(m.getBinarySource())));
 			} else {
 				// TODO: feature info responses end up here at the moment. This is ambiguous so we either 
 				// remove the GetFeatureInfoResponseModel or go to the effort of differentiating between 
@@ -101,12 +101,12 @@ public class WmtsSoapMapper extends SoapMapper {
 						responseBody = responseBody.substring(responseBody.indexOf("<", responseBody.indexOf("?>")));
 					}
 				//}
-				result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, responseBody);
+				result = String.format(SoapConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, responseBody);
 			}
 			
 		} else if(model instanceof GetFeatureInfoResponseModel) {
 			GetFeatureInfoResponseModel m = (GetFeatureInfoResponseModel)model;
-			result = String.format(SOAPConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.getProperties().get("response"));
+			result = String.format(SoapConstants.GET_FEATURE_INFO_RESPONSE_TEMPLATE, m.getProperties().get("response"));
 			
 		} else {
 			if(model.getProperties().containsKey("capabilities")) {
@@ -117,12 +117,12 @@ public class WmtsSoapMapper extends SoapMapper {
 					// chop to the first tag after the xml file descriptor bit
 					responseBody = responseBody.substring(responseBody.indexOf("<", responseBody.indexOf("?>")));
 				}
-				responseBody = String.format(SOAPConstants.GET_CAPABILITIES_RESPONSE_TEMPLATE, responseBody);
+				responseBody = String.format(SoapConstants.GET_CAPABILITIES_RESPONSE_TEMPLATE, responseBody);
 				result = injectCapabilities(responseBody, model.getProperties().get("host"));
 				
 			} else if(model.getProperties().containsKey("response")) {
 				// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-				result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.getProperties().get("response"));
+				result = String.format(SoapConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.getProperties().get("response"));
 			} else {
 				throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
 			}
@@ -246,7 +246,7 @@ public class WmtsSoapMapper extends SoapMapper {
     }
 
     protected IModel parseGetCapabilities(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	IModel model = new CommonModel(SOAPConstants.GET_CAPABILITIES_MODEL);
+    	IModel model = new CommonModel(SoapConstants.GET_CAPABILITIES_MODEL);
     	
 		model.getProperties().put("name", xpp.getName());
 		model.getProperties().put("service", xpp.getAttributeValue(null, "service"));
@@ -325,7 +325,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get capabilities
     	int idx = result.indexOf("<ows:Operation name=\"GetCapabilities\">");
     	if(idx != -1) {
-    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SoapConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -333,7 +333,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get tile
     	idx = result.indexOf("<ows:Operation name=\"GetTile\">");
     	if(idx != -1) {
-    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SoapConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -341,7 +341,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// get feature info
     	idx = result.indexOf("<ows:Operation name=\"GetFeatureInfo\">");
     	if(idx != -1) {
-    		String new_content = String.format(SOAPConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
+    		String new_content = String.format(SoapConstants.SOAP_OPERATIONS_METADATA_REPLACE, host);
     		int idx2 = result.indexOf("<ows:HTTP>", idx) + "<ows:HTTP>".length();
     		result = result.substring(0, idx2) + new_content + result.substring(idx2, result.length());
     	}
@@ -349,7 +349,7 @@ public class WmtsSoapMapper extends SoapMapper {
     	// WSDL details
     	idx = result.indexOf("</Capabilities>");
     	if(idx != -1) {
-    		String new_content = String.format(SOAPConstants.SOAP_WSDL_LINK_TEMPLATE, host);
+    		String new_content = String.format(SoapConstants.SOAP_WSDL_LINK_TEMPLATE, host);
     		result = result.substring(0, idx) + new_content + result.substring(idx, result.length());
     	}
     	

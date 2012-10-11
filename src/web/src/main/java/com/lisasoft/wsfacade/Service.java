@@ -61,12 +61,12 @@ public class Service extends HttpServlet implements Servlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest("get", request, response);
+		processRequest(request, response);
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest("post", request, response);
+		processRequest(request, response);
 	}
 
 	/**
@@ -80,8 +80,7 @@ public class Service extends HttpServlet implements Servlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void processRequest(String requestServiceType,
-			HttpServletRequest request, HttpServletResponse response)
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
@@ -101,7 +100,7 @@ public class Service extends HttpServlet implements Servlet {
 
 			Proxy proxy = pm.getProxy(proxyUrl);
 
-			proxy.processRequest(requestServiceType, request, response);
+			proxy.processRequest(request, response);
 
 		} catch (ProxyException te) {
 			throw new ServletException("Couldn't perform translation", te);

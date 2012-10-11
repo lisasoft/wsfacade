@@ -19,46 +19,63 @@
  */
 package com.lisasoft.wsfacade.mappers;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
+
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
+import nu.xom.ParsingException;
 
 import org.apache.log4j.Logger;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.lisasoft.wsfacade.models.IModel;
-import com.lisasoft.wsfacade.models.RestModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
-import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.models.XmlModel;
+import com.lisasoft.wsfacade.utils.SoapConstants;
+import com.lisasoft.wsfacade.utils.XmlUtilities;
 
 public class SoapMapper extends AbstractMapper {
-	
-    static final Logger log = Logger.getLogger(SoapMapper.class);
-    
-    protected String startTag = null;
 
-	protected SoapMapper() {}
+	static final Logger log = Logger.getLogger(SoapMapper.class);
 
-	protected SoapMapper(String startTag){
+	protected String startTag = null;
+
+	protected SoapMapper() {
+	}
+
+	protected SoapMapper(String startTag) {
 		this.startTag = startTag;
 	}
 
-    public IModel mapToModel(String source) throws IllegalArgumentException {
-    	IModel result = null;
-    	try {
-			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-			factory.setNamespaceAware(true);
+	/**
+	 * The input here is likely to be a SOAP envelope
+	 */
+	public IModel mapToModel(String source) throws IllegalArgumentException {
+		IModel result = null;
 
-			XmlPullParser xpp = factory.newPullParser();
-			xpp.setInput(new StringReader(source));
-			result = parse(xpp);
-    	} catch(IllegalArgumentException iae) {
-    		throw iae;
-    	} catch (XmlPullParserException xppe) {
-    		throw new IllegalArgumentException(String.format("XPP exception while parsing XML:\n\n %s", source), xppe);
-		} catch (IOException ioe) {
-    		throw new IllegalArgumentException(String.format("IOException while parsing XML:\n\n %s", source), ioe);
+		/*
+		 * extract the data we need from the soap envelope 
+		 */
+		Builder builder = new Builder();
+		try {
+			Document doc = builder.build(new ByteArrayInputStream(source
+					.getBytes()));
+			Element html = doc.getRootElement();
+			Element xmlResponse = html.getFirstChildElement("Body","http://www.w3.org/2003/05/soap-envelope"); /*TODO: this needs to be dynamic for the correct soap namespace*/
+
+			if (xmlResponse==null) {
+				xmlResponse = html.getFirstChildElement("Body","http://schemas.xmlsoap.org/soap/envelope/"); /*TODO: this needs to be dynamic for the correct soap namespace*/
+			}
+
+			Elements children = xmlResponse.getChildElements();
+			Element response = children.get(0);
+
+			result = new XmlModel(response.copy());
+		} catch (NullPointerException ex) {
+		} catch (ParsingException ex) {
+		} catch (IOException ex) {
 		}
 
 		return result;
@@ -66,57 +83,41 @@ public class SoapMapper extends AbstractMapper {
 
 	public String mapFromModel(IModel model) throws UnsupportedModelException {
 		String result = null;
-		if(model.getProperties().containsKey("response")) {
-			// TODO: This error reporting needs standards conforming information from the REST server so it can be properly reported here.
-			result = String.format(SOAPConstants.ERROR_RESPONSE_TEMPLATE, "OperationNotSupported", model.getProperties().get("response"));
+		if (model.getProperties().containsKey("response")) {
+			// TODO: This error reporting needs standards conforming information
+			// from the server so it can be properly reported here.
+			result = String.format(SoapConstants.ERROR_RESPONSE_TEMPLATE,
+					"OperationNotSupported",
+					model.getProperties().get("response"));
 		} else {
-			throw new UnsupportedModelException(String.format("%s cannot map from model %s - 'response' property expected.", getClass().getName(), model.getClass().getName()));
+			/*
+			 * Map the model into a standard OGC Soap request
+			 */
+			String soapTemplate = null;
+			try {
+				soapTemplate = XmlUtilities
+						.loadDocument("standard_soap_template.xml");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			/*
+			 * Here we need to map the model into an OGC XML part, which will
+			 * then be added to the SOAP BODY element.
+			 */
+			String xml = XmlUtilities.mapModelToOGCXML(model);
+
+			/*
+			 * Add the OGC XMl to the soap binding
+			 */
+			result = String.format(soapTemplate, xml);
 		}
-		return(result);
+
+		if (log.isDebugEnabled()) {
+			log.info(result);
+		}
+
+		return result;
 	}
-
-    protected IModel parse(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-
-    	IModel model = null;
-
-    	while(true) {
-    		int eventType = xpp.nextTag();
-
-    		if(eventType == XmlPullParser.START_TAG) {
-                 String tag = xpp.getName();
-
-                 if(startTag.equals(tag)) {
-                	 if(model != null) {
-                		 log.warn(String.format("The soap message could be parsed into more than one model. %s was ignored.", tag));
-                	 } else {
-                		 model = parseTags(xpp);
-                	 }
-                 } else if(eventType == XmlPullParser.END_TAG) {
-                	 break;
-                 }
-    		}
-    	}		
-    	return model;
-    }
-	
-    protected IModel parseTags(XmlPullParser xpp) throws IllegalArgumentException, XmlPullParserException, IOException {
-    	IModel model = new RestModel("");
-
-    	while(true) {
-    		int eventType = xpp.nextTag();
-
-    		if(eventType == XmlPullParser.START_TAG) {
-    			String tag = xpp.getName();
-    			
-    			String val = xpp.getText();
-
-				model.getProperties().put(tag, val);
-                	 
-             } else if(eventType == XmlPullParser.END_TAG) {
-            	 break;
-             }
-    	}		
-    	
-    	return model;
-    }
 }

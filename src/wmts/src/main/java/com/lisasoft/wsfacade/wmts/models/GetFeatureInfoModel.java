@@ -19,13 +19,13 @@
  */
 package com.lisasoft.wsfacade.wmts.models;
 
-import com.lisasoft.wsfacade.utils.SOAPConstants;
+import com.lisasoft.wsfacade.utils.SoapConstants;
 
 public class GetFeatureInfoModel extends GetTileModel {
 	
 	public GetFeatureInfoModel() {
-		this(SOAPConstants.GET_FEATURE_INFO_MODEL);
-		order = SOAPConstants.GET_FEATURE_INFO_ORDER.split(",");
+		this(SoapConstants.GET_FEATURE_INFO_MODEL);
+		order = SoapConstants.GET_FEATURE_INFO_ORDER.split(",");
 	}
 
 	public GetFeatureInfoModel(String modelPropertyNames) {

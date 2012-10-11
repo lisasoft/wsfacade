@@ -20,70 +20,132 @@
 package com.lisasoft.wsfacade.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.ParsingException;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+
+import com.lisasoft.wsfacade.models.IModel;
 
 /**
- * This objects responsibility is to load XML into an accessible object, This is
- * to start replacing the SOAPConstants.java String xml objects and load the xml
- * from .xml files from the resources directory.
+ * This objects responsibility is to manipulate XML into an accessible object.
+ * This is to start transition of the SOAPConstants.java Strings xml objects and
+ * load the xml from .xml files from the resources directory.
  * 
  * @author jhudson
  * 
  */
-public class XMLUtilities {
+public class XmlUtilities {
 
-	/**
-	 * The static instance of the object
-	 */
-	private static XMLUtilities instance;
+	static final Logger log = Logger.getLogger(XmlUtilities.class);
 
 	/**
 	 * Private constructor - singleton object
 	 */
-	private XMLUtilities() {}
-
-	public static XMLUtilities getInstance() {
-		if (instance == null) {
-			instance = new XMLUtilities();
-		}
-		return instance;
+	private XmlUtilities() {
 	}
 
 	/**
-	 * Load an XML file into a Document for later use
+	 * Load an XML template file into a String. This is use to string replace
+	 * for request/response
 	 * 
-	 * @param xmlFilePath
-	 *            the full String path of the document to load
-	 * @return a Document if the xml file can be read, null otherwise
+	 * @param fileName
+	 * @return
+	 * @throws IOException
 	 */
-	public Document loadDocument(final String xmlFilePath) {
-		return loadDocument(new File(xmlFilePath));
+	public static String loadDocument(final String fileName) throws IOException {
+		File file = new File("xml", fileName);
+
+		if (log.isDebugEnabled()) {
+			log.info("Looking for file: " + file.getAbsolutePath());
+		}
+
+		/*
+		 * Look for the file in the target dir - we might be testing check
+		 */
+		if (!file.exists()) {
+			file = new File("target//classes//xml", fileName);
+
+			if (log.isDebugEnabled()) {
+				log.info("File doesnt exist, testing? looking for file: "
+						+ file.getAbsolutePath());
+			}
+		}
+
+		/*
+		 * Look for the file in the test-harness dir - we might be testing check
+		 * locally.
+		 */
+		if (!file.exists()) {
+			file = new File("target//wsfacade-testharness//xml", fileName);
+
+			if (log.isDebugEnabled()) {
+				log.info("File doesnt exist, testing? looking for file: "
+						+ file.getAbsolutePath());
+			}
+		}
+
+		if (!file.exists()) {
+			throw new FileNotFoundException("The file with name '"
+					+ file.getAbsolutePath() + "' could not be found");
+		}
+
+		return FileUtils.readFileToString(file);
 	}
 
 	/**
+	 * <p>
+	 * This method takes the key/value paris ard turns it into the correct OGC
+	 * XML to be embedded into a SOAP:Body element.
+	 * </p>
 	 * 
-	 * Load an XML file into a Document for later use
-	 * 
-	 * @param xmlFile
-	 *            the File of the document to load
-	 * @return a Document if the xml file can be read, null otherwise
+	 * @param model
+	 *            a model containing a key value pair Map representing an OGC
+	 *            request
+	 * @return String XML of the model representing the correct OGC XML request
 	 */
-	public Document loadDocument(final File xmlFile) {
-		Document returnDoc = null;
-		try {
-			Builder parser = new Builder();
-			returnDoc = parser.build(xmlFile);
-		} catch (ParsingException ex) {
-			System.err
-					.println("Cafe con Leche is malformed today. How embarrassing!");
-		} catch (IOException ex) {
-			System.err
-					.println("Could not connect to Cafe con Leche. The site may be down.");
+	public static String mapModelToOGCXML(IModel model) {
+
+		String request = model.getProperties().get("request");
+		String version = model.getProperties().get("version");
+		String service = model.getProperties().get("service");
+		String resultType = model.getProperties().get("resulttype");
+		String outputFormat = model.getProperties().get("outputformat");
+		String count = model.getProperties().get("count");
+		String typeName = model.getProperties().get("typename");
+		String handle = model.getProperties().get("handle");
+		String featureId = model.getProperties().get("featureid");
+		String maxFeatures = model.getProperties().get("maxfeatures");
+		String fid = model.getProperties().get("featureid");
+
+		String template = "";
+
+		/*
+		 * This will likely become a large unwieldy if statement and should be
+		 * considered more
+		 */
+		if (service != null && "wfs".equals(service.toLowerCase())) {
+			if (request != null && "getfeature".equals(request.toLowerCase())) {
+				try {
+					/*
+					 * This template is really not great - it needs to take into consideration filters etc.
+					 * proof of concept only.
+					 */
+					template = loadDocument("WFS_GetFeature.xml");
+
+					return String.format(template, service, version,
+												   outputFormat == null ? "application/gml+xml; version=3.2" : outputFormat, 
+												   count == null ? "" : count, 
+												   typeName);
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		return returnDoc;
+
+		return "";
 	}
 }

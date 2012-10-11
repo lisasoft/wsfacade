@@ -14,6 +14,8 @@
 
 	String xml = request.getParameter("xml");
 	String proxy = request.getParameter("proxy");
+	String xmlResponse = "";
+	String imageUrl = "";
 	
 	HttpURLConnection conn = null;
 
@@ -46,8 +48,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="EN">
 <head>
-<title>Web Service Facade Response</title>
-<link rel="stylesheet" href='css/lisasoft.css' type="text/css" />
+	<title>Web Service Facade Response</title>
+	<link rel="stylesheet" href='css/lisasoft.css' type="text/css" />
+
+	<link rel="stylesheet" href="libs/codemirror-2.34/lib/codemirror.css" />
+    <script src="libs/codemirror-2.34/lib/codemirror.js"></script>
+    <script src="libs/codemirror-2.34/mode/xml/xml.js"></script>
+
 </head>
 <body>
 <div id="contentDivMainColumnTotalWidth">
@@ -84,75 +91,44 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	<hr />
 
 <%
-	if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {  
+	if(conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		
-		String xmlResponse = "";
 		String line = "";
-		while((line = in.readLine())!=null)
-		{
+		while((line = in.readLine())!=null) {
 			xmlResponse += line + "\n";
 		}
 		in.close();
 		conn.disconnect();
 
-		String imageUrl = "";
-		String url = "";
-		
-		Logger log = Logger.getLogger("com.lisasoft.wsfacade.jsp.requestSender");
-		if(xmlResponse.contains("<BinaryPayload") || xmlResponse.contains("<wmts:BinaryPayload")) {
+		if(xmlResponse.contains("<BinaryPayload") || xmlResponse.contains("<wmts:BinaryPayload")) { //special case for images
 			BinaryPayload payload = BinaryPayloadExtracter.extractBinaryPayload(xmlResponse);
 			
 			imageUrl = "base64decoder.jsp?mimetype=" + URLEncoder.encode(payload.format, "UTF-8") + "&dataAttributeName=wsf_data";
-			url = "xmlResponse.jsp?xmlAttributeName=wsf_xml";
-			
+
 			// put the image data and the xml in the session 
 			request.getSession().setAttribute("wsf_data",payload.payloadContent);	
 			request.getSession().setAttribute("wsf_xml",xmlResponse);
-		} else {
-			url = "errorResponse.jsp?errorAttributeName=wsf_error&format=text/xml";
-			
-			// put the image data and the xml in the session 
-			request.getSession().setAttribute("wsf_error",xmlResponse);
 		}
-%>		
-<h1><u>WS-Facade Response</u></h1>
-
-<iframe width="100%" height="400px" style="border:1px solid" src="<%=url%>"></iframe>
-<br/>
-<img src="<%=imageUrl%>" />
-<%
-	} else {
-
-%>
-<h1><u>Web Service Facade Response: <%=conn.getResponseCode()%></u></h1>
-<%
-		String errorResponse = "";
-		InputStream errorStream = conn.getErrorStream();
-		if(errorStream == null) {
-			errorResponse = "No error information provided.";
-		} else {
-			BufferedReader in = new BufferedReader(new InputStreamReader(errorStream));
-			
-			errorResponse = "";
-			String line = "";
-			while((line = in.readLine())!=null)
-			{
-				errorResponse += line + "\n";
-			}
-			in.close();
-
-		}
-		conn.disconnect();
-
-		String responseUrl = "errorResponse.jsp?errorAttributeName=wsf_error";
-		
-		// put the image data and the xml in the session 
-		request.getSession().setAttribute("wsf_error",errorResponse);
-%>
-<iframe width="100%" height="400px" style="border:1px solid" src="<%=responseUrl%>"></iframe>
-<%
 	}
+	%>
+		<h1><u>Web Service Facade Response: <%=conn.getResponseCode()%></u></h1>
+		<br/>
+	<% if (imageUrl != null && !"".equals(imageUrl)) { %>
+		<img src="<%=imageUrl%>" />
+	<%
+		} else {
+			%>
+				<textarea cols="100" rows="30" id="code">
+					<%=xmlResponse%>
+				</textarea>
+			<%
+		}
 %>
-</body>
+	<script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: {name: "xml", alignCDATA: true},
+        lineNumbers: true
+      });
+    </script>
+    </body>
 </html>

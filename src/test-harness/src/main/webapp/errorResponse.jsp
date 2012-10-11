@@ -1,10 +1,10 @@
-﻿<%
+<%
 	String error = null;
 	String errorAttributeName = request.getParameter("errorAttributeName");
 	String format = request.getParameter("format");
 
 	if(format == null) {
-		format = "text/html";
+		format = "text/xml";
 	}
 	
 	if(errorAttributeName == null) {

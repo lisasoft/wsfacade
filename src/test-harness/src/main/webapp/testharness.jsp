@@ -25,112 +25,127 @@ var files = new Array();
 $(document).ready(function() {
 
 	var i = 0;
-    names[i] = "WSDL request";
+    names[i] = "Get - WSDL request";
 	descriptions[i] = "Gets a WSDL document from the proxy.";
 	files[i] = "?WSDL";
 
 	i++;
-	names[i] = "Get Capabilities Request";
-	descriptions[i] = "Gets the capabilities of the WMTS service";
-	files[i] = "xml/get_capabilities.xml"; 
+	names[i] = "Get - Get Capabilities Request";
+	descriptions[i] = "Gets the capabilities of a WFS service";
+	files[i] = "?&service=WFS&version=2.0.0&request=GetCapabilities";
 
 	i++;
-    names[i] = "GetTile Request";
+	names[i] = "Get - Get Features";
+	descriptions[i] = "Gets the capabilities of a WFS service";
+	files[i] = "?request=getfeature&typename=tds:AerodromeBoundaryGeocurve&service=wfs&version=2.0.0&maxfeatures=2";
+	
+	i++;
+	names[i] = "Get - Get Single Feature Request";
+	descriptions[i] = "Gets the capabilities of a WFS service";
+	files[i] = "?request=getfeature&typename=tds:CemeteryGeosurface&service=wfs&version=2.0.0&featureid=CulturalSurfaces3";
+
+	i++;
+	names[i] = "Post - Get Capabilities Request";
+	descriptions[i] = "Gets the capabilities of the WMTS service";
+	files[i] = "xml/get_capabilities.xml";
+
+	i++;
+    names[i] = "Post - GetTile Request";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache.";
 	files[i] = "xml/get_tile.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - dimensions example";
+    names[i] = "Post - GetTile Request - dimensions example";
 	descriptions[i] = "Requests a tile from a WMTS layer with dimension information.";
 	files[i] = "xml/get_tile_dimensions.xml";
 
 	i++;
-    names[i] = "GetTile Request - bad dimensions example";
+    names[i] = "Post - GetTile Request - bad dimensions example";
 	descriptions[i] = "Requests a tile from a WMTS layer with incorrect dimension information.";
 	files[i] = "xml/get_tile_dimensions_bad.xml";
 
 	i++;
-    names[i] = "GetTile Request - incorrectly ordered dimensions example";
+    names[i] = "Post - GetTile Request - incorrectly ordered dimensions example";
 	descriptions[i] = "Requests a tile from a WMTS layer with dimension information in the wrong order.";
 	files[i] = "xml/get_tile_dimensions_bad_order.xml";
 
 	i++;
-    names[i] = "GetTile Request - missing dimensions example";
+    names[i] = "Post - GetTile Request - missing dimensions example";
 	descriptions[i] = "Requests a tile from a WMTS layer with dimension information missing.";
 	files[i] = "xml/get_tile_missing_dimensions.xml";
 
 	i++;
-    names[i] = "GetTile Request - bad layer";
+    names[i] = "Post - GetTile Request - bad layer";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server with an incorrect layer name.";
 	files[i] = "xml/get_tile_bad_layer.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - bad style";
+    names[i] = "Post - GetTile Request - bad style";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server with an incorrect style.";
 	files[i] = "xml/get_tile_bad_style.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - missing style";
+    names[i] = "Post - GetTile Request - missing style";
 	descriptions[i] = "Requests a tile from a WMTS layer with required style information missing.";
 	files[i] = "xml/get_tile_missing_style.xml";
 
 	i++;
-    names[i] = "GetTile Request - bad tile matrix set";
+    names[i] = "Post - GetTile Request - bad tile matrix set";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server with an incorrect tile matrix set.";
 	files[i] = "xml/get_tile_bad_tile_matrix_set.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - missing tile matrix set";
+    names[i] = "Post - GetTile Request - missing tile matrix set";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server missing the tile matrix set.";
 	files[i] = "xml/get_tile_missing_tile_matrix_set.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - bad tile matrix";
+    names[i] = "Post - GetTile Request - bad tile matrix";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server with incorrect tile matrix information.";
 	files[i] = "xml/get_tile_bad_tile_matrix.xml"; 
 
 	i++;
-    names[i] = "GetTile Request - missing tile matrix";
+    names[i] = "Post - GetTile Request - missing tile matrix";
 	descriptions[i] = "Requests a tile from a WMTS enabled TileCache server missing the tile matrix.";
 	files[i] = "xml/get_tile_missing_tile_matrix.xml"; 
 
 	i++;
-    names[i] = "Example GetTile from OWS-6 WMTS ER Document";
+    names[i] = "Post - Example GetTile from OWS-6 WMTS ER Document";
 	descriptions[i] = "An example SOAP GetTile request from the OWS-6 WMTS ER Document";
 	files[i] = "xml/get_tile_ows6.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request";
+    names[i] = "Post - GetFeatureInfo Request";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache";
 	files[i] = "xml/get_feature_info.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request - dimensions example";
+    names[i] = "Post - GetFeatureInfo Request - dimensions example";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache with dimension information";
 	files[i] = "xml/get_feature_info_dimensions.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request - bad layer";
+    names[i] = "Post - GetFeatureInfo Request - bad layer";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache with an incorrect layer name";
 	files[i] = "xml/get_feature_info_bad_layer.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request - bad J value";
+    names[i] = "Post - GetFeatureInfo Request - bad J value";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache with a J value of more than the width of a tile";
 	files[i] = "xml/get_feature_info_bad_j.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request - bad I value";
+    names[i] = "Post - GetFeatureInfo Request - bad I value";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache with an I value of more than the height of a tile";
 	files[i] = "xml/get_feature_info_bad_i.xml";
 
 	i++;
-    names[i] = "GetFeatureInfo Request - bad info format";
+    names[i] = "Post - GetFeatureInfo Request - bad info format";
 	descriptions[i] = "Requests feature information from a WMTS enabled TileCache with a malformed info format";
 	files[i] = "xml/get_feature_info_bad_info_format.xml";
 
 	i++;
-    names[i] = "Example GetFeatureInfo from OWS-6 WMTS ER Document";
+    names[i] = "Post - Example GetFeatureInfo from OWS-6 WMTS ER Document";
 	descriptions[i] = "An example SOAP GetFeatureInfo request from the OWS-6 WMTS ER Document";
 	files[i] = "xml/get_feature_info_ows6.xml";
 

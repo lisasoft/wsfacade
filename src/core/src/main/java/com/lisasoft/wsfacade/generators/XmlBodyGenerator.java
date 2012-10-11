@@ -19,13 +19,19 @@
  */
 package com.lisasoft.wsfacade.generators;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.ParsingException;
+import nu.xom.Serializer;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -42,80 +48,117 @@ import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 public class XmlBodyGenerator extends HttpGenerator {
 
-    static final Logger log = Logger.getLogger(XmlBodyGenerator.class);
+	static final Logger log = Logger.getLogger(XmlBodyGenerator.class);
 
 	public XmlBodyGenerator(IMapper mapper) {
 		super(mapper);
 	}
 
 	@Override
-	public HttpRequestBase generateRequest(IModel model, String url, String requestType) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
+	public HttpRequestBase generateRequest(IModel model, String url,
+			String requestType) throws UnsupportedEncodingException,
+			UnsupportedModelException, URISyntaxException {
 		// for now all REST requests are GETs.
-		if(requestType.equals("get")) {
-			return(generateGetRequest(model, url));
+		if (requestType.equals("get")) {
+			return (generateGetRequest(model, url));
 		} else {
-			return(generatePostRequest(model, url));
+			return (generatePostRequest(model, url));
 		}
 	}
 
-
 	@Override
-	protected HttpGet generateGetRequest(IModel model, String url) throws UnsupportedModelException, URISyntaxException {
+	protected HttpGet generateGetRequest(IModel model, String url)
+			throws UnsupportedModelException, URISyntaxException {
 		HttpGet result = null;
 		String xml = getMapper().mapFromModel(model);
-		
+
 		result = new HttpGet(new URI(url));
-		
+
 		result.getParams().setParameter("xml", xml);
-		
+
 		return result;
 	}
 
 	@Override
-	protected HttpPost generatePostRequest(IModel model, String url) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
-		return generatePostRequest(model, url, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
+	protected HttpPost generatePostRequest(IModel model, String url)
+			throws UnsupportedEncodingException, UnsupportedModelException,
+			URISyntaxException {
+		return generatePostRequest(model, url,
+				PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
-	protected HttpPost generatePostRequest(IModel model, String url, String charset) throws UnsupportedEncodingException, UnsupportedModelException, URISyntaxException {
-		HttpPost result = null;
+
+	protected HttpPost generatePostRequest(IModel model, String url,
+			String charset) throws UnsupportedEncodingException,
+			UnsupportedModelException, URISyntaxException {
+		HttpPost postMethod = null;
 		String xml = getMapper().mapFromModel(model);
 
-		result = new HttpPost(new URI(url));
-		
-		// TODO: Make the charset a default setting from context.xml
+		postMethod = new HttpPost(new URI(url));
+
 		HttpEntity entity = null;
 		try {
-			entity = new StringEntity(xml, charset);
+			entity = new StringEntity(xml);
 		} catch (UnsupportedEncodingException e) {
-			log.warn(String.format("Charset '%s' was unsupported. Defaulting to '%s'.", charset, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)));
+			log.warn(String.format(
+					"Charset '%s' was unsupported. Defaulting to '%s'.",
+					charset,
+					PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)));
 			charset = PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET);
 			try {
 				entity = new StringEntity(xml, charset);
 			} catch (UnsupportedEncodingException uee) {
-				log.error(String.format("The default charset '%s' was unsupported.", PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)), uee);
+				log.error(String.format(
+						"The default charset '%s' was unsupported.",
+						PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)),
+						uee);
 				throw uee;
 			}
 		}
-		
-		result.setEntity(entity);
-		
-		result.setHeader("Content-type", "text/xml; charset=" + charset);
-		
-		return result;
+
+		postMethod.setEntity(entity);
+		postMethod.setHeader("Content-type", "application/soap+xml; charset="
+				+ charset);
+
+		return postMethod;
 	}
 
 	@Override
-	public void generateResponse(IModel model, HttpServletResponse response) throws IOException, UnsupportedModelException {
-		generateResponse(model, response, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
+	public void generateResponse(IModel model, HttpServletResponse response)
+			throws IOException, UnsupportedModelException {
+		generateResponse(model, response,
+				PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
-	public void generateResponse(IModel model, HttpServletResponse response, String charset) throws IOException, UnsupportedModelException {
+	public void generateResponse(IModel model, HttpServletResponse response,
+			String charset) throws IOException, UnsupportedModelException {
 		String xml = getMapper().mapFromModel(model);
-		
+		OutputStream out = response.getOutputStream();
 		response.setContentType("text/xml");
-		ServletOutputStream out = response.getOutputStream();
-		
-		out.print(xml);
-		out.flush();
-		out.close();
+		Document doc = null;
+		try {
+			Builder builder = new Builder();
+			doc = builder.build(new ByteArrayInputStream(xml.getBytes()));
+		} catch (ParsingException ex) {
+			log.error(
+					"An error occured trying to create an XML Document from the input String: ",
+					ex);
+		}
+		Serializer serializer = null;
+		try {
+			serializer = new Serializer(out, "ISO-8859-1");
+			serializer.setIndent(4);
+			serializer.setMaxLength(64);
+			serializer.write(doc);
+		} catch (IOException ex) {
+			System.err.println(ex);
+		} finally {
+			if (serializer != null) {
+				serializer.flush();
+			}
+			if (out != null) {
+				out.flush();
+				out.close();
+			}
+		}
 	}
 }

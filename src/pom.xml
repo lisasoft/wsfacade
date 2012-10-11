@@ -99,6 +99,11 @@
 				<version>4.10</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>xom</groupId>
+				<artifactId>xom</artifactId>
+				<version>1.2.5</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -145,4 +150,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<modules>
+		<module>core</module>
+		<module>test-harness</module>
+		<module>web</module>
+		<module>wfs</module>
+		<module>wmts</module>
+	</modules>
 </project>

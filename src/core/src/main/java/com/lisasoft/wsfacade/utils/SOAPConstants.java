@@ -24,7 +24,7 @@ package com.lisasoft.wsfacade.utils;
  * @author jhudson
  *
  */
-public class SOAPConstants {
+public class SoapConstants {
 	public static final String COMMON_REQUEST_ORDER  = "Layer,Style,dimensions,TileMatrixSet,TileMatrix,TileCol,TileRow";
 	
 	public static final String GET_TILE_MODEL = "Layer,Style,TileMatrixSet,TileMatrix,TileCol,TileRow,Format,mime";
