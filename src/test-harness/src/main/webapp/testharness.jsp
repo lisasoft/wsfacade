@@ -30,19 +30,19 @@ $(document).ready(function() {
 	files[i] = "?WSDL";
 
 	i++;
-	names[i] = "Get - Get Capabilities Request";
+	names[i] = "Get - GetCapabilities Request";
 	descriptions[i] = "Gets the capabilities of a WFS service";
 	files[i] = "?&service=WFS&version=2.0.0&request=GetCapabilities";
 
 	i++;
-	names[i] = "Get - Get Features";
-	descriptions[i] = "Gets the capabilities of a WFS service";
+	names[i] = "Get - GetFeature Request";
+	descriptions[i] = "Gets 2 features of a WFS service using KVP";
 	files[i] = "?request=getfeature&typename=tds:AerodromeBoundaryGeocurve&service=wfs&version=2.0.0&maxfeatures=2";
-	
+
 	i++;
-	names[i] = "Get - Get Single Feature Request";
-	descriptions[i] = "Gets the capabilities of a WFS service";
-	files[i] = "?request=getfeature&typename=tds:CemeteryGeosurface&service=wfs&version=2.0.0&featureid=CulturalSurfaces3";
+	names[i] = "Post - GetFeature Request";
+	descriptions[i] = "Gets 20 features of the WFS service";
+	files[i] = "xml/get_features.xml";
 
 	i++;
 	names[i] = "Post - Get Capabilities Request";
@@ -151,7 +151,7 @@ $(document).ready(function() {
 
 	var options = "";
 	for(i=0; i< names.length; i++) {
-		options += '<option value="' + i + '">' + names[i] + '</option>';
+		options += '<option value="' + i + '">' + names[i] + " - " + descriptions[i] + '</option>';
 	}
 	$("select#requests").html(options);
 

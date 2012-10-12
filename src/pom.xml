@@ -113,7 +113,6 @@
 			<modules>
 				<module>core</module>
 				<module>wmts</module>
-				<module>wfs</module>
 				<module>web</module>
 				<module>test-harness</module>
 			</modules>
@@ -154,7 +153,6 @@
 		<module>core</module>
 		<module>test-harness</module>
 		<module>web</module>
-		<module>wfs</module>
 		<module>wmts</module>
 	</modules>
 </project>

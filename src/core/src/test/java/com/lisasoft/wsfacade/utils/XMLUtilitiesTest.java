@@ -20,6 +20,7 @@
 package com.lisasoft.wsfacade.utils;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -32,7 +33,7 @@ import com.lisasoft.wsfacade.models.KvpModel;
 
 public class XMLUtilitiesTest {
 
-	String xmlFileName = "FeatureInfoResponse.xml";
+	String xmlFileName = "wfs_GetFeature.xml";
 
 	@Before
 	public void setUp() throws Exception {}
@@ -44,6 +45,7 @@ public class XMLUtilitiesTest {
 	public void testObjects() {
 		assertNotNull(xmlFileName);
 	}
+
 	@Test
 	public void testloadDocument() throws IOException {
 		assertNotNull(XmlUtilities.loadDocument(xmlFileName));
@@ -58,7 +60,12 @@ public class XMLUtilitiesTest {
 	@Test
 	public void testMapModelToOGCXML(){
 		IModel model = new KvpModel("request=getfeature,typename=tds:AircraftHangarGeopoint,service=wfs,version=2.0.0,maxfeatures=10");
-		String xml = XmlUtilities.mapModelToOGCXML(model);
-		System.out.println(xml);
+		String xml = null;
+		try {
+			xml = XmlUtilities.mapModelToOGCXML(model);
+		} catch (IOException ioe) {
+			fail();
+		}
+		assertNotNull(xml);
 	}
 }

@@ -36,9 +36,6 @@ import com.lisasoft.wsfacade.utils.FileConfigurationContext;
  *
  */
 public class KvpInterpreterTest {
-	
-	private static final String SERVICE_WMS = "service=wms,version=1.3.0,request=GetCapabilities";
-	private static final String SERVICE_WMS_R = "request=GetCapabilities&service=wms&version=1.3.0";
 
 	private KvpInterpreter interpreter;
 

@@ -9,7 +9,7 @@
 	</parent>
 
 	<groupId>com.lisasoft.wsfacade.web</groupId>
-	<artifactId>web-service</artifactId>
+	<artifactId>web</artifactId>
 	<packaging>war</packaging>
 	<name>Web Service Facade Wev Service</name>
 	<description>

@@ -106,12 +106,20 @@ public class SoapMapper extends AbstractMapper {
 			 * Here we need to map the model into an OGC XML part, which will
 			 * then be added to the SOAP BODY element.
 			 */
-			String xml = XmlUtilities.mapModelToOGCXML(model);
+			String xml = null;
+			try {
+				xml = XmlUtilities.mapModelToOGCXML(model);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			/*
 			 * Add the OGC XMl to the soap binding
 			 */
-			result = String.format(soapTemplate, xml);
+			if (xml != null){
+				result = String.format(soapTemplate, xml);
+			}
 		}
 
 		if (log.isDebugEnabled()) {

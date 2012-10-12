@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -34,6 +32,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Enumeration getAttributeNames() {
 		// TODO Auto-generated method stub
@@ -87,6 +86,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Enumeration getLocales() {
 		// TODO Auto-generated method stub
@@ -98,12 +98,14 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return paramaters.get(key);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Map getParameterMap() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Enumeration getParameterNames() {
 		return Collections.enumeration(paramaters.keySet()); 
@@ -230,12 +232,14 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Enumeration getHeaderNames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Enumeration getHeaders(String arg0) {
 		// TODO Auto-generated method stub

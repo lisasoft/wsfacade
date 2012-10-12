@@ -65,7 +65,7 @@ public class XmlUtilities {
 		 * Look for the file in the target dir - we might be testing check
 		 */
 		if (!file.exists()) {
-			file = new File("target//classes//xml", fileName);
+			file = new File("target//test-classes//xml", fileName);
 
 			if (log.isDebugEnabled()) {
 				log.info("File doesnt exist, testing? looking for file: "
@@ -78,7 +78,7 @@ public class XmlUtilities {
 		 * locally.
 		 */
 		if (!file.exists()) {
-			file = new File("target//wsfacade-testharness//xml", fileName);
+			file = new File("target//core//xml", fileName);
 
 			if (log.isDebugEnabled()) {
 				log.info("File doesnt exist, testing? looking for file: "
@@ -104,20 +104,21 @@ public class XmlUtilities {
 	 *            a model containing a key value pair Map representing an OGC
 	 *            request
 	 * @return String XML of the model representing the correct OGC XML request
+	 * @throws IOException 
 	 */
-	public static String mapModelToOGCXML(IModel model) {
+	public static String mapModelToOGCXML(IModel model) throws IOException {
 
 		String request = model.getProperties().get("request");
 		String version = model.getProperties().get("version");
 		String service = model.getProperties().get("service");
-		String resultType = model.getProperties().get("resulttype");
 		String outputFormat = model.getProperties().get("outputformat");
 		String count = model.getProperties().get("count");
 		String typeName = model.getProperties().get("typename");
-		String handle = model.getProperties().get("handle");
-		String featureId = model.getProperties().get("featureid");
-		String maxFeatures = model.getProperties().get("maxfeatures");
-		String fid = model.getProperties().get("featureid");
+		// String resultType = model.getProperties().get("resulttype");
+		// String handle = model.getProperties().get("handle");
+		// String featureId = model.getProperties().get("featureid");
+		// String maxFeatures = model.getProperties().get("maxfeatures");
+		// String fid = model.getProperties().get("featureid");
 
 		String template = "";
 
@@ -127,22 +128,20 @@ public class XmlUtilities {
 		 */
 		if (service != null && "wfs".equals(service.toLowerCase())) {
 			if (request != null && "getfeature".equals(request.toLowerCase())) {
-				try {
-					/*
-					 * This template is really not great - it needs to take into consideration filters etc.
-					 * proof of concept only.
-					 */
-					template = loadDocument("WFS_GetFeature.xml");
 
-					return String.format(template, service, version,
-												   outputFormat == null ? "application/gml+xml; version=3.2" : outputFormat, 
-												   count == null ? "" : count, 
-												   typeName);
+				/*
+				 * This template is really not great - it needs to take into
+				 * consideration filters etc. proof of concept only.
+				 */
+				template = loadDocument("wfs_GetFeature.xml");
 
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				return String
+						.format(template,
+								service,
+								version,
+								outputFormat == null ? "application/gml+xml; version=3.2"
+										: outputFormat, count == null ? ""
+										: count, typeName);
 			}
 		}
 
