@@ -46,7 +46,7 @@ public class XmlModel extends AbstractModel {
 	}
 
 	@Override
-	public String getTextSource() {		
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + getXml().toXML();
+	public String getTextSourceAsXML() {		
+		return getXml().toXML();
 	}
 }

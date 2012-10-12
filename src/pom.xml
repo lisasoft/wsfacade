@@ -149,10 +149,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>core</module>
-		<module>test-harness</module>
-		<module>web</module>
-		<module>wmts</module>
-	</modules>
 </project>

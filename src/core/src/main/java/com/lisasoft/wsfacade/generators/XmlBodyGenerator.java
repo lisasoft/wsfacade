@@ -58,7 +58,6 @@ public class XmlBodyGenerator extends HttpGenerator {
 	public HttpRequestBase generateRequest(IModel model, String url,
 			String requestType) throws UnsupportedEncodingException,
 			UnsupportedModelException, URISyntaxException {
-		// for now all REST requests are GETs.
 		if (requestType.equals("get")) {
 			return (generateGetRequest(model, url));
 		} else {
@@ -132,6 +131,11 @@ public class XmlBodyGenerator extends HttpGenerator {
 	public void generateResponse(IModel model, HttpServletResponse response,
 			String charset) throws IOException, UnsupportedModelException {
 		String xml = getMapper().mapFromModel(model);
+		
+		if (!xml.startsWith("<?xml")) { /*If the XML header is missing, add it*/
+			xml = "<?xml version=\"1.0\" encoding=\""+PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)+"\"?>" + xml;
+		}
+		
 		OutputStream out = response.getOutputStream();
 		response.setContentType("text/xml");
 		Document doc = null;
@@ -145,7 +149,7 @@ public class XmlBodyGenerator extends HttpGenerator {
 		}
 		Serializer serializer = null;
 		try {
-			serializer = new Serializer(out, "ISO-8859-1");
+			serializer = new Serializer(out, "UTF-8");
 			serializer.setIndent(4);
 			serializer.setMaxLength(64);
 			serializer.write(doc);

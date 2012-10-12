@@ -78,7 +78,7 @@ public class XmlUtilities {
 		 * locally.
 		 */
 		if (!file.exists()) {
-			file = new File("target//core//xml", fileName);
+			file = new File("target//wsfacade-testharness//xml", fileName);
 
 			if (log.isDebugEnabled()) {
 				log.info("File doesnt exist, testing? looking for file: "

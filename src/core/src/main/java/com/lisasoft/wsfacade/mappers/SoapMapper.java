@@ -98,21 +98,14 @@ public class SoapMapper extends AbstractMapper {
 				soapTemplate = XmlUtilities
 						.loadDocument("standard_soap_template.xml");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("An error occured trying to load the SOAP template");
 			}
 
 			/*
 			 * Here we need to map the model into an OGC XML part, which will
 			 * then be added to the SOAP BODY element.
 			 */
-			String xml = null;
-			try {
-				xml = XmlUtilities.mapModelToOGCXML(model);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String xml = model.getTextSourceAsXML();
 
 			/*
 			 * Add the OGC XMl to the soap binding

@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.lisasoft.wsfacade.web</groupId>
-			<artifactId>web-service</artifactId>
+			<artifactId>web</artifactId>
 			<version>${wsf.version}</version>
 			<type>war</type>
 		</dependency>
@@ -60,7 +60,7 @@
 					<overlays>
 						<overlay>
 							<groupId>com.lisasoft.wsfacade.web</groupId>
-							<artifactId>web-service</artifactId>
+							<artifactId>web</artifactId>
 							<includes>
 								<indluce>**/**.*</indluce>
 							</includes>

@@ -58,7 +58,7 @@ public class XMLUtilitiesTest {
 	}
 
 	@Test
-	public void testMapModelToOGCXML(){
+	public void testMapModelToOGCXML() {
 		IModel model = new KvpModel("request=getfeature,typename=tds:AircraftHangarGeopoint,service=wfs,version=2.0.0,maxfeatures=10");
 		String xml = null;
 		try {

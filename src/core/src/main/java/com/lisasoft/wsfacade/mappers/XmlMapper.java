@@ -69,6 +69,6 @@ public class XmlMapper extends AbstractMapper {
 	}
 
 	public String mapFromModel(IModel model) throws UnsupportedModelException {
-		return model.getTextSource();
+		return model.getTextSourceAsXML();
 	}
 }

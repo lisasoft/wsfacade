@@ -29,6 +29,7 @@ public interface IModel {
 	public byte[] getBinarySource();
 	public void setBinarySource(byte[] binarySource);
 	public String getTextSource();
+	public String getTextSourceAsXML();
 	public void setTextSource(String textSource);
 	public Map<String, String> getProperties() ;
 	public void setProperties(Map<String, String> properties);

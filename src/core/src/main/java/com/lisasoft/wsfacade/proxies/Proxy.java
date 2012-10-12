@@ -59,7 +59,7 @@ public class Proxy {
 	 * The name of this proxy object for example "WFSProxy" set in the
 	 * applicationContext.xml with the name property
 	 * </p>
-	 * <property name="name" value="genericKVPtoSoap" />
+	 * <property name="name" value="kvpToSoap" />
 	 */
 	protected String name = null;
 

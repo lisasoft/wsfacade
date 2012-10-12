@@ -19,6 +19,10 @@
  */
 package com.lisasoft.wsfacade.models;
 
+import java.io.IOException;
+
+import com.lisasoft.wsfacade.utils.XmlUtilities;
+
 /**
  * Interpreters and populate a model with paramaters from a KVP GET request.
  * 
@@ -35,5 +39,17 @@ public class KvpModel extends AbstractModel {
 			propertyValue = propertyNameValue[1];
 			getProperties().put(propertyName.trim(), propertyValue.trim());
 		}
+	}
+
+	@Override
+	public String getTextSourceAsXML() {
+		String xml = "";
+		try {
+			xml = XmlUtilities.mapModelToOGCXML(this);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return xml;
 	}
 }

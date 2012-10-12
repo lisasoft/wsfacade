@@ -62,6 +62,10 @@ public abstract class AbstractModel implements IModel {
 	public String getTextSource() {
 		return textSource;
 	}
+	
+	public String getTextSourceAsXML(){
+		return textSource;
+	}
 
 	public void setTextSource(String textSource) {
 		this.textSource = textSource;
