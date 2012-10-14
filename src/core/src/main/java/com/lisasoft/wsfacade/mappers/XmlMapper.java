@@ -55,6 +55,10 @@ public class XmlMapper extends AbstractMapper {
 	 */
 	public IModel mapToModel(String source) throws IllegalArgumentException {
 		IModel result = null;
+		
+		if (source.toLowerCase().startsWith("<?xml")){
+			source = source.substring(source.indexOf('>')+1, source.length()).trim();
+		}
 
 		Builder builder = new Builder();
 		try {
