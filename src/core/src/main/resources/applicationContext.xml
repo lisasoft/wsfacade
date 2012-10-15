@@ -30,12 +30,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<!-- KVP Get to SOAP using Generic interpreters -->
-	<bean id="kvpToSoap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+	<bean id="kvpToSoap" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/kvp" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wfs_2_0_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="kvpToSoap" />
 		<property name="serviceRequestType" value="post" />
@@ -46,18 +51,23 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="serverRequestGenerator" ref="xmlBodyGenerator" />
 		<property name="serverResponseInterpreter" ref="kvpXmlBodyInterpreter" />
 	</bean>
-	
+
 	<bean id="postXmlBodyInterpreter" class="com.lisasoft.wsfacade.interpreters.XmlBodyInterpreter">
 		<constructor-arg ref="xmlMapper" />
 	</bean>
 
 	<!-- XML POST to SOAP using Generic interpreters -->
-	<bean id="xmlToSoap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+	<bean id="xmlToSoap" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/postXML" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wfs_2_0_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="xmlToSoap" />
 		<property name="serviceRequestType" value="post" />

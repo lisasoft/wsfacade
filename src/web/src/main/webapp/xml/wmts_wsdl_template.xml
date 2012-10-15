@@ -20,7 +20,6 @@
 <!-- ****************************************
                          Bindings
       **************************************** -->
-             
 	<!-- HTTP Post SOAP  bindings -->
 
 	<binding name="WMTS_SOAP_Binding"

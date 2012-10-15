@@ -26,12 +26,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<!-- KVP Get to SOAP using Generic interpreters -->
-	<bean id="kvpToSoap" class="com.lisasoft.wsfacade.proxies.CommonProxy">
+	<bean id="kvpToSoap" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/kvp" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wmts_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="kvpToSoap" />
 		<property name="serviceRequestType" value="post" />

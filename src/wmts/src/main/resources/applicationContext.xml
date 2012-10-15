@@ -23,12 +23,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<constructor-arg ref="wmtsServerMapper" />
 	</bean>
 
-	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
+	<bean id="wmtsLocal" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/wmts" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wmts_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="wmtsLocal" />
 		<property name="serviceRequestType" value="post" />
@@ -40,16 +45,22 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<!-- WMTS Landgate Proxy -->
-	<bean id="wmtsLandgate" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
+	<bean id="wmtsLandgate" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/landgate" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wmts_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="wmtsLocal" />
 		<property name="serviceRequestType" value="post" />
-		<property name="serviceUrl" value="http://beta.landgate.wa.gov.au/tilecache2/wmts.py/" />
+		<property name="serviceUrl"
+			value="http://beta.landgate.wa.gov.au/tilecache2/wmts.py/" />
 		<property name="clientRequestInterpreter" ref="xmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlBodyGenerator" />
 		<property name="serverRequestGenerator" ref="restGenerator" />
@@ -57,12 +68,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<!-- WMTS uab Proxy -->
-	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.wmts.proxy.WmtsProxy">
+	<bean id="wmtsUAB" class="com.lisasoft.wsfacade.proxies.Proxy">
 		<property name="proxyContextUrl" value="/uab" />
 		<property name="proxyManagedUrls">
-			<list>
-				<value>?WSDL</value>
-			</list>
+			<map>
+				<entry>
+					<key>
+						<value>?WSDL</value>
+					</key>
+					<value>xml/wmts_wsdl_template.xml</value>
+				</entry>
+			</map>
 		</property>
 		<property name="name" value="wmtsLocal" />
 		<property name="serviceRequestType" value="post" />

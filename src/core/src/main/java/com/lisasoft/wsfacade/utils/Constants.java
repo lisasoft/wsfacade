@@ -36,7 +36,6 @@ public class Constants {
 	/*
 	 * Property Names for lookup in the application.properties file 
 	 */
-	public static final String WSDL_TEMPLATE = "WSDL_TEMPLATE";
 	public static final String TYPE_TEXT_XML = "TYPE_TEXT_XML";
 	public static final String DEFAULT_CHARSET = "DEFAULT_CHARSET";
 }

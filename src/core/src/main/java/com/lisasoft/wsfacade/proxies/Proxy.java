@@ -19,16 +19,19 @@
  */
 package com.lisasoft.wsfacade.proxies;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -42,6 +45,7 @@ import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 import com.lisasoft.wsfacade.security.ISecurityProvider;
 import com.lisasoft.wsfacade.utils.Constants;
+import com.lisasoft.wsfacade.utils.PropertiesUtil;
 
 /**
  * A Proxy object which is loaded from the application context through spring
@@ -90,7 +94,7 @@ public class Proxy {
 	 * request from the client is a request to a URL in this list it will
 	 * <b>NOT</b> be pushed to the service.
 	 */
-	protected List<String> proxyManagedUrls = null;
+	protected Map<String, String> proxyManagedUrls = null;
 
 	/**
 	 * A security provider - can provide security implementations on top of the
@@ -166,7 +170,7 @@ public class Proxy {
 		 * URL for instance "WSDL" - in this case we don't want to pass the
 		 * request on to the server we can to handle it here at the proxy.
 		 */
-		if (getProxyManagedUrls().contains(requestedUrl)) {
+		if (getProxyManagedUrls().keySet().contains(requestedUrl)) {
 			processProxyManagedUrl(host, requestedUrl, serviceRequestType,
 					request, response);
 		} else {
@@ -296,6 +300,19 @@ public class Proxy {
 	protected void processProxyManagedUrl(URL host, String url,
 			String serviceRequestType, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+
+			response.setContentType(PropertiesUtil.getProperty(Constants.TYPE_TEXT_XML));
+			ServletOutputStream out = response.getOutputStream();
+			
+			String fileName = getProxyManagedUrls().get(url);
+			
+			if (fileName != null || !"".endsWith(fileName)){
+				String absolutePath = request.getSession().getServletContext().getRealPath(fileName);
+				String wsdlTemplate = FileUtils.readFileToString(new File(absolutePath));
+				out.print(String.format(wsdlTemplate, host, name));
+				out.flush();
+				out.close();
+			}
 	}
 
 	public String getName() {
@@ -328,13 +345,13 @@ public class Proxy {
 		this.serviceUrl = serviceUrl;
 	}
 
-	public List<String> getProxyManagedUrls() {
+	public Map<String, String> getProxyManagedUrls() {
 		return proxyManagedUrls;
 	}
 
-	public void setProxyManagedUrls(List<String> proxyManagedUrls) {
+	public void setProxyManagedUrls(Map<String, String> proxyManagedUrls) {
 		if (proxyManagedUrls == null) {
-			proxyManagedUrls = new ArrayList<String>();
+			proxyManagedUrls = new HashMap<String, String>();
 		}
 		this.proxyManagedUrls = proxyManagedUrls;
 	}
