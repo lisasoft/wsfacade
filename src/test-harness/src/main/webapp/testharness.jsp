@@ -40,10 +40,20 @@ $(document).ready(function() {
 	files[i] = "?request=getfeature&typename=tds:AerodromeBoundaryGeocurve&service=wfs&version=2.0.0&maxfeatures=2";
 
 	i++;
-	names[i] = "Post - GetFeature Request";
+	names[i] = "Post - GetCapabilities";
+	descriptions[i] = "Gets the Cababilities of the WFS service";
+	files[i] = "xml/POST_get_capabilities.xml";
+	
+	i++;
+	names[i] = "Post - GetFeature Request limits to 20";
 	descriptions[i] = "Gets 20 features of the WFS service";
-	files[i] = "xml/get_features.xml";
-
+	files[i] = "xml/POST_get_features.xml";
+	
+	i++;
+	names[i] = "Post - GetFeature Request with filter query";
+	descriptions[i] = "Gets tds:EmbankmentGeocurve with FID=PhysiographyCurves.289 from the WFS service";
+	files[i] = "xml/POST_get_features_with_query.xml";
+	
 	i++;
 	names[i] = "Post - Get Capabilities Request";
 	descriptions[i] = "Gets the capabilities of the WMTS service";
@@ -151,7 +161,7 @@ $(document).ready(function() {
 
 	var options = "";
 	for(i=0; i< names.length; i++) {
-		options += '<option value="' + i + '">' + names[i] + " - " + descriptions[i] + '</option>';
+		options += '<option value="' + i + '">' + names[i] + '</option>';
 	}
 	$("select#requests").html(options);
 

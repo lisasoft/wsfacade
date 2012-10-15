@@ -131,11 +131,11 @@ public class XmlBodyGenerator extends HttpGenerator {
 	public void generateResponse(IModel model, HttpServletResponse response,
 			String charset) throws IOException, UnsupportedModelException {
 		String xml = getMapper().mapFromModel(model);
-		
+
 		if (!xml.startsWith("<?xml")) { /*If the XML header is missing, add it*/
 			xml = "<?xml version=\"1.0\" encoding=\""+PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET)+"\"?>" + xml;
 		}
-		
+
 		OutputStream out = response.getOutputStream();
 		response.setContentType("text/xml");
 		Document doc = null;
