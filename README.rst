@@ -64,7 +64,7 @@ This will run a local version of the software on port 8080 which can be accessed
 Continious Integration
 ======================
 
-Build Status: .. image:: https://travis-ci.org/lisasoft/wsfacade.png
+Build Status: :img:https://travis-ci.org/lisasoft/wsfacade.png
 
 Participation
 =============
