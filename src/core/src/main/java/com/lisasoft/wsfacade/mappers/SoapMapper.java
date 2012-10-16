@@ -74,7 +74,7 @@ public class SoapMapper extends AbstractMapper {
 			
 			if (response.toXML().contains("<wfs:WFS_Capabilities")){
 				Element wsdl = new Element("wfs:WSDL", "http://www.opengis.net/wfs/2.0");
-				wsdl.addAttribute(new Attribute("xlink:href", "http://www.w3.org/1999/xlink", host+"/?WSDL"));
+				wsdl.addAttribute(new Attribute("xlink:href", "http://www.w3.org/1999/xlink", host+"?WSDL"));
 				response.appendChild(wsdl);
 			}
 			result = new XmlModel(response.copy());
