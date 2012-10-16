@@ -61,6 +61,11 @@ Change directory to the test harness and run:
  
 This will run a local version of the software on port 8080 which can be accessed at http://localhost:8080/wsfacade-testharness
 
+Continious Integration
+======================
+
+Build Status https://travis-ci.org/lisasoft/wsfacade.png
+
 Participation
 =============
 

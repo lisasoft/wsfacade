@@ -1,4 +1,4 @@
 language: java
 script:
     - cd src
-    - mvn clean install -Pall
+    - mvn test -Pall
