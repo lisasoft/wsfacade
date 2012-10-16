@@ -188,8 +188,8 @@ public class Proxy {
 			 * The model object represents the data in the request in a generic
 			 * format which can be translated into a new request type.
 			 */
-			IModel model = clientRequestInterpreter.interpretRequest(request);
-	
+			IModel model = clientRequestInterpreter.interpretRequest(request, host.toString());
+
 			/*
 			 * Give the model a copy of the host parameter in case its needed
 			 */
@@ -247,7 +247,7 @@ public class Proxy {
 			 * take the response from the service and get a the model (remember
 			 * its what holds the data in a nice generic way)
 			 */
-			model = serverResponseInterpreter.interpretResponse(serverResponse);
+			model = serverResponseInterpreter.interpretResponse(serverResponse, host.toString());
 			model.getProperties().put("host", host.toString());
 
 			if (log.isDebugEnabled()) {

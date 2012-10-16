@@ -22,6 +22,7 @@ package com.lisasoft.wsfacade.mappers;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -52,7 +53,7 @@ public class SoapMapper extends AbstractMapper {
 	/**
 	 * The input here is likely to be a SOAP envelope
 	 */
-	public IModel mapToModel(String source) throws IllegalArgumentException {
+	public IModel mapToModel(String source, String host) throws IllegalArgumentException {
 		IModel result = null;
 
 		/*
@@ -60,24 +61,28 @@ public class SoapMapper extends AbstractMapper {
 		 */
 		Builder builder = new Builder();
 		try {
-			Document doc = builder.build(new ByteArrayInputStream(source
-					.getBytes()));
-			Element html = doc.getRootElement();
-			Element xmlResponse = html.getFirstChildElement("Body","http://www.w3.org/2003/05/soap-envelope"); /*TODO: this needs to be dynamic for the correct soap namespace*/
+			Document doc = builder.build(new ByteArrayInputStream(source.getBytes()));
+			Element root = doc.getRootElement();
+			Element xmlResponse = root.getFirstChildElement("Body","http://www.w3.org/2003/05/soap-envelope"); /*TODO: this needs to be dynamic for the correct soap namespace*/
 
 			if (xmlResponse==null) {
-				xmlResponse = html.getFirstChildElement("Body","http://schemas.xmlsoap.org/soap/envelope/"); /*TODO: this needs to be dynamic for the correct soap namespace*/
+				xmlResponse = root.getFirstChildElement("Body","http://schemas.xmlsoap.org/soap/envelope/"); /*TODO: this needs to be dynamic for the correct soap namespace*/
 			}
 
 			Elements children = xmlResponse.getChildElements();
 			Element response = children.get(0);
-
+			
+			if (response.toXML().contains("<wfs:WFS_Capabilities")){
+				Element wsdl = new Element("wfs:WSDL", "http://www.opengis.net/wfs/2.0");
+				wsdl.addAttribute(new Attribute("xlink:href", "http://www.w3.org/1999/xlink", host+"/?WSDL"));
+				response.appendChild(wsdl);
+			}
 			result = new XmlModel(response.copy());
 		} catch (NullPointerException ex) {
 		} catch (ParsingException ex) {
 		} catch (IOException ex) {
 		}
-
+		
 		return result;
 	}
 

@@ -52,10 +52,10 @@ public abstract class HttpInterpreter {
 		this.setMapper(mapper);
 	}
 
-	public abstract IModel interpretRequest(HttpServletRequest request)
+	public abstract IModel interpretRequest(HttpServletRequest request, String host)
 			throws IOException;
 
-	public abstract IModel interpretResponse(HttpResponse response)
+	public abstract IModel interpretResponse(HttpResponse response, String host)
 			throws IOException;
 
 	protected static String LINE_SEPERATOR = "\n";

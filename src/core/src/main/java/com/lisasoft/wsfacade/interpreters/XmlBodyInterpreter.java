@@ -40,15 +40,15 @@ public class XmlBodyInterpreter extends HttpInterpreter {
 	}
 
 	@Override
-	public IModel interpretRequest(HttpServletRequest request) throws IOException {
+	public IModel interpretRequest(HttpServletRequest request, String host) throws IOException {
 		String xml = readString(request);
-		return getMapper().mapToModel(xml);
+		return getMapper().mapToModel(xml, host);
 	}
 
 	@Override
-	public IModel interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response, String host) throws IOException {
 		String xml = readString(response);
-		return getMapper().mapToModel(xml);
+		return getMapper().mapToModel(xml, host);
 	}
 
 }

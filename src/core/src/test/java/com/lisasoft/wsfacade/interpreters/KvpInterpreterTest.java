@@ -57,7 +57,7 @@ public class KvpInterpreterTest {
 	@Test
 	public void testInterprater() throws Exception {
 		assertNotNull(interpreter);
-		IModel model = interpreter.interpretRequest(new MockHttpServletRequest());
+		IModel model = interpreter.interpretRequest(new MockHttpServletRequest(), "");
 		assertEquals(model.getProperties().get("service"), "wms");
 		assertEquals(model.getProperties().get("version"), "1.3.0");
 		assertEquals(model.getProperties().get("request"), "GetCapabilities");

@@ -29,7 +29,7 @@ public class RestMapper extends AbstractMapper {
 	
     static final Logger log = Logger.getLogger(RestMapper.class);
 
-    public IModel mapToModel(String source) throws IllegalArgumentException {
+    public IModel mapToModel(String source, String host) throws IllegalArgumentException {
 		throw new IllegalArgumentException("Mapping from REST to the model is not supported yet.");
 		// return null;
 	}

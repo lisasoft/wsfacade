@@ -47,7 +47,7 @@ public class KvpInterpreter extends HttpInterpreter {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public IModel interpretRequest(HttpServletRequest request) throws IOException {
+	public IModel interpretRequest(HttpServletRequest request, String host) throws IOException {
 		Enumeration<String> keys = request.getParameterNames();
 		StringBuilder sb = new StringBuilder();
 		while (keys.hasMoreElements()){
@@ -55,14 +55,14 @@ public class KvpInterpreter extends HttpInterpreter {
 			sb.append(key+"="+request.getParameter(key));
 			sb.append(",");
 		}
-		return getMapper().mapToModel(request.getRequestURI(), sb.toString(), request.getContentType());
+		return getMapper().mapToModel(sb.toString(), request.getContentType(), host);
 	}
 
 	/**
 	 * The response from a KVP Get request on an OGC service should be an XML body
 	 */
 	@Override
-	public IModel interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response, String host) throws IOException {
 		String textContent = null;
 		byte[] binaryContent = null;
 		IModel result = null;
@@ -85,7 +85,7 @@ public class KvpInterpreter extends HttpInterpreter {
 				if(log.isDebugEnabled()) {
 					log.debug("Binary Content length: " + binaryContent.length);
 				}
-				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue(), host);
 			}
 		}
 		return result;

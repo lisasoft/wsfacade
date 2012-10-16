@@ -53,7 +53,7 @@ public class XmlMapper extends AbstractMapper {
 	/**
 	 * The input here is likely to be a SOAP envelope
 	 */
-	public IModel mapToModel(String source) throws IllegalArgumentException {
+	public IModel mapToModel(String source, String host) throws IllegalArgumentException {
 		IModel result = null;
 		
 		if (source.toLowerCase().startsWith("<?xml")){

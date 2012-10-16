@@ -41,7 +41,7 @@ public class RestInterpreter extends HttpInterpreter {
 	}
 
 	@Override
-	public IModel interpretRequest(HttpServletRequest request) throws IOException {
+	public IModel interpretRequest(HttpServletRequest request, String host) throws IOException {
 		String textContent = null;
 		if(request.getContentLength() > 0) {
 			if(request.getContentType().startsWith("text/")) {
@@ -53,7 +53,7 @@ public class RestInterpreter extends HttpInterpreter {
 	}
 
 	@Override
-	public IModel interpretResponse(HttpResponse response) throws IOException {
+	public IModel interpretResponse(HttpResponse response, String host) throws IOException {
 		String textContent = null;
 		byte[] binaryContent = null;
 		IModel result = null;
@@ -76,7 +76,7 @@ public class RestInterpreter extends HttpInterpreter {
 				if(log.isDebugEnabled()) {
 					log.debug("Binary Content length: " + binaryContent.length);
 				}
-				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue());
+				result = getMapper().mapToModel(binaryContent, response.getEntity().getContentType().getValue(), host);
 			}
 		}
 		return result;

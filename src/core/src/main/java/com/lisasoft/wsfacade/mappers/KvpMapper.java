@@ -47,7 +47,7 @@ public class KvpMapper extends AbstractMapper {
 	 * <b>http://HOST:PORT/service?property1=value1&...propertyN=valueN</b>
 	 * </p>
 	 */
-	public IModel mapToModel(String source) throws IllegalArgumentException {
+	public IModel mapToModel(String source, String host) throws IllegalArgumentException {
 		if (log.isDebugEnabled()){
 			log.info("Parsing input string in the KvpMapper: '" + source  + "'");
 		}

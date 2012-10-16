@@ -30,7 +30,7 @@ public class KvpMapperTest {
 
 	@Test
 	public void testMapToModelString() {
-		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS);
+		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS, "");
 		assertEquals(model.getProperties().get("service"), "wms");
 		assertEquals(model.getProperties().get("version"), "1.3.0");
 		assertEquals(model.getProperties().get("request"), "GetCapabilities");
@@ -38,7 +38,7 @@ public class KvpMapperTest {
 
 	@Test
 	public void testMapFromModel() throws Exception {
-		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS);
+		IModel model = interpreter.getMapper().mapToModel(SERVICE_WMS, "");
 		String testString = interpreter.getMapper().mapFromModel(model);
 		assertEquals(SERVICE_WMS_R, testString);
 	}

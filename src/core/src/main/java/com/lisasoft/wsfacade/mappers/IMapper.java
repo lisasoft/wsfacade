@@ -23,6 +23,6 @@ import com.lisasoft.wsfacade.models.IModel;
 import com.lisasoft.wsfacade.models.UnsupportedModelException;
 
 public interface IMapper {	
-	public abstract IModel mapToModel(String source) throws IllegalArgumentException;
+	public abstract IModel mapToModel(String source, String url) throws IllegalArgumentException;
 	public abstract String mapFromModel(IModel model) throws UnsupportedModelException;
 }

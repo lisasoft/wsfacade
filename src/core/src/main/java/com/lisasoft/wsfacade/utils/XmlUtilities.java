@@ -91,7 +91,7 @@ public class XmlUtilities {
 					+ file.getAbsolutePath() + "' could not be found");
 		}
 
-		return FileUtils.readFileToString(file);
+		return FileUtils.readFileToString(file, PropertiesUtil.getProperty(Constants.DEFAULT_CHARSET));
 	}
 
 	/**

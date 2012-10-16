@@ -24,8 +24,8 @@ import com.lisasoft.wsfacade.models.IModel;
 
 public abstract class AbstractMapper implements IMapper {
 	
-	public IModel mapToModel(String uri, String source, String contentType) throws IllegalArgumentException {
-		IModel model = mapToModel(source);
+	public IModel mapToModel(String source, String contentType, String host) throws IllegalArgumentException {
+		IModel model = mapToModel(source, "");
 
 		model.setContentType(contentType);
 		model.setBinary(false);
@@ -34,18 +34,8 @@ public abstract class AbstractMapper implements IMapper {
 		return model;
 	}
 
-	public IModel mapToModel(String source, String contentType) throws IllegalArgumentException {
-		IModel model = mapToModel(source);
-
-		model.setContentType(contentType);
-		model.setBinary(false);
-		model.setTextSource(source);
-
-		return model;
-	}
-
-	public IModel mapToModel(byte[] source, String contentType) throws IllegalArgumentException {
-		IModel model = mapToModel(null);
+	public IModel mapToModel(byte[] source, String contentType, String host) throws IllegalArgumentException {
+		IModel model = mapToModel(null, "");
 
 		model.setContentType(contentType);
 		model.setBinary(true);
