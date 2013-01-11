@@ -72,7 +72,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="name" value="xmlToSoap" />
 		<property name="serviceRequestType" value="post" />
 		<property name="serviceUrl"
-			value="http://services.interactive-instruments.de/xsprojects/ows9-tds/services/ltds/wfs" />
+			value="http://portal.cubewerx.com/cubewerx/projects/ows9/cubeserv.cgi?&amp;datastore=OWS9" />
 		<property name="clientRequestInterpreter" ref="postXmlBodyInterpreter" />
 		<property name="clientResponseGenerator" ref="xmlClientBodyGenerator" />
 		<property name="serverRequestGenerator" ref="xmlBodyGenerator" />
